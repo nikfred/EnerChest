@@ -1,0 +1,115 @@
+const userService = require('../services/userService')
+const ApiError = require('../error/ApiError')
+
+const checkName = (name) => {
+    const regex = /\s/
+    return name || !name.match(regex)
+}
+
+const checkPassword = (password) => {
+    return password.length <= 18 && password.length >= 8 && checkName(password)
+}
+
+class UserController {
+    async registration(req, res, next) {
+        try {
+            const {firstname, lastname, email, birth_date, gender, phone, password} = req.body
+            const userData = {firstname, lastname, email, birth_date, gender, phone}
+            let user = ""
+            if (!checkPassword(password)) {
+                return next(ApiError.badRequest('Неверный формат пароля'))
+            } else {
+                user = await userService.registration(userData, password)
+            }
+            res.cookie('refreshToken', user.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+            return res.json(user)
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async activate(req, res, next) {
+        try {
+            const {link} = req.params
+            await userService.activate(link)
+            return res.redirect(process.env.CLIENT_URL)
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async login(req, res, next) {
+        try {
+            const {email, password} = req.body
+            const user = await userService.login(email, password)
+            res.cookie('refreshToken', user.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+            return res.json(user)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
+
+    async logout(req, res, next) {
+        try {
+            const {refreshToken} = req.cookie
+            const user = await userService.logout(refreshToken)
+            res.clearCookie('refreshToken')
+            return res.status(200)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
+
+    async refresh(req, res, next) {
+        try {
+            console.log(req.cookies);
+            const {refreshToken} = req.cookies
+            if (!refreshToken) {
+                return next(ApiError.unauthorized('Unauthorized'))
+            }
+            const user = await userService.refresh(refreshToken)
+            res.cookie('refreshToken', user.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
+            return res.json(user)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
+
+    async getUser(req, res, next) {
+        try {
+            const {id} = req.user
+            const users = await userService.getUser(id)
+            return res.json(users)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
+
+    async getAll(req, res, next) {
+        try {
+            const users = await userService.getAll()
+            return res.json(users)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
+
+    async update(req, res, next) {
+        try {
+            const {id} = req.user
+            const {firstname, lastname, email, birth_date, gender, phone} = req.body
+            const rawProfile = {firstname, lastname, email, birth_date, gender, phone}
+            const profile = await userService.update(id, rawProfile)
+            return res.json(profile)
+        } catch (e) {
+            next(e)
+        }
+    }
+}
+
+module.exports = new UserController()
