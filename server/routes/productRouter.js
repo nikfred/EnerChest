@@ -11,5 +11,6 @@ router.delete('/:product_id', authMiddleware, adminMiddleware, productController
 
 router.get('/all', productController.getAll)
 router.get('/:product_id', productController.getOne)
+router.get('/byBrand/:brand_id', productController.getByBrand)
 
 module.exports = router

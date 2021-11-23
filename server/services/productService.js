@@ -59,6 +59,19 @@ class ProductService {
 
     }
 
+    async getByBrand(brand_id) {
+        const brand = await Brand.findById(brand_id)
+        if (!brand) {
+            throw ApiError.notFound("Brand not found")
+        }
+        const rawProducts = await Product.find({brand: brand.brand})
+        const products = []
+        for (const rawProduct of rawProducts) {
+            products.push(new ProductDto(rawProduct))
+        }
+        return products
+    }
+
     async activate(product_id, active = true) {
         return Product.findOneAndUpdate({_id: product_id}, {active}, {new: true, upsert: true})
     }
