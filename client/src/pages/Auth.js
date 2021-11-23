@@ -2,7 +2,7 @@ import React from 'react';
 
 const Auth = () => {
     return (
-        <div>
+        <div style={{backgroundColor: '#856CA4'}}>
             Auth
         </div>
     );

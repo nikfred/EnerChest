@@ -5,13 +5,13 @@ import {SHOP_ROUTE} from "../utils/consts";
 
 const Navbars = () => {
     return (
-        <Navbar variant="dark" style={{backgroundColor: '#F3A055'}}>
+        <Navbar variant="dark" style={{backgroundColor: '#F3A055', borderRadius: '0px 0px 20px 20px', fontSize: '28px'}}>
             <Container>
-                <NavLink to={SHOP_ROUTE}>EnerChest</NavLink>
-                <Nav className="me-auto">
-                    <Nav.Link href="#home">Home</Nav.Link>
-                    <Nav.Link href="#features">Features</Nav.Link>
-                    <Nav.Link href="#pricing">Pricing</Nav.Link>
+                <NavLink to={SHOP_ROUTE} style={{fontFamily: 'Impact', textDecoration: 'none'}}>EnerChest</NavLink>
+                <Nav className="ml-auto" style={{position: 'right', color: 'green'}}>
+                    <Nav.Link href="#dfdsfdsfsdf">Аккаунт</Nav.Link>
+                    <Nav.Link href="#features">Корзина </Nav.Link>
+
                 </Nav>
             </Container>
         </Navbar>
