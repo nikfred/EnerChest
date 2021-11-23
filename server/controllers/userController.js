@@ -110,6 +110,17 @@ class UserController {
             next(e)
         }
     }
+
+    async deleteUser(req, res, next) {
+        try {
+            const {id} = req.user
+            const user = await userService.deleteUser(id)
+            return res.json(user)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
 }
 
 module.exports = new UserController()

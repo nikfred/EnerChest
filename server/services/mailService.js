@@ -21,10 +21,31 @@ class MailService {
             text: "",
             html:
                 `
-                <div>
-                <h1>Для активации перейдите по ссылке</h1>
-                <a href="${link}">${link}</a>
+                <center>
+                <div style="
+                    background-color: #856CA4;
+                    border-radius: 20px;
+                    padding: 1px;
+                ">
+                <h1 style="
+                    color: #fff;
+                    margin: 15px 20px;
+                ">Для активации перейдите по ссылке</h1>
+                <a href="${link}" style="
+                    text-decoration: none;
+                    display: inline-block;
+                    padding: 10px 30px;
+                    margin: 10px 20px;
+                    position: center;
+                    overflow: hidden;
+                    border: 2px solid #fe6637;
+                    border-radius: 8px;
+                    font-family: 'Montserrat', sans-serif;
+                    background: #F3A055;
+                    color: #fff;
+                ">Подтвердить</a>
                 </div>
+                </center>
                 `
         })
     }

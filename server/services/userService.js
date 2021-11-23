@@ -1,5 +1,6 @@
 const User = require("../models/user");
 const Cart = require("../models/cart");
+const Token = require("../models/token");
 const ApiError = require('../error/ApiError')
 const bcrypt = require('bcrypt')
 const uuid = require('uuid')
@@ -102,6 +103,12 @@ class UserService {
         console.log("Update User")
         console.log(user);
         return User.findOneAndUpdate({_id: id}, rawUser, {upsert: true, new: true})
+    }
+
+    async deleteUser(uid) {
+        await Cart.deleteOne({uid})
+        await Token.deleteOne({uid})
+        return User.deleteOne({_id: uid})
     }
 }
 
