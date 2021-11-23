@@ -106,9 +106,9 @@ class UserService {
     }
 
     async deleteUser(uid) {
-        await Cart.findOneAndDelete({uid})
-        await Token.findOneAndDelete({uid})
-        return User.findOneAndDelete({_id: uid})
+        await Cart.deleteOne({uid})
+        await Token.deleteOne({uid})
+        return User.deleteOne({_id: uid})
     }
 }
 
