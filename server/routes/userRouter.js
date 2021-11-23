@@ -12,5 +12,6 @@ router.get('/refresh', userController.refresh)
 router.get('/all', authMiddleware, userController.getAll)
 router.get('/', authMiddleware, userController.getUser)
 router.put('/', authMiddleware, userController.update)
+router.delete('/', authMiddleware, userController.deleteUser)
 
 module.exports = router
