@@ -1,0 +1,25 @@
+import React, {useContext} from 'react';
+import {Context} from "../index";
+import {ListGroup} from "react-bootstrap";
+import {observer} from "mobx-react-lite";
+
+const BrandBar = observer(() => {
+    const {product} = useContext(Context)
+    return (
+        <ListGroup className="mt-3">
+            {product.brands.map(brand =>
+                <ListGroup.Item key={brand.id}
+                                active={brand.id === product.selectedBrand.id}
+                                onClick={() => product.setSelectedBrand(brand)}
+                                style={{
+                                    fontFamily: 'Montserrat Alternates',
+                                    backgroundColor: '#C4C4C4', textAlign: 'center', width: '60%',
+                                    cursor: 'pointer'
+                                }} className="align-self-auto">
+                    {brand.name}
+                </ListGroup.Item>)}
+        </ListGroup>
+    );
+});
+
+export default BrandBar;

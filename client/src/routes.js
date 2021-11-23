@@ -1,9 +1,10 @@
-import {ADMIN_ROUTE, BASKET_ROUTE, LOGIN_ROUTE, PRODUCT_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "./utils/consts";
+import {ADMIN_ROUTE, BASKET_ROUTE, LOGIN_ROUTE, PRODUCT_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE, ACCOUNT_ROUTE} from "./utils/consts";
 import AdminPanel from "./pages/AdminPanel";
 import Basket from "./pages/Basket";
 import Shop from "./pages/Shop";
 import Auth from "./pages/Auth";
 import Product from "./pages/Product";
+import Account from "./pages/Account";
 
 export const authRoutes = [
     {
@@ -13,6 +14,10 @@ export const authRoutes = [
     {
         path : BASKET_ROUTE,
         Component: Basket
+    },
+    {
+        path : ACCOUNT_ROUTE,
+        Component: Account
     }
 
 ]
