@@ -59,12 +59,16 @@ class ProductService {
 
     }
 
-    async getByBrand(brand_id) {
-        const brand = await Brand.findById(brand_id)
-        if (!brand) {
-            throw ApiError.notFound("Brand not found")
+    async search(brand = undefined, size = undefined) {
+        let rawProducts
+        if (!brand && !size) {
+            rawProducts = await this.getAll()
+        } else {
+            // const brand = brand_id ? (await Brand.findById(brand_id)).brand : undefined
+            const filter = brand ? size ? {brand, size} : {brand} : {size}
+            console.log(filter)
+            rawProducts = await Product.find(filter)
         }
-        const rawProducts = await Product.find({brand: brand.brand})
         const products = []
         for (const rawProduct of rawProducts) {
             products.push(new ProductDto(rawProduct))
@@ -86,6 +90,10 @@ class ProductService {
             throw ApiError.notFound("Product not found")
         }
         return new ProductDto(product)
+    }
+
+    async getAllBrands() {
+        return Brand.find()
     }
 
     async delete(product_id) {

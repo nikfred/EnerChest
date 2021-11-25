@@ -44,13 +44,20 @@ class ProductController {
         }
     }
 
-    async getByBrand(req, res, next){
+    async getAllBrands(req, res, next){
         try {
-            const {brand_id} = req.params
-            const products = await productService.getByBrand(brand_id)
-            if (!products) {
-                return next(ApiError.notFound('Product not found'))
-            }
+            const products = await productService.getAllBrands()
+            return res.json(products)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
+
+    async search(req, res, next){
+        try {
+            const {brand, size} = req.query
+            const products = await productService.search(brand, size)
             return res.json(products)
         } catch (e) {
             console.log(e)
