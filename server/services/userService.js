@@ -87,7 +87,7 @@ class UserService {
     }
 
     async update(id, rawUser) {
-        const user = await User.findById(id)
+        let user = await User.findById(id)
         if (user) {
             rawUser = {
                 firstname: rawUser.firstname || user.firstname,
@@ -102,7 +102,23 @@ class UserService {
         }
         console.log("Update User")
         console.log(user);
-        return User.findOneAndUpdate({_id: id}, rawUser, {upsert: true, new: true})
+        user = await User.findOneAndUpdate({_id: id}, rawUser, {upsert: true, new: true})
+        return new UserProfileDto(user)
+    }
+
+    async updateRole(id, role) {
+        let user = await User.findById(id)
+        if (!user) {
+            throw ApiError.notFound('User not found')
+        }
+
+        const roles = User.schema.tree.role.enum.values
+        if (roles.indexOf(role) === -1) {
+            throw ApiError.badRequest('Role not exists')
+        }
+
+        user = await User.findOneAndUpdate({_id: id}, {role}, {new: true})
+        return new UserProfileDto(user)
     }
 
     async deleteUser(uid) {
