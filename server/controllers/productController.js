@@ -44,6 +44,27 @@ class ProductController {
         }
     }
 
+    async getAllBrands(req, res, next){
+        try {
+            const products = await productService.getAllBrands()
+            return res.json(products)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
+
+    async search(req, res, next){
+        try {
+            const {brand, size} = req.query
+            const products = await productService.search(brand, size)
+            return res.json(products)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
+
     async update(req, res, next){
         try {
             const {product_id} = req.params

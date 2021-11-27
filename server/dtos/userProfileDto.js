@@ -8,6 +8,7 @@ module.exports = class UserProfileDto{
     birth_date;
     gender;
     isActivated;
+    role;
 
     constructor(model) {
         this.id = model._id;
@@ -19,5 +20,6 @@ module.exports = class UserProfileDto{
         this.birth_date = model.birth_date || "";
         this.gender = model.gender || "";
         this.isActivated = model.isActivated;
+        this.role = model.role || "USER";
     }
 }

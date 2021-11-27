@@ -10,6 +10,9 @@ router.put('/activate/:product_id', authMiddleware, adminMiddleware, productCont
 router.delete('/:product_id', authMiddleware, adminMiddleware, productController.delete)
 
 router.get('/all', productController.getAll)
+router.get('/brands', productController.getAllBrands)
+router.get('/search', productController.search)
 router.get('/:product_id', productController.getOne)
+
 
 module.exports = router

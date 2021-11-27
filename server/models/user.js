@@ -47,7 +47,10 @@ const userSchema = new mongoose.Schema({
     },
     role: {
         type: String,
-        enum: ['USER', 'ADMIN', 'STAFF'],
+        enum: {
+            values: ['USER', 'ADMIN', 'STAFF'],
+            message: '{VALUE} is not supported'
+        },
         default: 'USER'
     },
     isActivated: {

@@ -53,7 +53,7 @@ class UserController {
     async logout(req, res, next) {
         try {
             const {refreshToken} = req.cookie
-            const user = await userService.logout(refreshToken)
+            await userService.logout(refreshToken)
             res.clearCookie('refreshToken')
             return res.status(200)
         } catch (e) {
@@ -105,6 +105,16 @@ class UserController {
             const {firstname, lastname, email, birth_date, gender, phone} = req.body
             const rawProfile = {firstname, lastname, email, birth_date, gender, phone}
             const profile = await userService.update(id, rawProfile)
+            return res.json(profile)
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async updateRole(req, res, next) {
+        try {
+            const {id, role} = req.body
+            const profile = await userService.updateRole(id, role)
             return res.json(profile)
         } catch (e) {
             next(e)
