@@ -85,7 +85,7 @@ class ProductService {
     }
 
     async getOne(product_id) {
-        const product = await Product.findById(product_id)
+        const product = await Product.findOne({_id: product_id})
         if (!product) {
             throw ApiError.notFound("Product not found")
         }
