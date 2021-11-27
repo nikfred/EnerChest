@@ -2,6 +2,7 @@ const Dispenser = require('../models/dispenser')
 const Product = require('../models/product')
 const DispenserItem = require('../models/dispenserItem')
 const ApiError = require('../error/ApiError')
+const dispenserItemDto = require('../dtos/dispenserItemDto')
 
 const findDispenserById = async (dispenser_id) => {
     const dispenser = await Dispenser.findById(dispenser_id)
@@ -18,7 +19,6 @@ const findProductById = async (product_id) => {
     }
     return product
 }
-
 
 class DispenserService {
     async create(address) {
@@ -96,6 +96,22 @@ class DispenserService {
             {_id: dispenserItem._id},
             {quantityAll: newQuantityAll},
             {new: true})
+    }
+
+    async getProducts(dispenser_id) {
+        const dispenser = await findDispenserById(dispenser_id)
+        let dispenserItems = await DispenserItem.find({dispenser_id})
+        let product
+        for (let i = 0; i < dispenserItems.length; i++) {
+            product = await findProductById(dispenserItems[i].product_id)
+            dispenserItems[i] = new dispenserItemDto({
+                ...product._doc,
+                quantityAll: dispenserItems[i].quantityAll,
+                quantityFree: dispenserItems[i].quantityFree,
+                address: dispenser.address
+            })
+        }
+        return dispenserItems
     }
 }
 

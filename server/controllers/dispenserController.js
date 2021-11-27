@@ -39,6 +39,17 @@ class DispenserController {
             next(e)
         }
     }
+
+    async getProducts(req, res, next){
+        try {
+            const {dispenser_id} = req.params
+            const products = await dispenserService.getProducts(dispenser_id)
+            return res.json(products)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
 }
 
 module.exports = new DispenserController()
