@@ -36,7 +36,7 @@ export const publicRoutes = [
         Component: Auth
     },
     {
-        path : PRODUCT_ROUTE,
+        path : PRODUCT_ROUTE + '/:id',
         Component: Product
     }
 ]

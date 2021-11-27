@@ -1,26 +1,25 @@
 import React, {useContext} from 'react';
 import {Context} from "../index";
-import {Card, Row} from "react-bootstrap";
+import {Card, ListGroup, Row} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
 
 const SizeBar = observer(() => {
     const {product} = useContext(Context)
     return (
-        <Row className="d-flex mt-3">
+        <ListGroup className="mt-3" style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
             {product.sizes.map(size =>
-                <Card key={size.id}
-                      className="mt-2"
-                      onClick={() => product.setSelectedSize(size)}
-                      border={size.id === product.selectedSize.id ? 'danger' : 'light'}
-                      style={{
-                          fontFamily: 'Montserrat Alternates',
-                          backgroundColor: '#C4C4C4',
-                          cursor: 'pointer'
-                      }}>
+                <ListGroup.Item key={size.id}
+                                active={size.id === product.selectedSize.id}
+                                onClick={() => product.setSelectedSize(size)}
+                                style={{
+                                    fontFamily: 'Montserrat Alternates',
+                                    backgroundColor: '#C4C4C4', textAlign: 'center',
+                                    cursor: 'pointer'
+                                }} className="align-self-auto">
                     {size.name}
-                </Card>
+                </ListGroup.Item>
             )}
-        </Row>
+        </ListGroup>
     );
 });
 
