@@ -92,7 +92,6 @@ class UserService {
             rawUser = {
                 firstname: rawUser.firstname || user.firstname,
                 lastname: rawUser.lastname || user.lastname,
-                email: rawUser.email || user.email,
                 birth_date: rawUser.birth_date || user.birth_date,
                 phone: rawUser.phone || user.phone,
                 gender: rawUser.gender || user.gender

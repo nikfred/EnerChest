@@ -1,5 +1,6 @@
 module.exports = class productDto{
     id;
+    brand;
     name;
     size;
     price;
@@ -10,7 +11,8 @@ module.exports = class productDto{
 
     constructor(model) {
         this.id = model._id;
-        this.name = `${model.brand} ${model.name || ""}`.trim();
+        this.brand = model.brand;
+        this.name = model.name || "";
         this.size = model.size || "";
         this.price = +model.price || 0;
         this.discount = +model.discount || 0;

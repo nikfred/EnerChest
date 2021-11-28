@@ -3,6 +3,7 @@ const Product = require('../models/product')
 const CartItem = require('../models/cartItem')
 const Dispenser = require('../models/dispenser')
 const ApiError = require('../error/ApiError')
+const ProductDto = require('../dtos/productDto')
 
 class CartService {
     async addProduct(product_id, dispenser_id, uid, quantity = 1) {
@@ -53,7 +54,8 @@ class CartService {
             if (!product) {
                 throw ApiError.notFound("Product not found")
             }
-            product._doc.quantity = cartItem.quantity
+            product = new ProductDto(product)
+            product.quantity = cartItem.quantity
             products.push(product)
         }
         return {cart, products}

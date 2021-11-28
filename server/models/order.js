@@ -4,8 +4,7 @@ const orderSchema = new mongoose.Schema({
     uid: {
         type: mongoose.Types.ObjectId,
         ref: 'User',
-        required: true,
-        unique: true
+        required: true
     },
     dispenser_id: {
         type: mongoose.Types.ObjectId,
@@ -28,6 +27,9 @@ const orderSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
+    },
+    dateCancel: {
+        type: Date
     }
 })
 
