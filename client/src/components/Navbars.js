@@ -1,12 +1,12 @@
 import React, {useContext} from 'react';
 import {Container, Nav, Navbar} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
-import {ACCOUNT_ROUTE, BASKET_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "../utils/consts";
+import {ACCOUNT_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "../utils/consts";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
 
 const mystyle = {
-    fontFamily: 'Montserrat Alternates',
+    fontFamily: 'Bebas Neue',
     textDecoration: 'none',
     color: 'green',
     paddingLeft: '20px',
@@ -16,16 +16,16 @@ const mystyle = {
 
 const Navbars = observer(() => {
     const {user} = useContext(Context)
+
     return (
         <Navbar variant="dark"
-                style={{backgroundColor: '#F3A055', borderRadius: '0px 40px 40px 0px',
+                style={{background: 'linear-gradient(171deg,#121212,#181818)', borderRadius: '0px 0px 15px 15px',
                     boxShadow:'0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
             <Container>
                 <NavLink to={SHOP_ROUTE} style={mystyle}>EnerChest</NavLink>
                 {user.isAuth ?
                     <Nav className="ml-auto">
                         <NavLink to={ACCOUNT_ROUTE} style={mystyle}>Account</NavLink>
-                        <NavLink to={BASKET_ROUTE} style={mystyle}>Basket</NavLink>
                     </Nav>
                     :
                     <Nav className="ml-auto" >
@@ -40,3 +40,4 @@ const Navbars = observer(() => {
 
 
 export default Navbars;
+

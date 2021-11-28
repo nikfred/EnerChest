@@ -1,10 +1,11 @@
 import React, {useContext} from 'react';
 import {Context} from "../index";
-import {Card, ListGroup, Row} from "react-bootstrap";
+import { ListGroup} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
 
 const SizeBar = observer(() => {
     const {product} = useContext(Context)
+
     return (
         <ListGroup className="mt-3" style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
             {product.sizes.map(size =>
