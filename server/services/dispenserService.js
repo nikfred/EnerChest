@@ -81,6 +81,7 @@ class DispenserService {
     }
 
     async returned(dispenser_id, product_id, quantity) {
+        console.log('returned ' + product_id )
         return this.updateQuantityFree(dispenser_id, product_id, -quantity)
     }
 
