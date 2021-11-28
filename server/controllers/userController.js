@@ -102,8 +102,8 @@ class UserController {
     async update(req, res, next) {
         try {
             const {id} = req.user
-            const {firstname, lastname, email, birth_date, gender, phone} = req.body
-            const rawProfile = {firstname, lastname, email, birth_date, gender, phone}
+            const {firstname, lastname, birth_date, gender, phone} = req.body
+            const rawProfile = {firstname, lastname, birth_date, gender, phone}
             const profile = await userService.update(id, rawProfile)
             return res.json(profile)
         } catch (e) {
