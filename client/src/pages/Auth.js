@@ -13,21 +13,25 @@ const Auth = observer(()=> {
     const isLogin = location.pathname === LOGIN_ROUTE
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [phone, setPhone] = useState('')
+    const [firstname, setFirstname] = useState('')
+    const [lastname, setLastname] = useState('')
 
     const click = async () =>{
         try {
             let data;
-            if ( isLogin){
+            if (isLogin){
                 data = await login(email, password);
             } else {
-                data = await registration(email, password);
+                data = await registration(email, password, phone, firstname, lastname);
             }
+            console.log(data)
             user.setUser(user)
             user.setIsAuth(true)
             history.push(SHOP_ROUTE)
 
         } catch (e) {
-            alert(e.response.data.messages)
+            alert(e)
         }
 
     }
@@ -54,6 +58,27 @@ const Auth = observer(()=> {
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
+                    {isLogin ? ' ' : <div>
+                    <FormControl
+                        className="mt-3"
+                        placeholder="Enter phone..."
+                        value={phone}
+                        onChange={e => setPhone(e.target.value)}
+                    />
+                        <FormControl
+                        className="mt-3"
+                        placeholder="Enter first name ..."
+                        value={firstname}
+                        onChange={e => setFirstname(e.target.value)}
+                        />
+                        <FormControl
+                        className="mt-3"
+                        placeholder="Enter last name ..."
+                        value={lastname}
+                        onChange={e => setLastname(e.target.value)}
+                        />
+                    </div>
+                    }
                     <Row className="d-flex justify-content-between mt-3 pl-3 pr-3">
                         {isLogin ?
                             <div>
