@@ -3,6 +3,7 @@ const path = require('path')
 const fs = require('fs')
 const Product = require('../models/product')
 const Brand = require('../models/brand')
+const Size = require('../models/size')
 const ProductDto = require('../dtos/productDto')
 const ApiError = require('../error/ApiError')
 
@@ -22,12 +23,17 @@ class ProductService {
                 console.log(brand)
             }
         }
+        if (productData.size) {
+            if (!await Size.findOne({value: productData.size})) {
+                await Size.create({value: productData.size})
+            }
+        }
 
         if (await Product.findOne(productData)) {
             throw ApiError.badRequest("Product is exist")
         }
 
-        productData.imageUrl = uuid.v4() + ".jpg"
+        productData.imageUrl = uuid.v4() + ".png"
         await img.mv(path.resolve(__dirname, '../static', productData.imageUrl))
         const product = await Product.create(productData)
         console.log("New Product:")
@@ -94,6 +100,10 @@ class ProductService {
 
     async getAllBrands() {
         return Brand.find()
+    }
+
+    async getAllSizes() {
+        return Size.find()
     }
 
     async delete(product_id) {
