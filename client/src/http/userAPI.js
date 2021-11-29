@@ -7,13 +7,14 @@ export const registration = async (email, password, phone, firstname, lastname) 
     return jwt_decode(data.accessToken)
 }
 
-export const login = async (email, password) =>{
+export const login = async (email, password) => {
     const {data} = await $host.post('api/user/login', {email, password})
-    localStorage.setItem('token', data.token)
-    return jwt_decode(data.token)
+    localStorage.setItem('accessToken', data.accessToken)
+    return jwt_decode(data.accessToken)
 }
 
 export const check = async () =>{
-    const response = await $host.post('api/user/registration' )
-    return response
+    const {data} = await $authHost.get('api/user' )
+    localStorage.setItem('accessToken', data.accessToken)
+    return jwt_decode(data.accessToken)
 }

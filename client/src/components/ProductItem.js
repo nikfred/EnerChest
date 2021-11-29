@@ -15,16 +15,18 @@ const ProductItem = ({product}) => {
             }} className='mt-3'>
                 <div className="d-flex justify-content-center">
                     <Image height={150} width={75}
-                           src={product.imageUrl || "https://memegenerator.net/img/instances/41037355.jpg"}/>
+                           src={product.imageUrl || "https://storage.googleapis.com/multi-static-content/previews/artage-io-thumb-38074b7b27e6dbc574938e81868f435d.png"}/>
                 </div>
-                <div className="d-flex justify-content-between" style={{
-                    backgroundColor: '#C49FC4', fontSize: '18px',
+                <div style={{
+                    color: 'green', backgroundColor: '#C49FC4', fontSize: '18px',
                     fontFamily: 'Montserrat Alternates'
-                }}>
-                    <div style={{color: 'green'}}>{product.name}</div>
-                    <div style={{color: '#536872'}}>{product.price} UAH</div>
+                }}>{product.brand} {product.name}</div>
+                <div className="d-flex justify-content-between"
+                     style={{backgroundColor: '#C49FC4', color: '#536872', fontSize: '20px', fontFamily: 'Bebas Neue'}}>
+                    <div>{product.size}</div>
+                    <div>{product.price} UAH</div>
                 </div>
-                <div style={{backgroundColor: '#C49FC4'}}>{product.brand}, {product.size}</div>
+
             </Card>
         </Col>
     );

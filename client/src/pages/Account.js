@@ -3,11 +3,13 @@ import {Button, Container, Image, ListGroup, Row} from "react-bootstrap";
 import BasketBar from "../components/BasketBar";
 import {Context} from "../index";
 import {useHistory} from "react-router-dom"
-import {ADMIN_ROUTE, LOGIN_ROUTE} from "../utils/consts";
+import {ADMIN_ROUTE} from "../utils/consts";
 
 const Account = () => {
     const {user} = useContext(Context)
+
     const history = useHistory()
+
     const users = {
         "id": "6184948d16b1dd7ba58e0e63",
         "email": "priymak678@gmail.com",
@@ -20,6 +22,12 @@ const Account = () => {
         "isActivated": true,
         "role": "ADMIN"
     }
+
+    const logOut = () => {
+        user.setUser({})
+        user.isAuth(false)
+    }
+
 
     return (
         <Container className="d-flex flex-column justify-content-center align-items-center">
@@ -60,11 +68,10 @@ const Account = () => {
                         :
                         <ListGroup.Item>
                         </ListGroup.Item>}
-                    <ListGroup.Item> <Button variant="success"
+                    <ListGroup.Item>
+                        <Button variant="success"
                                              style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
-                                             onClick={() => history.push(LOGIN_ROUTE)}>
-                        Log out
-                    </Button>
+                                             onClick={() => logOut()}>' LogOut ' </Button>
                     </ListGroup.Item>
                 </ListGroup>
             </Row>

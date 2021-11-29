@@ -1,21 +1,20 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button, Card, Col, Container, Image, Row} from "react-bootstrap";
 import {Context} from "../index";
 import {BASKET_ROUTE, LOGIN_ROUTE} from "../utils/consts";
+import {fetchOneProduct} from "../http/productAPI";
+import {useParams} from "react-router-dom"
 
 const Product = () => {
     const {user} = useContext(Context)
-    const product = {
-        id: 3,
-        name: "jungle",
-        brand: "Hell",
-        size: "500 ml",
-        price: 22,
-        discount: 0,
-        description: "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad adipisci animi architecto blanditiis consectetur culpa dolorem doloremque dolores earum eligendi enim exercitationem expedita fugiat, id ipsa iste magnam minus, molestiae nobis nulla omnis perferendis perspiciatis placeat quaerat quas quia ratione sed tenetur vel velit voluptatem.",
-        imageUrl: "http://20.52.25.145:5000/2fbb2c17-f7b6-40e1-b062-a0d318996ebb.jpg",
-        active: true
-    }
+    const [product, setProduct] = useState(' ')
+
+    const {id} = useParams()
+
+
+    useEffect(()=> {
+        fetchOneProduct(id).then(data => setProduct(data))
+    })
 
     return (
         <Container>
@@ -27,7 +26,7 @@ const Product = () => {
                     }} className='mt-3'>
                         <div className="d-flex justify-content-center">
                             <Image height={600}
-                                   src={product.imageUrl || "https://memegenerator.net/img/instances/41037355.jpg"}/>
+                                   src={product.imageUrl || "https://storage.googleapis.com/multi-static-content/previews/artage-io-thumb-38074b7b27e6dbc574938e81868f435d.png"}/>
                         </div>
                     </Card>
                 </Col>

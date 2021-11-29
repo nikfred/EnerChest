@@ -31,7 +31,7 @@ const Auth = observer(()=> {
             history.push(SHOP_ROUTE)
 
         } catch (e) {
-            alert(e)
+            alert(e.response.data.message)
         }
 
     }
