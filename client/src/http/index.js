@@ -9,11 +9,18 @@ const $authHost = axios.create({
 })
 
 const authInterceptor = config => {
-    config.headers.authorization = `Bearer ${localStorage.getItem('token')} `
+    config.headers.authorization = `Bearer ${localStorage.getItem('accessToken')} `
+    return config
+}
+
+const cookieInterceptor = config => {
+    config.headers.cookie = document.cookie
     return config
 }
 
 $authHost.interceptors.request.use(authInterceptor)
+
+//$host.interceptors.request.use(cookieInterceptor)
 
 export {
     $host,
