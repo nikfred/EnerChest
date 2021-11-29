@@ -46,8 +46,18 @@ class ProductController {
 
     async getAllBrands(req, res, next){
         try {
-            const products = await productService.getAllBrands()
-            return res.json(products)
+            const brands = await productService.getAllBrands()
+            return res.json(brands)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
+
+    async getAllSizes(req, res, next){
+        try {
+            const sizes = await productService.getAllSizes()
+            return res.json(sizes)
         } catch (e) {
             console.log(e)
             next(e)

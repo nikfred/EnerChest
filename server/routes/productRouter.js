@@ -11,6 +11,7 @@ router.delete('/:product_id', authMiddleware, adminMiddleware, productController
 
 router.get('/all', productController.getAll)
 router.get('/brands', productController.getAllBrands)
+router.get('/sizes', productController.getAllSizes)
 router.get('/search', productController.search)
 router.get('/:product_id', productController.getOne)
 
