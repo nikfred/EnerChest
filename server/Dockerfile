@@ -18,4 +18,7 @@ RUN npm install
 COPY . .
 
 EXPOSE 5000
+
+VOLUME [ "/var/enerchest/static" ]
+
 CMD [ "npm", "run", "dev" ]
