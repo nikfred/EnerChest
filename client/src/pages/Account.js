@@ -14,7 +14,7 @@ const Account = () => {
 
     useEffect(()=> {
         fetchUser().then(data=> setUser(data))
-    })
+    }, [])
 
     const history = useHistory()
 
