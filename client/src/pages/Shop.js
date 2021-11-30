@@ -15,7 +15,7 @@ const Shop = observer(() => {
         fetchBrands().then(data => product.setBrands(data))
         fetchSize().then(data => product.setSizes(data))
         fetchProducts().then(data => product.setProducts(data))
-    })
+    }, [])
 
 
     return (

@@ -1,27 +1,22 @@
-import React, {useContext} from 'react';
-import {Button, Container, Image, ListGroup, Row} from "react-bootstrap";
+import React, {useContext, useEffect, useState} from 'react';
+import Button from "react-bootstrap/Button";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import ListGroup from "react-bootstrap/ListGroup";
+import Image from "react-bootstrap/Image";
 import BasketBar from "../components/BasketBar";
-import {Context} from "../index";
 import {useHistory} from "react-router-dom"
 import {ADMIN_ROUTE} from "../utils/consts";
+import {fetchUser} from "../http/userAPI";
 
 const Account = () => {
-    const {user} = useContext(Context)
+    const [user, setUser] = useState(' ')
+
+    useEffect(()=> {
+        fetchUser().then(data=> setUser(data))
+    })
 
     const history = useHistory()
-
-    const users = {
-        "id": "6184948d16b1dd7ba58e0e63",
-        "email": "priymak678@gmail.com",
-        "firstname": "Дмитрий",
-        "lastname": "Приймак",
-        "phone": "+380500496028",
-        "imageUrl": "",
-        "birth_date": "07.03.2001",
-        "gender": "Мужской",
-        "isActivated": true,
-        "role": "ADMIN"
-    }
 
     const logOut = () => {
         user.setUser({})
@@ -49,12 +44,12 @@ const Account = () => {
                     borderRadius: '10px',
                     textAlign: 'center',
                 }}>
-                    <ListGroup.Item> {users.firstname} </ListGroup.Item>
-                    <ListGroup.Item> {users.lastname} </ListGroup.Item>
-                    <ListGroup.Item> {users.birth_date} </ListGroup.Item>
-                    <ListGroup.Item> {users.gender} </ListGroup.Item>
-                    <ListGroup.Item> {users.email} </ListGroup.Item>
-                    <ListGroup.Item> {users.phone} </ListGroup.Item>
+                    <ListGroup.Item> {user.firstname} </ListGroup.Item>
+                    <ListGroup.Item> {user.lastname} </ListGroup.Item>
+                    <ListGroup.Item> {user.birth_date} </ListGroup.Item>
+                    <ListGroup.Item> {user.gender} </ListGroup.Item>
+                    <ListGroup.Item> {user.email} </ListGroup.Item>
+                    <ListGroup.Item> {user.phone} </ListGroup.Item>
                     <ListGroup.Item> <BasketBar/> </ListGroup.Item>
                     {user.isAdmin ? <ListGroup.Item>
                             <div className="d-grid gap-2">

@@ -1,9 +1,36 @@
-import React, {useContext} from 'react';
-import {Button, Dropdown, Form, FormControl, Modal} from "react-bootstrap";
-import {Context} from "../../index";
+import React, {useContext, useState} from 'react';
+import {Button, Form, FormCheck, FormControl, Modal} from "react-bootstrap";
+import {createProducts} from "../../http/productAPI";
+import {observer} from "mobx-react-lite";
 
-const AddProduct = ({show, onHide}) => {
-    const {product} = useContext(Context)
+
+const AddProduct = observer(({show, onHide}) => {
+
+    const [name, setName] = useState('')
+    const [price, setPrice] = useState('')
+    const [file, setFile] = useState(null)
+    const [description, setDescription] = useState('')
+    const [brand, setBrand] = useState(' ')
+    const [size, setSize] = useState(' ')
+    const [newbrand, setNewbrand] = useState( false)
+    const [newsize, setNewsize] = useState( false)
+
+
+    const selectFile = e => {
+        setFile(e.target.files[0])
+    }
+
+    const add = () =>{
+        const formData = new FormData()
+        formData.append('brand', brand)
+        formData.append('size', size)
+        formData.append('newBrandFlag',true)
+        formData.append('name', name)
+        formData.append('price', price)
+        formData.append('description', description)
+        createProducts(formData).then(data => onHide())
+    }
+
 
     return (
         <Modal
@@ -19,27 +46,29 @@ const AddProduct = ({show, onHide}) => {
             </Modal.Header>
             <Modal.Body>
                 <Form>
-                    <Dropdown className='mt-3'>
-                        <Dropdown.Toggle>Select product brand</Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {product.brands.map(brands =>
-                                <Dropdown.Item key={brands.id}> {brands.name}</Dropdown.Item>
-                            )}
-                        </Dropdown.Menu>
-                    </Dropdown>
-                    <Dropdown className='mt-3'>
-                        <Dropdown.Toggle>Select product size</Dropdown.Toggle>
-                        <Dropdown.Menu>
-                            {product.sizes.map(sizes =>
-                                <Dropdown.Item key={sizes.id}> {sizes.name}</Dropdown.Item>
-                            )}
-                        </Dropdown.Menu>
-                    </Dropdown>
                     <FormControl
+                        className="mt-3"
+                        placeholder="Enter brand..."
+                        value={brand}
+                        onChange={e => setBrand(e.target.value)}
+                    />
+                       <FormCheck isValid={e => setNewbrand(true)} label='New brand' />
+                    <FormControl
+                        className="mt-3"
+                        placeholder="Enter size..."
+                        value={size}
+                        onChange={e => setSize(e.target.value)}
+                    />
+                        <FormCheck isValid={e => setNewsize(true)} label='New size' />
+                    <FormControl
+                        value={name}
+                        onChange={e => setName(e.target.value)}
                         className="mt-3"
                         placeholder="Enter name product..."
                     />
                     <FormControl
+                        value={price}
+                        onChange={e => setPrice(e.target.value)}
                         className="mt-3"
                         placeholder="Enter price  product..."
                         type="number"
@@ -47,19 +76,22 @@ const AddProduct = ({show, onHide}) => {
                     <FormControl
                         className="mt-3"
                         type="file"
+                        onChange={selectFile}
                     />
                     <FormControl
                         className="mt-3"
-                        placeholder="Enter description product..."
+                        placeholder="Enter discription product..."
+                        value={description}
+                        onChange={e => setDescription(e.target.value)}
                     />
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="success" onClick={onHide}>Add</Button>
+                <Button variant="success" onClick={add}>Add</Button>
                 <Button variant="danger" onClick={onHide}>Close</Button>
             </Modal.Footer>
         </Modal>
     );
-};
+});
 
 export default AddProduct;

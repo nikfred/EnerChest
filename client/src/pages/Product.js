@@ -4,8 +4,10 @@ import {Context} from "../index";
 import {BASKET_ROUTE, LOGIN_ROUTE} from "../utils/consts";
 import {fetchOneProduct} from "../http/productAPI";
 import {useParams} from "react-router-dom"
+import {observer} from "mobx-react-lite";
 
-const Product = () => {
+
+const Product = observer(() => {
     const {user} = useContext(Context)
     const [product, setProduct] = useState(' ')
 
@@ -14,7 +16,7 @@ const Product = () => {
 
     useEffect(()=> {
         fetchOneProduct(id).then(data => setProduct(data))
-    })
+    }, [])
 
     return (
         <Container>
@@ -67,6 +69,6 @@ const Product = () => {
             </Row>
         </Container>
     );
-};
+});
 
 export default Product;

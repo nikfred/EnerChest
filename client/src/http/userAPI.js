@@ -28,3 +28,9 @@ export const check = async () =>{
     localStorage.setItem('refreshToken', response.data.refreshToken)
     return jwt_decode(response.data.accessToken)
 }
+
+export const fetchUser = async () => {
+    const {data} = await $authHost.get('api/user')
+    console.log(data)
+    return data
+}
