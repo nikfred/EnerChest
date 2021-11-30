@@ -114,6 +114,23 @@ class DispenserService {
         }
         return dispenserItems
     }
+
+    async getDispensersWithProduct(product_id) {
+        let dispensers = await DispenserItem.find({product_id})
+        let dispenser
+        for (let i = 0; i < dispensers.length; i++) {
+            dispenser = await Dispenser.findById(dispensers[i].dispenser_id)
+            dispensers[i] = {
+                dispenser_id: dispenser._id,
+                address: dispenser.address,
+                product_id,
+                quantityAll: dispensers[i].quantityAll,
+                quantityFree: dispensers[i].quantityFree
+            }
+            console.log(dispensers[i])
+        }
+        return dispensers
+    }
 }
 
 module.exports = new DispenserService()
