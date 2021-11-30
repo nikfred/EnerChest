@@ -52,7 +52,7 @@ class UserController {
 
     async logout(req, res, next) {
         try {
-            const {refreshToken} = req.cookie
+            const refreshToken = req.cookies.refreshToken || req.body.refreshToken
             await userService.logout(refreshToken)
             res.clearCookie('refreshToken')
             return res.status(200)
@@ -64,8 +64,8 @@ class UserController {
 
     async refresh(req, res, next) {
         try {
-            console.log(req.cookies);
-            const {refreshToken} = req.cookies
+            const refreshToken = req.cookies.refreshToken ?? req.body.refreshToken
+            console.log("refreshToken=" + refreshToken)
             if (!refreshToken) {
                 return next(ApiError.unauthorized('Unauthorized'))
             }
