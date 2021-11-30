@@ -2,6 +2,7 @@ import React, {useContext} from 'react';
 import {Container, Nav, Navbar} from "react-bootstrap";
 import {NavLink} from "react-router-dom";
 import {ACCOUNT_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "../utils/consts";
+import BasketBar from "./BasketBar";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
 
@@ -25,6 +26,7 @@ const Navbars = observer(() => {
                 <NavLink to={SHOP_ROUTE} style={mystyle}>EnerChest</NavLink>
                 {user.isAuth ?
                     <Nav className="ml-auto">
+                        <NavLink to='#' style={mystyle}><BasketBar/></NavLink>
                         <NavLink to={ACCOUNT_ROUTE} style={mystyle}>Account</NavLink>
                     </Nav>
                     :

@@ -7,6 +7,7 @@ export default class  ProductStore{
         this._products = [ ]
         this._selectedBrand = {}
         this._selectedSize = {}
+        this._selectedDispenser = {}
 
         makeAutoObservable(this)
     }
@@ -26,8 +27,13 @@ export default class  ProductStore{
     setSelectedBrand(brand){
         this._selectedBrand = brand
     }
+
     setSelectedSize(size){
         this._selectedSize = size
+    }
+
+    setSelectedDispenser(dispenser){
+        this._selectedDispenser = dispenser
     }
 
     get brands(){
@@ -48,5 +54,9 @@ export default class  ProductStore{
 
     get selectedSize(){
         return this._selectedSize
+    }
+
+    get selectedDispenser(){
+        return this._selectedDispenser
     }
 }

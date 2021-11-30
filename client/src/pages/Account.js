@@ -6,21 +6,28 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Image from "react-bootstrap/Image";
 import BasketBar from "../components/BasketBar";
 import {useHistory} from "react-router-dom"
-import {ADMIN_ROUTE} from "../utils/consts";
-import {fetchUser} from "../http/userAPI";
+import {ADMIN_ROUTE, LOGIN_ROUTE} from "../utils/consts";
+import {fetchUser, logout} from "../http/userAPI";
+import {Context} from "../index";
 
 const Account = () => {
-    const [user, setUser] = useState(' ')
+    const {user} = useContext(Context)
+    const [profile, setProfile] = useState(' ')
 
     useEffect(()=> {
-        fetchUser().then(data=> setUser(data))
+        fetchUser().then(data=> {
+            setProfile(data)
+        })
     }, [])
 
     const history = useHistory()
 
     const logOut = () => {
+        logout().then(r => console.log(r))
         user.setUser({})
+        //setProfile({})
         user.setIsAuth(false)
+        user.setIsAdmin(false)
     }
 
 
@@ -44,12 +51,12 @@ const Account = () => {
                     borderRadius: '10px',
                     textAlign: 'center',
                 }}>
-                    <ListGroup.Item> {user.firstname} </ListGroup.Item>
-                    <ListGroup.Item> {user.lastname} </ListGroup.Item>
-                    <ListGroup.Item> {user.birth_date} </ListGroup.Item>
-                    <ListGroup.Item> {user.gender} </ListGroup.Item>
-                    <ListGroup.Item> {user.email} </ListGroup.Item>
-                    <ListGroup.Item> {user.phone} </ListGroup.Item>
+                    <ListGroup.Item> {profile.firstname} </ListGroup.Item>
+                    <ListGroup.Item> {profile.lastname} </ListGroup.Item>
+                    <ListGroup.Item> {profile.birth_date} </ListGroup.Item>
+                    <ListGroup.Item> {profile.gender} </ListGroup.Item>
+                    <ListGroup.Item> {profile.email} </ListGroup.Item>
+                    <ListGroup.Item> {profile.phone} </ListGroup.Item>
                     <ListGroup.Item> <BasketBar/> </ListGroup.Item>
                     {user.isAdmin ? <ListGroup.Item>
                             <div className="d-grid gap-2">
@@ -66,7 +73,10 @@ const Account = () => {
                     <ListGroup.Item>
                         <Button variant="success"
                                              style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
-                                             onClick={() => logOut()}>' LogOut ' </Button>
+                                             onClick={() => {
+                                                 logOut()
+                                                 history.push(LOGIN_ROUTE)
+                                             }}>' LogOut ' </Button>
                     </ListGroup.Item>
                 </ListGroup>
             </Row>

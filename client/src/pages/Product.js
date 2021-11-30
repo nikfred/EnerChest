@@ -1,8 +1,8 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Card, Col, Container, Image, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Image, ListGroup, Row} from "react-bootstrap";
 import {Context} from "../index";
 import {BASKET_ROUTE, LOGIN_ROUTE} from "../utils/consts";
-import {fetchOneProduct} from "../http/productAPI";
+import {fetchDispensers, fetchOneProduct} from "../http/productAPI";
 import {useParams} from "react-router-dom"
 import {observer} from "mobx-react-lite";
 
@@ -10,12 +10,14 @@ import {observer} from "mobx-react-lite";
 const Product = observer(() => {
     const {user} = useContext(Context)
     const [product, setProduct] = useState(' ')
+    const [dispensers, setDispensers] = useState([ ])
 
     const {id} = useParams()
 
 
     useEffect(()=> {
         fetchOneProduct(id).then(data => setProduct(data))
+        fetchDispensers(id).then(data => setDispensers(data))
     }, [])
 
     return (
@@ -56,6 +58,30 @@ const Product = observer(() => {
                                     to={LOGIN_ROUTE}>Buy now</Button>
                         </div>
                     }
+                    {dispensers.length !== 0 ?
+                        <ListGroup className="mt-3" style={{boxShadow:'0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+                            {dispensers.map(dispenser =>
+                                <ListGroup.Item key={dispenser.dispenser_id}
+                                                // active={dispenser.dispenser_id === product.selectedDispenser.dispenser_id}
+                                                // onClick={() => product.setSelectedDispenser(dispenser)}
+                                                style={{
+                                                    fontFamily: 'Montserrat Alternates',
+                                                    fontSize: '30px',
+                                                    backgroundColor: '#C4C4C4', textAlign: 'center',
+                                                    cursor: 'pointer'
+                                                }} className="align-self-auto">
+                                    <p>{dispenser.address}</p>
+                                    <b style={{color: 'green'}}>{dispenser.quantityFree}</b>/
+                                    <b style={{color: 'grey'}}>{dispenser.quantityAll}</b>
+                                </ListGroup.Item>)}
+                        </ListGroup>
+                        :
+                        <div className="d-grid gap-2 mt-3">
+                            Not available
+                        </div>
+
+                    }
+
                 </Col>
                 <Col md={4}>
                     <Card className="mt-3" style={{

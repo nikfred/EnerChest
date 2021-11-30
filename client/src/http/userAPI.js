@@ -1,36 +1,42 @@
-import {$authHost, $host} from "./index";
+import {$authHost, $host, deleteAllCookies} from "./index";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
 export const registration = async (email, password, phone, firstname, lastname) =>{
     const {data} = await $host.post('api/user/registration', {email, password, phone, firstname, lastname})
-    document.cookie = `refreshToken=${data.refreshToken}`
     localStorage.setItem('accessToken', data.accessToken)
+    localStorage.setItem('accessToken', data.refreshToken)
     return jwt_decode(data.accessToken)
 }
 
 export const login = async (email, password) => {
-    const response = await $host.post('api/user/login', {email, password})
-    console.log(response)
-    localStorage.setItem('accessToken', response.data.accessToken)
-    localStorage.setItem('refreshToken', response.data.refreshToken)
-    return jwt_decode(response.data.accessToken)
+    const {data} = await $host.post('api/user/login', {email, password})
+    console.log(data)
+    localStorage.setItem('accessToken', data.accessToken)
+    localStorage.setItem('refreshToken', data.refreshToken)
+    return jwt_decode(data.accessToken)
 }
 
 export const check = async () =>{
     const refreshToken = localStorage.getItem('refreshToken')?.toString() || ""
-    document.cookie = 'refreshToken=' + refreshToken
-    document.cookie.replace('refreshToken',refreshToken)
-    console.log('Cookie = ' + document.cookie)
-    const response = await axios.get(process.env.REACT_APP_API_URL + 'api/user/refresh', {withCredentials: true})
-    console.log(response)
-    localStorage.setItem('accessToken', response.data.accessToken)
-    localStorage.setItem('refreshToken', response.data.refreshToken)
-    return jwt_decode(response.data.accessToken)
+    const {data} = await axios.post(process.env.REACT_APP_API_URL + 'api/user/refresh', {refreshToken: refreshToken})
+    console.log(data)
+    localStorage.setItem('accessToken', data.accessToken)
+    localStorage.setItem('refreshToken', data.refreshToken)
+    return jwt_decode(data.accessToken)
 }
 
 export const fetchUser = async () => {
     const {data} = await $authHost.get('api/user')
     console.log(data)
     return data
+}
+
+export const logout = async () =>{
+    const refreshToken = localStorage.getItem('refreshToken')?.toString() || ""
+    const response = await $authHost.post('api/user/logout', {refreshToken: refreshToken})
+    console.log(response)
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
+    return response
 }
