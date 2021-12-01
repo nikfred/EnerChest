@@ -28,6 +28,7 @@ const AddProduct = observer(({show, onHide}) => {
         formData.append('name', name)
         formData.append('price', price)
         formData.append('description', description)
+        formData.append('img', file)
         createProducts(formData).then(data => onHide())
     }
 
