@@ -65,7 +65,7 @@ function Example() {
                 Basket
             </Button>
 
-            <Offcanvas show={show} onHide={handleClose}>
+            <Offcanvas show={show} onHide={handleClose} placement={"start"}>
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title>Basket</Offcanvas.Title>
                 </Offcanvas.Header>

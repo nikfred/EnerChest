@@ -32,14 +32,14 @@ const Account = () => {
 
 
     return (
-        <Container className="d-flex flex-column justify-content-center align-items-center">
+        <Container >
             <Row>
-                <div className='d-flex justify-content-center mt-3 ' style={{
-                    background: 'linear-gradient(90deg, #1b1c55,#2f2888)',
-                    borderRadius: '90px 90px 90px 90px',
-                    width: ' 300px'
-                }}>
-                    <Image height={300} width={200} src='https://svgsilh.com/svg/159847-9e9e9e.svg'/>
+                <div className='d-flex justify-content-center mt-3 align-items-center ' >
+                    {<Image style={{
+                        background: 'linear-gradient(90deg, #1b1c55,#2f2888)',
+                        borderRadius: '90px 90px 90px 90px',
+                        width: ' 300px'
+                    }} height={200} width={200} src={profile.imageUrl ||'https://svgsilh.com/svg/159847-9e9e9e.svg'}/>}
                 </div>
             </Row>
             <Row>

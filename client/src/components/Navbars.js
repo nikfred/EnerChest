@@ -5,6 +5,7 @@ import {ACCOUNT_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "../uti
 import BasketBar from "./BasketBar";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
+import AccountBar from "./AccountBar";
 
 const mystyle = {
     fontFamily: 'Bebas Neue',
@@ -27,7 +28,7 @@ const Navbars = observer(() => {
                 {user.isAuth ?
                     <Nav className="ml-auto">
                         <NavLink to='#' style={mystyle}><BasketBar/></NavLink>
-                        <NavLink to={ACCOUNT_ROUTE} style={mystyle}>Account</NavLink>
+                        <NavLink to='#' style={mystyle}><AccountBar/></NavLink>
                     </Nav>
                     :
                     <Nav className="ml-auto" >
