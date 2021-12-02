@@ -15,8 +15,8 @@ export const createProducts = async (products) => {
     return data
 }
 
-export const fetchProducts = async () => {
-    const {data} = await $host.get('api/product/search')
+export const fetchProducts = async (query = '') => {
+    const {data} = await $host.get('api/product/search' + query)
     return data
 }
 
@@ -25,7 +25,19 @@ export const fetchOneProduct = async (id) => {
     return data
 }
 
-export const fetchDispensers = async (id) => {
+export const fetchDispensers = async () => {
+    const {data} = await $host.get('api/dispenser/all')
+    return data
+}
+
+export const fetchDispensersWithProduct = async (id) => {
     const {data} = await $host.get('api/dispenser/product/' + id)
     return data
 }
+
+export const addToDispenser = async (product) => {
+    const {data} = await $authHost.post('api/dispenser/add/', product)
+    return data
+}
+
+

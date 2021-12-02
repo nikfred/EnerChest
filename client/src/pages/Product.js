@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Button, Card, Col, Container, Image, ListGroup, Row} from "react-bootstrap";
 import {Context} from "../index";
 import {BASKET_ROUTE, LOGIN_ROUTE} from "../utils/consts";
-import {fetchDispensers, fetchOneProduct} from "../http/productAPI";
+import {fetchDispensers, fetchDispensersWithProduct, fetchOneProduct} from "../http/productAPI";
 import {useParams} from "react-router-dom"
 import {observer} from "mobx-react-lite";
 
@@ -17,7 +17,7 @@ const Product = observer(() => {
 
     useEffect(()=> {
         fetchOneProduct(id).then(data => setProduct(data))
-        fetchDispensers(id).then(data => setDispensers(data))
+        fetchDispensersWithProduct(id).then(data => setDispensers(data))
     }, [])
 
     return (
