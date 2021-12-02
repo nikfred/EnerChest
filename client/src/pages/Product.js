@@ -29,7 +29,7 @@ const Product = observer(() => {
                         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'
                     }} className='mt-3'>
                         <div className="d-flex justify-content-center">
-                            <Image height={600}
+                            <Image style={{width: '70%'}}
                                    src={product.imageUrl || "https://storage.googleapis.com/multi-static-content/previews/artage-io-thumb-38074b7b27e6dbc574938e81868f435d.png"}/>
                         </div>
                     </Card>
@@ -47,17 +47,7 @@ const Product = observer(() => {
                     }}>
                         {product.price} UAH
                     </div>
-                    {user.isAuth ?
-                        <div className="d-grid gap-2 mt-3">
-                            <Button variant="success" style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
-                                    to={BASKET_ROUTE}>Add to Basket</Button>
-                        </div>
-                        :
-                        <div className="d-grid gap-2 mt-3">
-                            <Button variant="success" style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
-                                    to={LOGIN_ROUTE}>Buy now</Button>
-                        </div>
-                    }
+
                     {dispensers.length !== 0 ?
                         <ListGroup className="mt-3" style={{boxShadow:'0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
                             {dispensers.map(dispenser =>
@@ -74,6 +64,19 @@ const Product = observer(() => {
                                     <b style={{color: 'green'}}>{dispenser.quantityFree}</b>/
                                     <b style={{color: 'grey'}}>{dispenser.quantityAll}</b>
                                 </ListGroup.Item>)}
+                            <div>
+                                {user.isAuth ?
+                                    <div className="d-grid gap-2 mt-3">
+                                        <Button variant="success" style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
+                                                to={BASKET_ROUTE}>Add to Basket</Button>
+                                    </div>
+                                    :
+                                    <div className="d-grid gap-2 mt-3">
+                                        <Button variant="success" style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
+                                                to={LOGIN_ROUTE} onClick={LOGIN_ROUTE}>Buy now</Button>
+                                    </div>
+                                }
+                            </div>
                         </ListGroup>
                         :
                         <div className="d-grid gap-2 mt-3">

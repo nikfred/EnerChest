@@ -11,6 +11,7 @@ import {fetchBrands, fetchProducts, fetchSize} from "../http/productAPI";
 const Shop = observer(() => {
     const {product} = useContext(Context)
 
+
     useEffect(()=> {
         fetchBrands().then(data => product.setBrands(data))
         fetchSize().then(data => product.setSizes(data))

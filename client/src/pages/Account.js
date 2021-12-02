@@ -53,7 +53,7 @@ const Account = () => {
                 }}>
                     <ListGroup.Item> {profile.firstname} </ListGroup.Item>
                     <ListGroup.Item> {profile.lastname} </ListGroup.Item>
-                    <ListGroup.Item> {profile.birth_date} </ListGroup.Item>
+                    <ListGroup.Item> {profile.birth_date?.substring(0, 10)} </ListGroup.Item>
                     <ListGroup.Item> {profile.gender} </ListGroup.Item>
                     <ListGroup.Item> {profile.email} </ListGroup.Item>
                     <ListGroup.Item> {profile.phone} </ListGroup.Item>
@@ -67,16 +67,14 @@ const Account = () => {
                                 </Button>
                             </div>
                         </ListGroup.Item>
-                        :
-                        <ListGroup.Item>
-                        </ListGroup.Item>}
+                        : ' '}
                     <ListGroup.Item>
                         <Button variant="success"
                                              style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
                                              onClick={() => {
                                                  logOut()
                                                  history.push(LOGIN_ROUTE)
-                                             }}>' LogOut ' </Button>
+                                             }}>LogOut</Button>
                     </ListGroup.Item>
                 </ListGroup>
             </Row>

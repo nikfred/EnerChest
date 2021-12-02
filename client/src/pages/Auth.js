@@ -16,6 +16,7 @@ const Auth = observer(()=> {
     const [phone, setPhone] = useState('')
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
+    const [birth_date, setBirth_date] = useState('')
 
     const click = async () =>{
         try {
@@ -23,7 +24,7 @@ const Auth = observer(()=> {
             if (isLogin){
                 data = await login(email, password);
             } else {
-                data = await registration(email, password, phone, firstname, lastname);
+                data = await registration(email, password, phone, firstname, lastname, birth_date);
             }
             console.log(data)
             user.setUser(user)
@@ -76,6 +77,13 @@ const Auth = observer(()=> {
                         placeholder="Enter last name ..."
                         value={lastname}
                         onChange={e => setLastname(e.target.value)}
+                        />
+                        <FormControl
+                            className="mt-3"
+                            placeholder="Enter last name ..."
+                            type='date'
+                            value={birth_date}
+                            onChange={e => setBirth_date(e.target.value)}
                         />
                     </div>
                     }

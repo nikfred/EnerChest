@@ -23,7 +23,7 @@ const Navbars = observer(() => {
                 style={{background: 'linear-gradient(171deg,#121212,#181818)', borderRadius: '0px 0px 15px 15px',
                     boxShadow:'0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
             <Container>
-                <NavLink to={SHOP_ROUTE} style={mystyle}>EnerChest</NavLink>
+                <a href={SHOP_ROUTE} style={mystyle}>EnerChest</a>
                 {user.isAuth ?
                     <Nav className="ml-auto">
                         <NavLink to='#' style={mystyle}><BasketBar/></NavLink>

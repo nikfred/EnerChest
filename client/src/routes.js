@@ -8,10 +8,6 @@ import Account from "./pages/Account";
 
 export const authRoutes = [
     {
-        path : ADMIN_ROUTE,
-        Component: AdminPanel
-    },
-    {
         path : BASKET_ROUTE,
         Component: Basket
     },
@@ -20,6 +16,13 @@ export const authRoutes = [
         Component: Account
     }
 
+]
+
+export const adminRoutes = [
+    {
+        path : ADMIN_ROUTE,
+        Component: AdminPanel
+    }
 ]
 
 export const publicRoutes = [
