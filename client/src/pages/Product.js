@@ -3,7 +3,7 @@ import {Button, Card, Col, Container, Image, ListGroup, Row} from "react-bootstr
 import {Context} from "../index";
 import {BASKET_ROUTE, LOGIN_ROUTE} from "../utils/consts";
 import {fetchDispensers, fetchDispensersWithProduct, fetchOneProduct} from "../http/productAPI";
-import {useParams} from "react-router-dom"
+import {useHistory, useParams} from "react-router-dom"
 import {observer} from "mobx-react-lite";
 
 
@@ -13,6 +13,8 @@ const Product = observer(() => {
     const [dispensers, setDispensers] = useState([ ])
 
     const {id} = useParams()
+
+    const history = useHistory()
 
 
     useEffect(()=> {
@@ -73,7 +75,7 @@ const Product = observer(() => {
                                     :
                                     <div className="d-grid gap-2 mt-3">
                                         <Button variant="success" style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
-                                                to={LOGIN_ROUTE} onClick={LOGIN_ROUTE}>Buy now</Button>
+                                                 onClick={() => history.push(LOGIN_ROUTE)}>Buy now</Button>
                                     </div>
                                 }
                             </div>

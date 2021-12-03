@@ -5,17 +5,21 @@ import SizeBar from "../components/SizeBar";
 import ProductList from "../components/ProductList";
 import {observer} from "mobx-react-lite";
 import {Context} from "../index";
-import {fetchBrands, fetchProducts, fetchSize} from "../http/productAPI";
+import {connectProduct, fetchBrands, fetchSize} from "../http/productAPI";
+import Pages from "../components/Pages";
 
 
 const Shop = observer(() => {
     const {product} = useContext(Context)
 
 
-    useEffect(()=> {
+    useEffect(() => {
         fetchBrands().then(data => product.setBrands(data))
         fetchSize().then(data => product.setSizes(data))
-        fetchProducts().then(data => product.setProducts(data))
+        connectProduct(null, null, 1, 3).then(data => {
+            product.setProducts(data)
+            product.setTotalCount(data.length)
+        })
     }, [])
 
 
@@ -28,6 +32,7 @@ const Shop = observer(() => {
                 </Col>
                 <Col md={10}>
                     <ProductList/>
+                    <Pages/>
                 </Col>
             </Row>
         </Container>

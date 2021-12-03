@@ -20,6 +20,11 @@ export const fetchProducts = async (query = '') => {
     return data
 }
 
+export const connectProduct = async (brand, size, page, limit = 5 ) => {
+    const {data} = await $host.get('api/product/search',{params: brand, size, page, limit})
+    return data
+}
+
 export const fetchOneProduct = async (id) => {
     const {data} = await $host.get('api/product/' + id)
     return data

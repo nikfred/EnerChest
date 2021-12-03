@@ -30,6 +30,7 @@ const Auth = observer(()=> {
             user.setUser(user)
             user.setIsAuth(true)
             history.push(SHOP_ROUTE)
+            window.location.reload()
 
         } catch (e) {
             alert(e.response.data.message)

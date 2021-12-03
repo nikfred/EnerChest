@@ -25,11 +25,7 @@ export const adminRoutes = [
     }
 ]
 
-export const publicRoutes = [
-    {
-        path : SHOP_ROUTE,
-        Component: Shop
-    },
+export const guestRoutes = [
     {
         path : LOGIN_ROUTE,
         Component: Auth
@@ -37,6 +33,13 @@ export const publicRoutes = [
     {
         path : REGISTRATION_ROUTE,
         Component: Auth
+    }
+]
+
+export const publicRoutes = [
+    {
+        path : SHOP_ROUTE,
+        Component: Shop
     },
     {
         path : PRODUCT_ROUTE + '/:id',
