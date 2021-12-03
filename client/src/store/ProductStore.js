@@ -8,6 +8,9 @@ export default class  ProductStore{
         this._selectedBrand = {}
         this._selectedSize = {}
         this._selectedDispenser = {}
+        this._page = 1
+        this._totalCount = 0
+        this._limit = 4
 
         makeAutoObservable(this)
     }
@@ -36,6 +39,16 @@ export default class  ProductStore{
         this._selectedDispenser = dispenser
     }
 
+    setPage(page){
+        this._page = page
+    }
+    setTotalCount(count){
+        this._totalCount = count
+    }
+    setLimit(limit){
+        this._limit = limit
+    }
+
     get brands(){
         return this._brands
     }
@@ -58,5 +71,17 @@ export default class  ProductStore{
 
     get selectedDispenser(){
         return this._selectedDispenser
+    }
+
+    get page(){
+        return this._page
+    }
+
+    get totalCount(){
+        return this._totalCount
+    }
+
+    get limit(){
+        return this._limit
     }
 }

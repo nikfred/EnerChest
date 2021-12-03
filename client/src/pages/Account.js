@@ -4,8 +4,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import ListGroup from "react-bootstrap/ListGroup";
 import Image from "react-bootstrap/Image";
-import BasketBar from "../components/BasketBar";
-import {useHistory} from "react-router-dom"
+import {NavLink, useHistory} from "react-router-dom"
 import {ADMIN_ROUTE, LOGIN_ROUTE} from "../utils/consts";
 import {fetchUser, logout} from "../http/userAPI";
 import {Context} from "../index";
@@ -28,11 +27,12 @@ const Account = () => {
         //setProfile({})
         user.setIsAuth(false)
         user.setIsAdmin(false)
+        window.location.reload();
     }
 
 
     return (
-        <Container >
+        <Container>
             <Row>
                 <div className='d-flex justify-content-center mt-3 align-items-center ' >
                     {<Image style={{
@@ -57,14 +57,20 @@ const Account = () => {
                     <ListGroup.Item> {profile.gender} </ListGroup.Item>
                     <ListGroup.Item> {profile.email} </ListGroup.Item>
                     <ListGroup.Item> {profile.phone} </ListGroup.Item>
-                    <ListGroup.Item> <BasketBar/> </ListGroup.Item>
                     {user.isAdmin ? <ListGroup.Item>
                             <div className="d-grid gap-2">
-                                <Button variant="success"
-                                        style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
-                                onClick={() => history.push(ADMIN_ROUTE)}>
-                                    Admin Panel
-                                </Button>
+                                {/*<Button variant="success"*/}
+                                {/*        style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}*/}
+                                {/*onClick={() => history.push(ADMIN_ROUTE)}>*/}
+                                {/*    Admin Panel*/}
+                                {/*</Button>*/}
+                                <NavLink to={ADMIN_ROUTE} style={{fontFamily: 'Bebas Neue',
+                                    textDecoration: 'none',
+                                    backgroundColor: 'green',
+                                    color: 'white',
+                                    paddingLeft: '20px',
+                                    paddingRight: '6px',
+                                    fontSize: '28px'}}>Admin panel</NavLink>
                             </div>
                         </ListGroup.Item>
                         : ' '}
