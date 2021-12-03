@@ -66,8 +66,8 @@ class ProductController {
 
     async search(req, res, next){
         try {
-            const {brand, size} = req.query
-            const products = await productService.search(brand, size)
+            const {brand, size, limit, page} = req.query
+            const products = await productService.search(brand, size, limit, page)
             return res.json(products)
         } catch (e) {
             console.log(e)

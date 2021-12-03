@@ -65,16 +65,24 @@ class ProductService {
 
     }
 
-    async search(brand = undefined, size = undefined) {
-        let rawProducts
-        if (!brand && !size) {
-            rawProducts = await this.getAll()
-        } else {
-            // const brand = brand_id ? (await Brand.findById(brand_id)).brand : undefined
-            const filter = brand ? size ? {brand, size} : {brand} : {size}
-            console.log(filter)
-            rawProducts = await Product.find(filter)
-        }
+    async search(brand = undefined, size = undefined, limit = 16, page = 1) {
+        limit = +limit
+        const skip = +limit * +page - +limit
+        const filter =
+            brand
+                ? size
+                    ? {brand, size}
+                    : {brand}
+                : size
+                    ? {size}
+                    : {}
+        console.log(filter)
+        console.log('Skip = ' + skip)
+        console.log('Limit = ' + limit)
+        const rawProducts = await Product.find(
+            filter,
+            {},
+            { sort: {brand: 'asc', name: 'asc', price: 'asc'}, skip, limit})
         const products = []
         for (const rawProduct of rawProducts) {
             products.push(new ProductDto(rawProduct))
