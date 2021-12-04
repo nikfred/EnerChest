@@ -1,8 +1,9 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Button, Card, Col, Container, Dropdown, DropdownButton, Image, ListGroup, Row} from "react-bootstrap";
 import {Context} from "../index";
-import {BASKET_ROUTE, LOGIN_ROUTE} from "../utils/consts";
-import {fetchDispensers, fetchDispensersWithProduct, fetchOneProduct} from "../http/productAPI";
+import {BASKET_ROUTE, LOGIN_ROUTE, SHOP_ROUTE} from "../utils/consts";
+import {fetchDispensersWithProduct, fetchOneProduct} from "../http/productAPI";
+import {addToCart} from "../http/userAPI";
 import {useHistory, useParams} from "react-router-dom"
 import {observer} from "mobx-react-lite";
 
@@ -10,14 +11,29 @@ import {observer} from "mobx-react-lite";
 const Product = observer(() => {
     const {user} = useContext(Context)
     const [product, setProduct] = useState(' ')
-    const [dispensers, setDispensers] = useState([ ])
+    const [dispensers, setDispensers] = useState([])
+    const [selectedDispenser, setSelectedDispenser] = useState({})
+    const [quantity, setQuantity] = useState('')
 
     const {id} = useParams()
 
     const history = useHistory()
 
+    const buy = () => {
+        if (!selectedDispenser.dispenser_id) {
+            alert("No dispenser selected")
+            return
+        }
+        const cartItem = {
+            product_id: id,
+            dispenser_id: selectedDispenser.dispenser_id,
+            quantity: quantity || 1
+        }
+        addToCart(cartItem).then(data => console.log("Product added to cart"))
+    }
 
-    useEffect(()=> {
+
+    useEffect(() => {
         fetchOneProduct(id).then(data => setProduct(data))
         fetchDispensersWithProduct(id).then(data => setDispensers(data))
     }, [])
@@ -51,11 +67,11 @@ const Product = observer(() => {
                     </div>
 
                     {dispensers.length !== 0 ?
-                        <ListGroup className="mt-3" style={{boxShadow:'0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+                        <ListGroup className="mt-3" style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
                             {dispensers.map(dispenser =>
                                 <ListGroup.Item key={dispenser.dispenser_id}
-                                                // active={dispenser.dispenser_id === product.selectedDispenser.dispenser_id}
-                                                // onClick={() => product.setSelectedDispenser(dispenser)}
+                                                active={dispenser.dispenser_id === selectedDispenser.dispenser_id}
+                                                onClick={() => setSelectedDispenser(dispenser)}
                                                 style={{
                                                     fontFamily: 'Montserrat Alternates',
                                                     fontSize: '30px',
@@ -70,12 +86,16 @@ const Product = observer(() => {
                                 {user.isAuth ?
                                     <div className="d-grid gap-2 mt-3">
                                         <Button variant="success" style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
-                                                to={BASKET_ROUTE}>Add to Basket</Button>
+                                                // to={BASKET_ROUTE}>Add to Basket</Button>
+                                                onClick={() => {
+                                                    buy()
+                                                    history.push(SHOP_ROUTE)
+                                                }}>Add to Basket</Button>
                                     </div>
                                     :
                                     <div className="d-grid gap-2 mt-3">
                                         <Button variant="success" style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
-                                                 onClick={() => history.push(LOGIN_ROUTE)}>Buy now</Button>
+                                                onClick={() => history.push(LOGIN_ROUTE)}>Buy now</Button>
                                     </div>
                                 }
                             </div>

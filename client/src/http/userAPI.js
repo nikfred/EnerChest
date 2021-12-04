@@ -40,3 +40,15 @@ export const logout = async () =>{
     localStorage.setItem('refreshToken', 's')
     return response
 }
+
+export const fetchCart = async () => {
+    const {data} = await $authHost.get('api/cart')
+    console.log(data)
+    return data
+}
+
+export const addToCart = async (cartItem) => {
+    const {data} = await $authHost.post('api/cart/add', cartItem)
+    console.log(data)
+    return data
+}
