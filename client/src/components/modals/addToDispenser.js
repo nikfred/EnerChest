@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Dropdown, Form, FormCheck, FormControl, Modal} from "react-bootstrap";
-import {addToDispenser, fetchDispensers, fetchProducts} from "../../http/productAPI";
+import {addToDispenser, fetchDispensers, fetchProduct} from "../../http/productAPI";
 import {observer} from "mobx-react-lite";
 
 
@@ -13,7 +13,7 @@ const AddToDispenser = observer(({show, onHide}) => {
     const [quantityAll, setQuantityAll] = useState('')
 
     useEffect(()=> {
-        fetchProducts().then(data => setProducts(data))
+        fetchProduct().then(data => setProducts(data.products))
         fetchDispensers().then(data => setDispensers(data))
     }, [])
 

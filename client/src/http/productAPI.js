@@ -15,13 +15,13 @@ export const createProducts = async (products) => {
     return data
 }
 
-export const fetchProducts = async (query = '') => {
-    const {data} = await $host.get('api/product/search' + query)
+export const connectProducts = async () => {
+    const {data} = await $host.get('api/product/all')
     return data
 }
 
-export const connectProduct = async (brand, size, page, limit = 5 ) => {
-    const {data} = await $host.get('api/product/search',{params: brand, size, page, limit})
+export const fetchProduct = async (brand, size, page, limit = 5 ) => {
+    const {data} = await $host.get('api/product/search',{params: {brand, size, page, limit}})
     return data
 }
 

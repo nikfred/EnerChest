@@ -9,7 +9,7 @@ const Pages = observer(() => {
     const pageCount = Math.ceil(product.totalCount / product.limit)
     const pages = [ ]
 
-    for (let i = 0; i < pageCount; i++ ){
+    for (let i = 0; i < pageCount; i++) {
         pages.push(i + 1)
     }
 
@@ -25,9 +25,8 @@ const Pages = observer(() => {
                     {page}
                 </Pagination.Item>
             )}
-
         </Pagination>
     );
-});
+})
 
 export default Pages;

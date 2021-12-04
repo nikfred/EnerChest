@@ -1,5 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Card, Col, Container, Image, ListGroup, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Dropdown, DropdownButton, Image, ListGroup, Row} from "react-bootstrap";
 import {Context} from "../index";
 import {BASKET_ROUTE, LOGIN_ROUTE} from "../utils/consts";
 import {fetchDispensers, fetchDispensersWithProduct, fetchOneProduct} from "../http/productAPI";
@@ -27,11 +27,11 @@ const Product = observer(() => {
             <Row>
                 <Col md={4}>
                     <Card style={{
-                        width: '150 px', cursor: 'pointer', backgroundColor: '#AB97C2',
+                        height: '400px', cursor: 'pointer', backgroundColor: '#AB97C2',
                         boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'
                     }} className='mt-3'>
                         <div className="d-flex justify-content-center">
-                            <Image style={{width: '70%'}}
+                            <Image style={{height: '350px'}} className="mt-2"
                                    src={product.imageUrl || "https://storage.googleapis.com/multi-static-content/previews/artage-io-thumb-38074b7b27e6dbc574938e81868f435d.png"}/>
                         </div>
                     </Card>

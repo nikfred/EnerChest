@@ -28,10 +28,12 @@ export default class  ProductStore{
     }
 
     setSelectedBrand(brand){
+        this.setPage(1)
         this._selectedBrand = brand
     }
 
     setSelectedSize(size){
+        this.setPage(1)
         this._selectedSize = size
     }
 

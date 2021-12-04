@@ -4,8 +4,8 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import ListGroup from "react-bootstrap/ListGroup";
 import Image from "react-bootstrap/Image";
-import {NavLink, useHistory} from "react-router-dom"
-import {ADMIN_ROUTE, LOGIN_ROUTE} from "../utils/consts";
+import {NavLink} from "react-router-dom"
+import {ADMIN_ROUTE} from "../utils/consts";
 import {fetchUser, logout} from "../http/userAPI";
 import {Context} from "../index";
 
@@ -19,7 +19,6 @@ const Account = () => {
         })
     }, [])
 
-    const history = useHistory()
 
     const logOut = () => {
         logout().then(r => console.log(r))
@@ -27,7 +26,6 @@ const Account = () => {
         //setProfile({})
         user.setIsAuth(false)
         user.setIsAdmin(false)
-        window.location.reload();
     }
 
 
@@ -79,7 +77,7 @@ const Account = () => {
                                              style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
                                              onClick={() => {
                                                  logOut()
-                                                 history.push(LOGIN_ROUTE)
+                                                 window.location.reload()
                                              }}>LogOut</Button>
                     </ListGroup.Item>
                 </ListGroup>

@@ -36,7 +36,7 @@ export const logout = async () =>{
     const refreshToken = localStorage.getItem('refreshToken')?.toString() || ""
     const response = await $authHost.post('api/user/logout', {refreshToken: refreshToken})
     console.log(response)
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
+    localStorage.setItem('accessToken', 'a')
+    localStorage.setItem('refreshToken', 's')
     return response
 }
