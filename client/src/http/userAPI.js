@@ -33,11 +33,12 @@ export const fetchUser = async () => {
 }
 
 export const logout = async () =>{
+    localStorage.removeItem('refreshToken')
     const refreshToken = localStorage.getItem('refreshToken')?.toString() || ""
     const response = await $authHost.post('api/user/logout', {refreshToken: refreshToken})
+    localStorage.removeItem('accessToken')
     console.log(response)
-    localStorage.setItem('accessToken', 'a')
-    localStorage.setItem('refreshToken', 's')
+
     return response
 }
 
@@ -50,5 +51,10 @@ export const fetchCart = async () => {
 export const addToCart = async (cartItem) => {
     const {data} = await $authHost.post('api/cart/add', cartItem)
     console.log(data)
+    return data
+}
+
+export const deleteProductFromCard = async (id) => {
+    const {data} = await $authHost.delete('api/cart/' + id)
     return data
 }

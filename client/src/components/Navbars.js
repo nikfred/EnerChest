@@ -6,6 +6,8 @@ import BasketBar from "./BasketBar";
 import {Context} from "../index";
 import {observer} from "mobx-react-lite";
 import AccountBar from "./AccountBar";
+import img from "../img/logo5122.png"
+import Image from "react-bootstrap/Image";
 
 const mystyle = {
     fontFamily: 'Bebas Neue',
@@ -19,12 +21,14 @@ const mystyle = {
 const Navbars = observer(() => {
     const {user} = useContext(Context)
 
+
     return (
         <Navbar variant="dark"
                 style={{background: 'linear-gradient(171deg,#121212,#181818)', borderRadius: '0px 0px 15px 15px',
                     boxShadow:'0px 4px 4px rgba(0, 0, 0, 0.25)' }}>
             <Container>
                 <a href={SHOP_ROUTE} style={mystyle}>EnerChest</a>
+                <Image width={40} src={img}/>
                 {user.isAuth ?
                     <Nav className="ml-auto">
                         <NavLink to='#' style={mystyle}><BasketBar/></NavLink>

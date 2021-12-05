@@ -3,7 +3,7 @@ import {Button, Card, Col, Container, Dropdown, DropdownButton, Image, ListGroup
 import {Context} from "../index";
 import {BASKET_ROUTE, LOGIN_ROUTE, SHOP_ROUTE} from "../utils/consts";
 import {fetchDispensersWithProduct, fetchOneProduct} from "../http/productAPI";
-import {addToCart} from "../http/userAPI";
+import {addToCart, fetchCart} from "../http/userAPI";
 import {useHistory, useParams} from "react-router-dom"
 import {observer} from "mobx-react-lite";
 
@@ -36,6 +36,7 @@ const Product = observer(() => {
     useEffect(() => {
         fetchOneProduct(id).then(data => setProduct(data))
         fetchDispensersWithProduct(id).then(data => setDispensers(data))
+        fetchCart().then()
     }, [])
 
     return (
