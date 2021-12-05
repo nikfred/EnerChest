@@ -68,21 +68,27 @@ const Product = observer(() => {
                     </div>
 
                     {dispensers.length !== 0 ?
-                        <ListGroup className="mt-3" style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
-                            {dispensers.map(dispenser =>
-                                <ListGroup.Item key={dispenser.dispenser_id}
-                                                active={dispenser.dispenser_id === selectedDispenser.dispenser_id}
-                                                onClick={() => setSelectedDispenser(dispenser)}
-                                                style={{
-                                                    fontFamily: 'Montserrat Alternates',
-                                                    fontSize: '30px',
-                                                    backgroundColor: '#C4C4C4', textAlign: 'center',
-                                                    cursor: 'pointer'
-                                                }} className="align-self-auto">
-                                    <p>{dispenser.address}</p>
-                                    <b style={{color: 'green'}}>{dispenser.quantityFree}</b>/
-                                    <b style={{color: 'grey'}}>{dispenser.quantityAll}</b>
-                                </ListGroup.Item>)}
+                        <ListGroup className="mt-3" >
+                                <Dropdown style={{fontFamily: 'Montserrat Alternates',
+                                    fontSize: '30px',
+                                    textAlign: 'center',
+                                    cursor: 'pointer',
+                                    width: '100%'}}>
+                                    <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                                        {selectedDispenser.address || "Selected dispenser" }
+                                    </Dropdown.Toggle>
+                                    <Dropdown.Menu>
+                                        {dispensers.map(dispenser =>
+                                        <Dropdown.Item key={dispenser.dispenser_id}
+                                                       onClick={() => setSelectedDispenser(dispenser)}
+                                                       className="align-self-auto"
+                                        style={{ boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+                                            <p>{dispenser.address}  </p>
+                                            <b style={{color: 'green'}}>{dispenser.quantityFree}</b>/
+                                            <b style={{color: 'grey'}}>{dispenser.quantityAll}</b>
+                                        </Dropdown.Item>)}
+                                    </Dropdown.Menu>
+                                </Dropdown>
                             <div>
                                 {user.isAuth ?
                                     <div className="d-grid gap-2 mt-3">
