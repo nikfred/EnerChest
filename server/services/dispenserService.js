@@ -131,6 +131,10 @@ class DispenserService {
         }
         return dispensers
     }
+
+    async getProductQuantityFree(product_id, dispenser_id) {
+        return (await DispenserItem.findOne({product_id, dispenser_id})).quantityFree
+    }
 }
 
 module.exports = new DispenserService()
