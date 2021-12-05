@@ -6,7 +6,7 @@ class ProductController {
     async createProduct(req, res, next) {
         try {
             let {brand, name, price, description, size, newBrandFlag, newSizeFlag} = req.body
-            const {img} = req.files
+            let {img} = req.files
             newBrandFlag = newBrandFlag === 'true'
             newSizeFlag = newSizeFlag === 'true'
             console.log('newBrandFlag = ' + newBrandFlag)
@@ -82,9 +82,10 @@ class ProductController {
     async update(req, res, next){
         try {
             const {product_id} = req.params
-            const {name, price, size, imageUrl, description, discount} = req.body
-            const productData = {name, price, size, imageUrl, description, discount}
-            const product = await productService.update(product_id, productData)
+            const {name, price, size, description, discount} = req.body
+            let img = req?.files?.img
+            const productData = {name, price, size, description, discount}
+            const product = await productService.update(product_id, productData, img)
             return res.json(product)
         } catch (e) {
             console.log(e)

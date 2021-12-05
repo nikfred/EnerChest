@@ -2,6 +2,7 @@ const Cart = require('../models/cart')
 const Product = require('../models/product')
 const CartItem = require('../models/cartItem')
 const Dispenser = require('../models/dispenser')
+const dispenserService = require('./dispenserService')
 const ApiError = require('../error/ApiError')
 const ProductDto = require('../dtos/productDto')
 
@@ -20,6 +21,24 @@ class CartService {
             throw ApiError.notFound("Cart not found")
         }
 
+        const quantityFree = await dispenserService.getProductQuantityFree(product_id, dispenser_id)
+        console.log('quantityFree = ' + quantityFree)
+
+        const cartItem = await CartItem.findOne({cart_id: cart._id, product_id, dispenser_id})
+        if (cartItem) {
+            console.log("Old CartItem")
+            console.log('quantity in cart = ' + quantityFree)
+            if (+cartItem.quantity + +quantity > quantityFree) {
+                quantity = quantityFree - +cartItem.quantity
+            }
+            await CartItem.findOneAndUpdate({_id: cartItem._id}, {quantity: +(+cartItem.quantity + quantity)})
+        } else {
+            quantity = quantity > quantityFree ? quantityFree : quantity
+            console.log("New CartItem")
+            await CartItem.create({cart_id: cart._id, product_id, dispenser_id, quantity})
+        }
+        console.log('quantity = ' + quantity)
+
         cart = await Cart.findOneAndUpdate(
             {_id: cart._id},
             {
@@ -28,15 +47,6 @@ class CartService {
             },
             {new: true, upsert: true}
         )
-
-        const cartItem = await CartItem.findOne({cart_id: cart._id, product_id, dispenser_id})
-        if (cartItem) {
-            console.log("Old CartItem")
-            await CartItem.findOneAndUpdate({_id: cartItem._id}, {quantity: +(+cartItem.quantity + quantity)})
-        } else {
-            console.log("New CartItem")
-            await CartItem.create({cart_id: cart._id, product_id, dispenser_id, quantity})
-        }
         return cart
     }
 
