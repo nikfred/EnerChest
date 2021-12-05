@@ -47,10 +47,12 @@ class ProductService {
         return new ProductDto(product)
     }
 
-    async update(product_id, productData) {
+    async update(product_id, productData, img = null) {
         let product = await Product.findById(product_id)
         console.log('Update product')
         console.log(product)
+        console.log('Image')
+        console.log(img)
         if (!product) {
             throw ApiError.notFound('Product not found')
         } else {
@@ -58,9 +60,22 @@ class ProductService {
                 name: productData.name || product.name,
                 price: productData.price || product.price,
                 size: productData.size || product.size,
-                imageUrl: productData.imageUrl || product.imageUrl,
                 description: productData.description || product.description,
                 discount: productData.discount || product.discount
+            }
+
+            let imageUrl = null
+            if (img) {
+                imageUrl = uuid.v4() + ".png"
+                console.log(imageUrl)
+                console.log(path.resolve(__dirname, '../static', imageUrl))
+                await img.mv(path.resolve(__dirname, '../static', imageUrl))
+                if (product.imageUrl) {
+                    console.log('Delete old image')
+                    console.log(path.resolve(__dirname, "../static", product.imageUrl))
+                    fs.unlinkSync(path.resolve(__dirname, "../static", product.imageUrl))
+                }
+                productData.imageUrl = imageUrl
             }
         }
         product = await Product.findOneAndUpdate(
