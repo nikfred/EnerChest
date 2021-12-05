@@ -6,7 +6,9 @@ run-bg:
 	docker run -p 5000:5000 -d --name enerchest-server nikfred/enerchest:server
 run+:build run
 run-bg+:build run-bg
-push:build
+prune:
+	docker image prune
+push:build prune
 	docker push nikfred/enerchest:server
 
 

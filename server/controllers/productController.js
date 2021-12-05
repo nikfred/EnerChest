@@ -5,14 +5,14 @@ const ApiError = require("../error/ApiError");
 class ProductController {
     async createProduct(req, res, next) {
         try {
-            const {brand, name, price, description, size, newBrandFlag} = req.body
+            const {brand, name, price, description, size, newBrandFlag, newSizeFlag} = req.body
             const {img} = req.files
             const productData = {brand, name, price, description, size}
             let product = ""
             if (brand === "" || size === "") {
                 return next(ApiError.badRequest('Incorrectly entered data'))
             } else {
-                product = await productService.create(productData, img, newBrandFlag)
+                product = await productService.create(productData, img, newBrandFlag, newSizeFlag)
             }
             return res.json(product)
         } catch (e) {

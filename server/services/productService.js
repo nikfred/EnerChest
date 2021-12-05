@@ -8,7 +8,7 @@ const ProductDto = require('../dtos/productDto')
 const ApiError = require('../error/ApiError')
 
 class ProductService {
-    async create(productData, img, newBrandFlag = false) {
+    async create(productData, img, newBrandFlag = false, newSizeFlag = false) {
         // Check exist or Create new brand
         // true - create
         // false - check exist
@@ -23,9 +23,15 @@ class ProductService {
                 console.log(brand)
             }
         }
-        if (productData.size) {
+        if (!newSizeFlag) {
             if (!await Size.findOne({value: productData.size})) {
-                await Size.create({value: productData.size})
+                throw ApiError.notFound("Size is not exist")
+            }
+        } else {
+            if (!await Size.findOne({value: productData.size})) {
+                const size = await Size.create({value: productData.size})
+                console.log("New Size:")
+                console.log(size)
             }
         }
 
@@ -76,9 +82,10 @@ class ProductService {
                 : size
                     ? {size}
                     : {}
-        console.log(filter)
-        console.log('Skip = ' + skip)
-        console.log('Limit = ' + limit)
+        // console.log(filter)
+        // console.log('Skip = ' + skip)
+        // console.log('Limit = ' + limit)
+        const count = (await Product.find(filter)).length
         const rawProducts = await Product.find(
             filter,
             {},
@@ -87,7 +94,7 @@ class ProductService {
         for (const rawProduct of rawProducts) {
             products.push(new ProductDto(rawProduct))
         }
-        return products
+        return {count, products}
     }
 
     async activate(product_id, active = true) {
