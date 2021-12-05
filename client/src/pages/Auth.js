@@ -1,5 +1,5 @@
 import React, {useContext, useState} from 'react';
-import {Button, Card, Container, Form, FormControl, Row} from "react-bootstrap";
+import {Button, Card, Container, Dropdown, Form, FormControl, Row} from "react-bootstrap";
 import {NavLink, useHistory, useLocation} from "react-router-dom";
 import {LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE} from "../utils/consts";
 import {login, registration} from "../http/userAPI";
@@ -16,7 +16,9 @@ const Auth = observer(()=> {
     const [phone, setPhone] = useState('')
     const [firstname, setFirstname] = useState('')
     const [lastname, setLastname] = useState('')
+    const [gender, setGender] = useState('')
     const [birth_date, setBirth_date] = useState('')
+
 
     const click = async () =>{
         try {
@@ -24,7 +26,7 @@ const Auth = observer(()=> {
             if (isLogin){
                 data = await login(email, password);
             } else {
-                data = await registration(email, password, phone, firstname, lastname, birth_date);
+                data = await registration(email, password, phone, firstname, lastname, gender, birth_date);
             }
             console.log(data)
             user.setUser(user)
@@ -79,6 +81,15 @@ const Auth = observer(()=> {
                         value={lastname}
                         onChange={e => setLastname(e.target.value)}
                         />
+                        <Dropdown className="mt-3" variant='success'>
+                            <Dropdown.Toggle>{gender || "Select gender"}</Dropdown.Toggle>
+                            <Dropdown.Menu>
+                                    <Dropdown.Item onClick={() => setGender('Мужской')}>Мужской</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => setGender('Женский')}>Женский</Dropdown.Item>
+                                    <Dropdown.Item onClick={() => setGender('Другой')}>Другой</Dropdown.Item>
+                            </Dropdown.Menu>
+                        </Dropdown>
+
                         <FormControl
                             className="mt-3"
                             placeholder="Enter last name ..."

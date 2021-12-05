@@ -4,6 +4,7 @@ export default class  UserStore{
     constructor() {
         this._isAdmin = false
         this._isAuth = false
+        this._totalPrice = 0
         this._user = {}
         makeAutoObservable(this)
     }
@@ -16,6 +17,10 @@ export default class  UserStore{
         this._isAuth = bool
     }
 
+    setTotalPrice(total){
+        this._totalPrice = total
+    }
+
     setUser(user){
         this._user = user
     }
@@ -26,6 +31,10 @@ export default class  UserStore{
 
     get isAuth(){
         return this._isAuth
+    }
+
+    get totalPrice(){
+        return this._totalPrice
     }
 
     get user(){

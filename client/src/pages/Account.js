@@ -4,14 +4,16 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import ListGroup from "react-bootstrap/ListGroup";
 import Image from "react-bootstrap/Image";
-import {NavLink} from "react-router-dom"
+import {NavLink, useHistory} from "react-router-dom"
 import {ADMIN_ROUTE} from "../utils/consts";
 import {fetchUser, logout} from "../http/userAPI";
 import {Context} from "../index";
+import UpdateProfile from "../components/modals/updateProfile";
 
 const Account = () => {
     const {user} = useContext(Context)
     const [profile, setProfile] = useState(' ')
+    const [updateVisible, setUpdateVisible] = useState (false)
 
     useEffect(()=> {
         fetchUser().then(data=> {
@@ -55,6 +57,18 @@ const Account = () => {
                     <ListGroup.Item> {profile.gender} </ListGroup.Item>
                     <ListGroup.Item> {profile.email} </ListGroup.Item>
                     <ListGroup.Item> {profile.phone} </ListGroup.Item>
+                    <ListGroup.Item>
+                        <div className="d-grid gap-2">
+                            <Button variant="success" style={{
+                                boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                                fontSize: '20px'
+                            }}
+                                    onClick={() => setUpdateVisible(true)}>
+                                Edit profile
+                            </Button>
+                            <UpdateProfile  show={updateVisible} onHide={() => setUpdateVisible(false)}/>
+                        </div>
+                    </ListGroup.Item>
                     {user.isAdmin ? <ListGroup.Item>
                             <div className="d-grid gap-2">
                                 {/*<Button variant="success"*/}

@@ -1,11 +1,23 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {Button, Card, Col, Container, Dropdown, DropdownButton, Image, ListGroup, Row} from "react-bootstrap";
+import {
+    Button,
+    Card,
+    Col,
+    Container,
+    Dropdown,
+    FormControl,
+    Image, InputGroup,
+    ListGroup,
+    Row
+} from "react-bootstrap";
 import {Context} from "../index";
-import {BASKET_ROUTE, LOGIN_ROUTE, SHOP_ROUTE} from "../utils/consts";
+import {LOGIN_ROUTE, SHOP_ROUTE} from "../utils/consts";
 import {fetchDispensersWithProduct, fetchOneProduct} from "../http/productAPI";
 import {addToCart, fetchCart} from "../http/userAPI";
 import {useHistory, useParams} from "react-router-dom"
 import {observer} from "mobx-react-lite";
+import AddProduct from "../components/modals/addProduct";
+import UpdateProduct from "../components/modals/updateProduct";
 
 
 const Product = observer(() => {
@@ -13,11 +25,14 @@ const Product = observer(() => {
     const [product, setProduct] = useState(' ')
     const [dispensers, setDispensers] = useState([])
     const [selectedDispenser, setSelectedDispenser] = useState({})
-    const [quantity, setQuantity] = useState('')
+    const [quantity, setQuantity] = useState(1)
+    const [isTrue, setIsTrue] = useState(false)
+    const [updateVisible, setUpdateVisible] = useState(false)
 
     const {id} = useParams()
 
     const history = useHistory()
+
 
     const buy = () => {
         if (!selectedDispenser.dispenser_id) {
@@ -29,7 +44,13 @@ const Product = observer(() => {
             dispenser_id: selectedDispenser.dispenser_id,
             quantity: quantity || 1
         }
-        addToCart(cartItem).then(data => console.log("Product added to cart"))
+        addToCart(cartItem).then(data => {
+            console.log("Product added to cart")
+            let total = data.total.$numberDecimal
+            user.setTotalPrice(total)
+        })
+
+        history.push(SHOP_ROUTE)
     }
 
 
@@ -37,6 +58,7 @@ const Product = observer(() => {
         fetchOneProduct(id).then(data => setProduct(data))
         fetchDispensersWithProduct(id).then(data => setDispensers(data))
         fetchCart().then()
+        setIsTrue(false)
     }, [])
 
     return (
@@ -64,46 +86,104 @@ const Product = observer(() => {
                     <div className="d-flex justify-content-center mt-3" style={{
                         color: '#39C829'
                     }}>
-                        {product.price} UAH
+                        {product.price * quantity} UAH
                     </div>
 
+                    {user.isAdmin ?
+                        <div className="d-grid gap-2 mt-3">
+                            <Button className= "mt-2"  variant="danger" style={{
+                                boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+                                fontSize: '20px'
+                            }}
+                                    onClick={() => setUpdateVisible(true)}>
+                                Update product info
+                            </Button>
+                            <UpdateProduct  show={updateVisible} onHide={() => setUpdateVisible(false)}/>
+                        </div>
+                        :
+                        ' '
+                    }
                     {dispensers.length !== 0 ?
-                        <ListGroup className="mt-3" >
-                                <Dropdown style={{fontFamily: 'Montserrat Alternates',
-                                    fontSize: '30px',
-                                    textAlign: 'center',
-                                    cursor: 'pointer',
-                                    width: '100%'}}>
-                                    <Dropdown.Toggle variant="secondary" id="dropdown-basic">
-                                        {selectedDispenser.address || "Selected dispenser" }
-                                    </Dropdown.Toggle>
-                                    <Dropdown.Menu>
-                                        {dispensers.map(dispenser =>
+                        <ListGroup className="mt-3">
+                            <Dropdown style={{
+                                fontFamily: 'Montserrat Alternates',
+                                fontSize: '30px',
+                                textAlign: 'center',
+                                cursor: 'pointer',
+                                width: '100%'
+                            }}>
+                                <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+                                    {selectedDispenser.address || "Selected dispenser"}
+                                </Dropdown.Toggle>
+                                <Dropdown.Menu>
+                                    {dispensers.map(dispenser =>
                                         <Dropdown.Item key={dispenser.dispenser_id}
-                                                       onClick={() => setSelectedDispenser(dispenser)}
+                                                       onClick={() => {
+                                                           setSelectedDispenser(dispenser)
+                                                           setIsTrue(true)
+                                                       }}
                                                        className="align-self-auto"
-                                        style={{ boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
+                                                       style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}>
                                             <p>{dispenser.address}  </p>
                                             <b style={{color: 'green'}}>{dispenser.quantityFree}</b>/
                                             <b style={{color: 'grey'}}>{dispenser.quantityAll}</b>
                                         </Dropdown.Item>)}
-                                    </Dropdown.Menu>
-                                </Dropdown>
+                                </Dropdown.Menu>
+                            </Dropdown>
                             <div>
-                                {user.isAuth ?
-                                    <div className="d-grid gap-2 mt-3">
-                                        <Button variant="success" style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
-                                                // to={BASKET_ROUTE}>Add to Basket</Button>
-                                                onClick={() => {
-                                                    buy()
-                                                    history.push(SHOP_ROUTE)
-                                                }}>Add to Basket</Button>
+                                {isTrue ?
+                                    <div>
+                                        <InputGroup className="mb-3">
+                                            <Button variant="success" onClick={() => {
+                                                if (quantity > 1) setQuantity(quantity - 1)
+                                            }}>-</Button>
+                                            <FormControl
+                                                onChange={e => {
+                                                    setQuantity(e.target.value)
+                                                }}
+                                                value={quantity}
+                                                className="mt-3 align-items-center"
+                                                type="number"
+                                                max={selectedDispenser.quantityFree}
+                                                min={0}
+                                                style={{
+                                                    textAlign: 'center',
+                                                    fontSize: '28px'
+                                                }}
+                                                readOnly={true}
+                                            />
+                                            <Button variant="success" onClick={() => {
+                                                if (quantity < selectedDispenser.quantityFree) setQuantity(quantity + 1);
+                                            }
+                                            }>+</Button>
+
+                                        </InputGroup>
                                     </div>
                                     :
-                                    <div className="d-grid gap-2 mt-3">
-                                        <Button variant="success" style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
-                                                onClick={() => history.push(LOGIN_ROUTE)}>Buy now</Button>
+                                    ' '
+                                }
+                            </div>
+                            <div>
+                                {user.isAuth ?
+                                    <div>
+                                        {user.isAdmin ?
+                                            ' '
+                                            :
+                                            <div className="d-grid gap-2 mt-3">
+                                                <Button variant="success"
+                                                        style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
+                                                    // to={BASKET_ROUTE}>Add to Basket</Button>
+                                                        onClick={() => {
+                                                            buy()
+                                                        }}>Add to Basket</Button>
+                                            </div>
+                                        }
                                     </div>
+                                :
+                                <div className="d-grid gap-2 mt-3">
+                                    <Button variant="success" style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
+                                            onClick={() => history.push(LOGIN_ROUTE)}>Buy now</Button>
+                                </div>
                                 }
                             </div>
                         </ListGroup>
@@ -130,3 +210,4 @@ const Product = observer(() => {
 });
 
 export default Product;
+

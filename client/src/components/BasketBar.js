@@ -1,7 +1,7 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Accordion, Button, Offcanvas} from "react-bootstrap";
-import {deleteProductFromCard, fetchCart} from "../http/userAPI";
-
+import {createOrder, deleteProductFromCard, fetchCart} from "../http/userAPI";
+import {Context} from "../index";
 
 const customStyle = {
     fontFamily: 'Bebas Neue',
@@ -10,6 +10,7 @@ const customStyle = {
 }
 
 const BasketBar = () => {
+    const {user} = useContext(Context)
 
     const [show, setShow] = useState(false);
     const [cart, setCart] = useState({});
@@ -24,13 +25,13 @@ const BasketBar = () => {
             let total = data.cart.total.$numberDecimal
             setCart({quantity, total})
             setCartItems(data.products)
+            user.setTotalPrice(total)
             console.log(cartItems)
         })
-    }, [show, removeItem, cart.quantity])
+    }, [show, removeItem, cart.quantity, cart.total])
 
     const handleClose = () => setShow(false);
     const handleShow = () => {
-
         setShow(true);}
 
     const remove = () => {
@@ -39,6 +40,10 @@ const BasketBar = () => {
         console.log(`tmp = `)
         console.log(tmp)
         deleteProductFromCard(tmp.id).then()
+    }
+
+    const order = () => {
+        createOrder().then(data => handleClose())
     }
 
     const setItem = () => {
@@ -50,7 +55,7 @@ const BasketBar = () => {
     return (
         <>
             <Button variant="success" onClick={handleShow}>
-                Basket
+                Basket: {user.totalPrice} UAH
             </Button>
 
 
@@ -61,6 +66,7 @@ const BasketBar = () => {
                 <Offcanvas.Body>
                     <div style={customStyle}> Total quantity: {cart.quantity}</div>
                     <div style={customStyle}> Total price: {cart.total} UAH</div>
+                    <Button onClick={order} variant='success' className='mb-3 align-items-center' style={{width: '90%'}}>Buy</Button>
 
                     <Accordion >
                         {cartItems.map(product =>

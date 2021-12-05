@@ -45,4 +45,9 @@ export const addToDispenser = async (product) => {
     return data
 }
 
+export const updateProduct = async (id, product) => {
+    const {data} = await $authHost.put('/api/product/update/' + id, product )
+    return data
+}
+
 
