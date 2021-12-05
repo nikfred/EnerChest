@@ -12,8 +12,8 @@ const AddProduct = observer(({show, onHide}) => {
     const [description, setDescription] = useState('')
     const [brand, setBrand] = useState(' ')
     const [size, setSize] = useState(' ')
-    const [newbrand, setNewbrand] = useState( false)
-    const [newsize, setNewsize] = useState( false)
+    const [newBrand, setNewBrand] = useState( false)
+    const [newSize, setNewSize] = useState( false)
 
 
     const selectFile = e => {
@@ -21,10 +21,13 @@ const AddProduct = observer(({show, onHide}) => {
     }
 
     const add = () =>{
+        console.log('newBrand = ' + newBrand)
+        console.log('newSize = ' + newSize)
         const formData = new FormData()
         formData.append('brand', brand)
         formData.append('size', size)
-        formData.append('newBrandFlag',true)
+        formData.append('newBrandFlag',newBrand.toString())
+        formData.append('newSizeFlag',newSize.toString())
         formData.append('name', name)
         formData.append('price', price)
         formData.append('description', description)
@@ -53,14 +56,14 @@ const AddProduct = observer(({show, onHide}) => {
                         value={brand}
                         onChange={e => setBrand(e.target.value)}
                     />
-                       <FormCheck isValid={e => setNewbrand(true)} label='New brand' />
+                       <FormCheck onClick={e => setNewBrand(!newBrand)} label='New brand' />
                     <FormControl
                         className="mt-3"
                         placeholder="Enter size..."
                         value={size}
                         onChange={e => setSize(e.target.value)}
                     />
-                        <FormCheck isValid={e => setNewsize(true)} label='New size' />
+                        <FormCheck onClick={e => setNewSize(!newSize)} label='New size' />
                     <FormControl
                         value={name}
                         onChange={e => setName(e.target.value)}

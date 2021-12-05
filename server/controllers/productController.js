@@ -5,8 +5,12 @@ const ApiError = require("../error/ApiError");
 class ProductController {
     async createProduct(req, res, next) {
         try {
-            const {brand, name, price, description, size, newBrandFlag, newSizeFlag} = req.body
+            let {brand, name, price, description, size, newBrandFlag, newSizeFlag} = req.body
             const {img} = req.files
+            newBrandFlag = newBrandFlag === 'true'
+            newSizeFlag = newSizeFlag === 'true'
+            console.log('newBrandFlag = ' + newBrandFlag)
+            console.log('newSizeFlag = ' + newSizeFlag)
             const productData = {brand, name, price, description, size}
             let product = ""
             if (brand === "" || size === "") {
