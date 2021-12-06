@@ -69,3 +69,20 @@ export const createOrder = async () => {
     return data
 }
 
+export const fetchOrder = async () => {
+    const {data} = await $authHost.get('/api/order')
+    return data
+}
+
+export const canceledOrder = async (id) => {
+    const {data} = await $authHost.get('/api/order/canceled/' + id)
+    return data
+}
+
+export const completionOrder = async (id) => {
+    const {data} = await $authHost.get('/api/order/completion/' + id)
+    return data
+}
+
+
+
