@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {Button, Dropdown, Form, FormCheck, FormControl, Modal} from "react-bootstrap";
-import {addToDispenser, fetchDispensers, fetchProduct} from "../../http/productAPI";
+import {addToDispenser, connectProducts, fetchDispensers} from "../../http/productAPI";
 import {observer} from "mobx-react-lite";
 
 
@@ -10,10 +10,10 @@ const AddToDispenser = observer(({show, onHide}) => {
     const [dispensers, setDispensers] = useState([ ])
     const [product, setProduct] = useState(null)
     const [products, setProducts] = useState([ ])
-    const [quantityAll, setQuantityAll] = useState('')
+    const [quantityAdd, setQuantityAdd] = useState('')
 
     useEffect(()=> {
-        fetchProduct().then(data => setProducts(data.products))
+        connectProducts().then(data => setProducts(data))
         fetchDispensers().then(data => setDispensers(data))
     }, [])
 
@@ -21,7 +21,7 @@ const AddToDispenser = observer(({show, onHide}) => {
         const body = {
             dispenser_id: dispenser._id,
             product_id: product.id,
-            quantityAll
+            quantityAdd
         }
         addToDispenser(body).then(data => onHide())
     }
@@ -43,7 +43,7 @@ const AddToDispenser = observer(({show, onHide}) => {
                 <Form>
                     <Dropdown className="mt-2 mb-2">
                         <Dropdown.Toggle>{!product? "Select product..." : `${product.brand} ${product.name} ${product.size}`}</Dropdown.Toggle>
-                        <Dropdown.Menu>
+                        <Dropdown.Menu style={{overflowY: 'scroll', maxHeight: '180px'}}>
                             {products.map(item =>
                                 <Dropdown.Item
                                     onClick={() => setProduct(item)}
@@ -68,8 +68,8 @@ const AddToDispenser = observer(({show, onHide}) => {
                         </Dropdown.Menu>
                     </Dropdown>
                     <FormControl
-                        value={quantityAll}
-                        onChange={e => setQuantityAll(e.target.value)}
+                        value={quantityAdd}
+                        onChange={e => setQuantityAdd(e.target.value)}
                         className="mt-3"
                         placeholder="Enter quantity product..."
                         type="number"

@@ -20,7 +20,7 @@ export const connectProducts = async () => {
     return data
 }
 
-export const fetchProduct = async (brand, size, page, limit = 5 ) => {
+export const fetchProduct = async (brand, size, page, limit = 8 ) => {
     const {data} = await $host.get('api/product/search',{params: {brand, size, page, limit}})
     return data
 }
