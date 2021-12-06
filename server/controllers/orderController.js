@@ -37,6 +37,17 @@ class OrderController {
             next(e)
         }
     }
+
+    async getUserOrders(req, res, next){
+        try {
+            const {id} = req.user
+            const order = await orderService.getUserOrders(id)
+            return res.json(order)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
 }
 
 module.exports = new OrderController()

@@ -3,18 +3,45 @@ const OrderItem = require('../models/orderItem')
 const ReadyOrder = require('../models/readyOrder')
 const Cart = require('../models/cart')
 const CartItem = require('../models/cartItem')
+const Dispenser = require('../models/dispenser')
 const DispenserItem = require('../models/dispenserItem')
 const Product = require('../models/product')
 const dispenserService = require('../services/dispenserService')
 const cartService = require('../services/cartService')
 const ApiError = require('../error/ApiError')
+const ProductDto = require("../dtos/productDto");
+const OrderDto = require("../dtos/orderDto")
 
 const minTime = 6
 const maxTime = 12
 
+const transformationOrder = async (order) => {
+    order.address = (await Dispenser.findById(order.dispenser_id)).address
+    order = new OrderDto(order)
+    const orderItems = await OrderItem.find({order_id: order.id})
+    let products = []
+    let product
+    for (const orderItem of orderItems) {
+        product = await Product.findById(orderItem.product_id)
+        if (!product) {
+            throw ApiError.notFound("Product not found")
+        }
+        product = new ProductDto(product)
+        product.quantity = orderItem.quantity
+        products.push(product)
+    }
+    return {order, products}
+}
+
 class OrderService {
     async create(uid, time = minTime) {
-        time = time <= minTime ? minTime : time >= maxTime ? maxTime : time
+        time =
+            time <= minTime
+                ? minTime
+                : time >= maxTime
+                    ? maxTime
+                    : time
+
         let cart = await Cart.findOne({uid})
         const cartItems = await CartItem.find({cart_id: cart._id})
         if (cartItems.length === 0) {
@@ -30,14 +57,19 @@ class OrderService {
         let blockedItems = []
         let product, dispenserItem
         for (const cartItem of cartItems) {
+            // console.log('order.dispenser_id = ' + order.dispenser_id + typeof order.dispenser_id)
+            // console.log('cartItem.dispenser_id = ' + cartItem.dispenser_id + typeof cartItem.dispenser_id)
             // checking the same dispenser
-            if (order.dispenser_id === cartItem.dispenser_id) {
-                dispenserItem = dispenserItems.filter(i => i.product_id.toString() === cartItem.product_id.toString())[0]
+            if (order.dispenser_id.toString() === cartItem.dispenser_id.toString()) {
+                dispenserItem = dispenserItems
+                    .filter(i => i.product_id.toString() === cartItem.product_id.toString())[0]
+                // console.log('dispenserItem:')
+                // console.log(dispenserItem)
 
                 // checking the quantity of free products inside the dispenser
                 if (+dispenserItem.quantityFree >= +cartItem.quantity) {
                     product = await Product.findById(cartItem.product_id)
-                    order.total += +product.price * +cartItem.quantity
+                    order.total = +order.total +product.price * +cartItem.quantity
                     order.quantity += +cartItem.quantity
 
                     await OrderItem.create({
@@ -119,6 +151,15 @@ class OrderService {
                 break
             }
         }
+    }
+
+    async getUserOrders(uid) {
+        const rawOrders = await Order.find({uid})
+        let orders = []
+        for (const rawOrder of rawOrders) {
+            orders.push(await transformationOrder(rawOrder))
+        }
+        return orders
     }
 }
 

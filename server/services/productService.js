@@ -117,7 +117,15 @@ class ProductService {
     }
 
     async getAll() {
-        return Product.find()
+        const rawProducts = await Product.find(
+            {},
+            {},
+            { sort: {brand: 'asc', name: 'asc', price: 'asc'}})
+        const products = []
+        for (const rawProduct of rawProducts) {
+            products.push(new ProductDto(rawProduct))
+        }
+        return products
     }
 
     async getOne(product_id) {
