@@ -16,5 +16,6 @@ router.put('/', authMiddleware, userController.update)
 router.delete('/', authMiddleware, userController.deleteUser)
 
 router.put('/role', authMiddleware, adminMiddleware, userController.updateRole)
+router.delete('/:uid', authMiddleware, adminMiddleware, userController.deleteUserBuId)
 
 module.exports = router

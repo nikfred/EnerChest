@@ -8,6 +8,8 @@ const UserDto = require('../dtos/userDto')
 const UserProfileDto = require('../dtos/userProfileDto')
 const mailService = require('./mailService')
 const tokenService = require('./tokenService')
+const path = require("path");
+const fs = require("fs");
 
 
 class UserService {
@@ -86,7 +88,7 @@ class UserService {
         return User.find()
     }
 
-    async update(id, rawUser) {
+    async update(id, rawUser, img = null) {
         let user = await User.findById(id)
         if (user) {
             rawUser = {
@@ -95,6 +97,15 @@ class UserService {
                 birth_date: rawUser.birth_date || user.birth_date,
                 phone: rawUser.phone || user.phone,
                 gender: rawUser.gender || user.gender
+            }
+            let imageUrl = null
+            if (img) {
+                imageUrl = uuid.v4() + ".png"
+                await img.mv(path.resolve(__dirname, '../static', imageUrl))
+                if (user.imageUrl) {
+                    fs.unlinkSync(path.resolve(__dirname, "../static", user.imageUrl))
+                }
+                rawUser.imageUrl = imageUrl
             }
         } else {
             throw ApiError.notFound('User not found')
@@ -123,6 +134,10 @@ class UserService {
     async deleteUser(uid) {
         await Cart.deleteOne({uid})
         await Token.deleteOne({uid})
+        const user = await User.findById(uid)
+        if (user.imageUrl) {
+            fs.unlinkSync(path.resolve(__dirname, "../static", user.imageUrl))
+        }
         return User.deleteOne({_id: uid})
     }
 }

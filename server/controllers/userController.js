@@ -103,8 +103,9 @@ class UserController {
         try {
             const {id} = req.user
             const {firstname, lastname, birth_date, gender, phone} = req.body
+            const img = req?.files?.img
             const rawProfile = {firstname, lastname, birth_date, gender, phone}
-            const profile = await userService.update(id, rawProfile)
+            const profile = await userService.update(id, rawProfile, img)
             return res.json(profile)
         } catch (e) {
             next(e)
@@ -125,6 +126,17 @@ class UserController {
         try {
             const {id} = req.user
             const user = await userService.deleteUser(id)
+            return res.json(user)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
+
+    async deleteUserBuId(req, res, next) {
+        try {
+            const {uid} = req.params
+            const user = await userService.deleteUser(uid)
             return res.json(user)
         } catch (e) {
             console.log(e)
