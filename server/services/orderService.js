@@ -57,16 +57,9 @@ class OrderService {
         let blockedItems = []
         let product, dispenserItem
         for (const cartItem of cartItems) {
-            // console.log('order.dispenser_id = ' + order.dispenser_id + typeof order.dispenser_id)
-            // console.log('cartItem.dispenser_id = ' + cartItem.dispenser_id + typeof cartItem.dispenser_id)
-            // checking the same dispenser
             if (order.dispenser_id.toString() === cartItem.dispenser_id.toString()) {
                 dispenserItem = dispenserItems
                     .filter(i => i.product_id.toString() === cartItem.product_id.toString())[0]
-                // console.log('dispenserItem:')
-                // console.log(dispenserItem)
-
-                // checking the quantity of free products inside the dispenser
                 if (+dispenserItem.quantityFree >= +cartItem.quantity) {
                     product = await Product.findById(cartItem.product_id)
                     order.total = +order.total +product.price * +cartItem.quantity
@@ -106,17 +99,13 @@ class OrderService {
     }
 
     async completion(order_id, uid) {
+        console.log('Complete order: ' + order_id)
         const order = await this.getReadyOrder(order_id, uid)
         const orderItems = await OrderItem.find({order_id})
         for (const orderItem of orderItems) {
             await dispenserService.delivery(order.dispenser_id, orderItem.product_id, orderItem.quantity)
         }
-
-        return Order.findOneAndUpdate(
-            {_id: order_id},
-            {status: "Complete"},
-            {new: true}
-        )
+        return this.deleteReadyOrder(order_id, 'Complete')
     }
 
     async canceled(order_id, uid = null) {
@@ -131,10 +120,14 @@ class OrderService {
         for (const orderItem of orderItems) {
             await dispenserService.returned(order.dispenser_id, orderItem.product_id, orderItem.quantity)
         }
+        return this.deleteReadyOrder(order_id, 'Cancel')
+    }
 
+    async deleteReadyOrder(order_id, status = 'Cancel') {
+        await ReadyOrder.findOneAndDelete({_id: order_id})
         return Order.findOneAndUpdate(
             {_id: order_id},
-            {status: "Cancel"},
+            {status: status},
             {new: true}
         )
     }
@@ -154,7 +147,11 @@ class OrderService {
     }
 
     async getUserOrders(uid) {
-        const rawOrders = await Order.find({uid})
+        const rawOrders = await Order.find(
+            {uid},
+            {},
+            {sort: {date: 'desc'}}
+        )
         let orders = []
         for (const rawOrder of rawOrders) {
             orders.push(await transformationOrder(rawOrder))

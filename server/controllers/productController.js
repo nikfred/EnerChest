@@ -83,7 +83,7 @@ class ProductController {
         try {
             const {product_id} = req.params
             const {name, price, size, description, discount} = req.body
-            let img = req?.files?.img
+            const img = req?.files?.img
             const productData = {name, price, size, description, discount}
             const product = await productService.update(product_id, productData, img)
             return res.json(product)

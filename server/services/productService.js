@@ -67,12 +67,8 @@ class ProductService {
             let imageUrl = null
             if (img) {
                 imageUrl = uuid.v4() + ".png"
-                console.log(imageUrl)
-                console.log(path.resolve(__dirname, '../static', imageUrl))
                 await img.mv(path.resolve(__dirname, '../static', imageUrl))
                 if (product.imageUrl) {
-                    console.log('Delete old image')
-                    console.log(path.resolve(__dirname, "../static", product.imageUrl))
                     fs.unlinkSync(path.resolve(__dirname, "../static", product.imageUrl))
                 }
                 productData.imageUrl = imageUrl
