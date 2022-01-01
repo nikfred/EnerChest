@@ -8,6 +8,7 @@ const CronJob = require('cron').CronJob;
 const path = require("path")
 const apiRouter = require("./routes/apiRouter")
 const orderService = require('./services/orderService')
+const dispenserService = require('./services/dispenserService')
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
 
 const PORT = process.env.PORT || 5000
@@ -34,6 +35,7 @@ app.get('/', (req, res) => {
 
 const job = new CronJob('*/10 * * * *', function() {
     orderService.checkReadyOrder()
+    dispenserService.clear()
 }, null, true, 'Europe/Kiev');
 
 

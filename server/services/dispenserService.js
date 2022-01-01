@@ -31,7 +31,7 @@ class DispenserService {
         return dispenser
     }
 
-    async getAllDispenser(){
+    async getAllDispenser() {
         return Dispenser.find()
     }
 
@@ -81,7 +81,7 @@ class DispenserService {
     }
 
     async returned(dispenser_id, product_id, quantity) {
-        console.log('returned ' + product_id )
+        console.log('returned ' + product_id)
         return this.updateQuantityFree(dispenser_id, product_id, -quantity)
     }
 
@@ -134,6 +134,10 @@ class DispenserService {
 
     async getProductQuantityFree(product_id, dispenser_id) {
         return (await DispenserItem.findOne({product_id, dispenser_id})).quantityFree
+    }
+
+    async clear() {
+        return DispenserItem.deleteMany({quantityAll: 0})
     }
 }
 
