@@ -49,6 +49,17 @@ class OrderController {
         }
     }
 
+    async getAllOrders(req, res, next) {
+        try {
+            const {status, limit, page} = req.query
+            const orders = await orderService.getAllOrders(status, limit, page)
+            return res.json(orders)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
+
     async getAllOrderStats(req, res, next) {
         try {
             const stats = await orderService.getAllOrderStats()

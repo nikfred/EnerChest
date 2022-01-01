@@ -6,31 +6,41 @@ const CartItem = require('../models/cartItem')
 const Dispenser = require('../models/dispenser')
 const DispenserItem = require('../models/dispenserItem')
 const Product = require('../models/product')
+const User = require('../models/user')
 const dispenserService = require('../services/dispenserService')
 const cartService = require('../services/cartService')
 const ApiError = require('../error/ApiError')
 const ProductDto = require("../dtos/productDto");
 const OrderDto = require("../dtos/orderDto")
+const OrderUserDto = require("../dtos/orderUserDto")
 
 const minTime = 6
 const maxTime = 12
 
-const transformationOrder = async (order) => {
-    order.address = (await Dispenser.findById(order.dispenser_id)).address
-    order = new OrderDto(order)
-    const orderItems = await OrderItem.find({order_id: order.id})
-    let products = []
-    let product
-    for (const orderItem of orderItems) {
-        product = await Product.findById(orderItem.product_id)
-        if (!product) {
-            throw ApiError.notFound("Product not found")
-        }
-        product = new ProductDto(product)
-        product.quantity = orderItem.quantity
-        products.push(product)
+const transformationOrder = async (order, addProduct = false, addUser = false) => {
+    order._doc.address = (await Dispenser.findById(order.dispenser_id)).address
+    if (addUser) {
+        const user = await User.findById(order.uid)
+        order = new OrderUserDto({...order._doc, ...user._doc})
+    } else {
+        order = new OrderDto(order)
     }
-    return {order, products}
+    if (addProduct) {
+        const orderItems = await OrderItem.find({order_id: order.id})
+        let products = []
+        let product
+        for (const orderItem of orderItems) {
+            product = await Product.findById(orderItem.product_id)
+            if (!product) {
+                throw ApiError.notFound("Product not found")
+            }
+            product = new ProductDto(product)
+            product.quantity = orderItem.quantity
+            products.push(product)
+        }
+        return {order, products}
+    }
+    return {order}
 }
 
 class OrderService {
@@ -154,7 +164,23 @@ class OrderService {
         )
         let orders = []
         for (const rawOrder of rawOrders) {
-            orders.push(await transformationOrder(rawOrder))
+            orders.push(await transformationOrder(rawOrder, true))
+        }
+        return orders
+    }
+
+    async getAllOrders(status = null, limit = 10, page = 1) {
+        limit = +limit
+        const skip = +limit * +page - +limit
+        const filter = status ? {status} : {}
+        const rawOrders = await Order.find(
+            filter,
+            {},
+            {sort: {date: 'desc'}, skip, limit}
+        )
+        let orders = []
+        for (const rawOrder of rawOrders) {
+            orders.push(await transformationOrder(rawOrder, false, true))
         }
         return orders
     }

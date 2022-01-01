@@ -2,10 +2,13 @@ const Router = require('express')
 const router = Router()
 const orderController = require('../controllers/orderController')
 const authMiddleware = require('../middleware/authMiddleware')
+const adminMiddleware = require('../middleware/adminMiddleware')
 
 router.post('/create', authMiddleware, orderController.create)
 router.get('/completion/:order_id', authMiddleware, orderController.completion)
 router.get('/canceled/:order_id', authMiddleware, orderController.canceled)
 router.get('/', authMiddleware, orderController.getUserOrders)
+
+router.get('/all', authMiddleware, adminMiddleware, orderController.getAllOrders)
 
 module.exports = router
