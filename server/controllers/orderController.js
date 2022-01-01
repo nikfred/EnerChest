@@ -48,6 +48,16 @@ class OrderController {
             next(e)
         }
     }
+
+    async getAllOrderStats(req, res, next) {
+        try {
+            const stats = await orderService.getAllOrderStats()
+            return res.json(stats)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
 }
 
 module.exports = new OrderController()

@@ -51,7 +51,7 @@ class OrderService {
         let order = new Order({
             uid,
             dispenser_id: cartItems[0].dispenser_id,
-            dateCancel: new Date(+new Date() + time*60*60*1000)
+            dateCancel: new Date(+new Date() + time * 60 * 60 * 1000)
         })
         const dispenserItems = await DispenserItem.find({dispenser_id: order.dispenser_id})
         let blockedItems = []
@@ -62,7 +62,7 @@ class OrderService {
                     .filter(i => i.product_id.toString() === cartItem.product_id.toString())[0]
                 if (+dispenserItem.quantityFree >= +cartItem.quantity) {
                     product = await Product.findById(cartItem.product_id)
-                    order.total = +order.total +product.price * +cartItem.quantity
+                    order.total = +order.total + product.price * +cartItem.quantity
                     order.quantity += +cartItem.quantity
 
                     await OrderItem.create({
@@ -157,6 +157,26 @@ class OrderService {
             orders.push(await transformationOrder(rawOrder))
         }
         return orders
+    }
+
+    async getAllOrderStats() {
+        const stats = {
+            completeTotal: 0,
+            completeCount: 0,
+            cancelTotal: 0,
+            cancelCount: 0
+        }
+        const completeOrders = await Order.find({status: "Complete"})
+        for (const completeOrder of completeOrders) {
+            stats.completeTotal += +completeOrder.total
+            stats.completeCount += +completeOrder.quantity
+        }
+        const cancelOrders = await Order.find({status: "Cancel"})
+        for (const cancelOrder of cancelOrders) {
+            stats.cancelTotal += +cancelOrder.total
+            stats.cancelCount += +cancelOrder.quantity
+        }
+        return stats
     }
 }
 
