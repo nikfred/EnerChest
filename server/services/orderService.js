@@ -8,6 +8,7 @@ const DispenserItem = require('../models/dispenserItem')
 const Product = require('../models/product')
 const User = require('../models/user')
 const dispenserService = require('../services/dispenserService')
+const productService = require('../services/productService')
 const cartService = require('../services/cartService')
 const ApiError = require('../error/ApiError')
 const ProductDto = require("../dtos/productDto");
@@ -203,6 +204,31 @@ class OrderService {
             stats.cancelCount += +cancelOrder.quantity
         }
         return stats
+    }
+
+    async getAllProductStats() {
+        const orders = (await Order.find({status: "Complete"}, "_id")).map(i => i._id)
+        const productsMap = new Map()
+        let key, value = undefined
+        const orderItems = await OrderItem.find({order_id: {$in: orders}})
+        for (const orderItem of orderItems) {
+            key = orderItem.product_id.toString()
+            value = productsMap.get(key)
+            // console.log(`key = ${key}`)
+            // console.log(`value = ${value}`)
+            if (value) {
+                productsMap.set(key, +value + +orderItem.quantity)
+            } else {
+                productsMap.set(key, +orderItem.quantity)
+            }
+        }
+        const products = []
+        let product
+        for (const [key, value] of productsMap) {
+            product = await productService.getOne(key)
+            products.push({...product, quantity: value})
+        }
+        return products
     }
 }
 
