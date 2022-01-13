@@ -230,6 +230,28 @@ class OrderService {
         }
         return products
     }
+
+    async getAllDispenserStats() {
+        const orders = await Order.find({status: "Complete"})
+        const dispensersMap = new Map()
+        let key, value = undefined
+        for (const order of orders) {
+            key = order.dispenser_id.toString()
+            value = dispensersMap.get(key)
+            if (value) {
+                dispensersMap.set(key, +value + +order.quantity)
+            } else {
+                dispensersMap.set(key, +order.quantity)
+            }
+        }
+        const dispensers = []
+        let dispenser
+        for (const [key, value] of dispensersMap) {
+            dispenser = await Dispenser.findById(key)
+            dispensers.push({...dispenser._doc, quantity: value})
+        }
+        return dispensers
+    }
 }
 
 module.exports = new OrderService()

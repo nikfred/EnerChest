@@ -6,5 +6,6 @@ const adminMiddleware = require('../middleware/adminMiddleware')
 
 router.get('/orders', authMiddleware, adminMiddleware, orderController.getAllOrderStats)
 router.get('/products', authMiddleware, adminMiddleware, orderController.getAllProductStats)
+router.get('/dispensers', authMiddleware, adminMiddleware, orderController.getAllDispenserStats)
 
 module.exports = router
