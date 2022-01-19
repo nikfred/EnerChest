@@ -250,6 +250,7 @@ class OrderService {
             dispenser = await Dispenser.findById(key)
             dispensers.push({...dispenser._doc, quantity: value})
         }
+        dispensers.sort((a, b) => (a.quantity < b.quantity) ? 1 : ((b.quantity < a.quantity) ? -1 : 0))
         return dispensers
     }
 }
