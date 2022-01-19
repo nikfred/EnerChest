@@ -81,7 +81,11 @@ class UserService {
     }
 
     async getUser(id) {
-        return new UserProfileDto(await User.findById(id))
+        const user = await User.findById(id)
+        if (!user) {
+            throw ApiError.notFound('User not found')
+        }
+        return new UserProfileDto(user)
     }
 
     async getAll() {
