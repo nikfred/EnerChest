@@ -213,11 +213,7 @@ const Product = observer(() => {
                     </Card>
                 </Col>
             </Row>
-            <Row>
-                <Col md={{ span: 8, offset: 2 }} style={{backgroundColor: "#C4C4C4"}}>
-                    sgasg
-                </Col>
-            </Row>
+
         </Container>
     );
 });
