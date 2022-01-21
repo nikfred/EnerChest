@@ -12,12 +12,12 @@ import {
 } from "react-bootstrap";
 import {Context} from "../index";
 import {LOGIN_ROUTE, SHOP_ROUTE} from "../utils/consts";
-import {fetchDispensersWithProduct, fetchOneProduct} from "../http/productAPI";
+import {fetchDispensersWithProduct, fetchOneProduct, fetchRating, fetchReviews} from "../http/productAPI";
 import {addToCart, fetchCart} from "../http/userAPI";
 import {useHistory, useParams} from "react-router-dom"
 import {observer} from "mobx-react-lite";
-import AddProduct from "../components/modals/addProduct";
 import UpdateProduct from "../components/modals/updateProduct";
+import Rating from "../components/Rating";
 
 
 const Product = observer(() => {
@@ -28,6 +28,8 @@ const Product = observer(() => {
     const [quantity, setQuantity] = useState(1)
     const [isTrue, setIsTrue] = useState(false)
     const [updateVisible, setUpdateVisible] = useState(false)
+    const [rating, setRating] = useState(0)
+    const [reviews, setReviews] = useState([])
 
     const {id} = useParams()
 
@@ -58,10 +60,13 @@ const Product = observer(() => {
         fetchOneProduct(id).then(data => setProduct(data))
         fetchDispensersWithProduct(id).then(data => setDispensers(data))
         fetchCart().then()
+        fetchRating(id).then(data => setRating(data))
+        fetchReviews(id).then(data => setReviews(data))
         setIsTrue(false)
     }, [])
 
     return (
+
         <Container>
             <Row>
                 <Col md={4}>
@@ -80,6 +85,9 @@ const Product = observer(() => {
                     fontFamily: 'Montserrat Alternates',
                     color: '#508852'
                 }}>
+                    <div className="d-flex justify-content-center mt-3">
+                        <Rating value={rating}/>
+                    </div>
                     <div className="d-flex justify-content-center mt-3">
                         {product.brand} {product.name}, {product.size}
                     </div>
@@ -203,6 +211,11 @@ const Product = observer(() => {
                         <h1>Description: </h1>
                         <h2>{product.description}</h2>
                     </Card>
+                </Col>
+            </Row>
+            <Row>
+                <Col md={{ span: 8, offset: 2 }} style={{backgroundColor: "#C4C4C4"}}>
+                    sgasg
                 </Col>
             </Row>
         </Container>

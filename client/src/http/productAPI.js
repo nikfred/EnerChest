@@ -50,4 +50,15 @@ export const updateProduct = async (id, product) => {
     return data
 }
 
+export const fetchRating = async (id) => {
+    const {data} = await $host.get('api/review/rating/' + id)
+    return data
+}
+
+export const fetchReviews = async (id) => {
+    const {data} = await $host.get('api/review/' + id)
+    return data
+}
+
+
 

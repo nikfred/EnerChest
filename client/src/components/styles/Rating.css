@@ -1,0 +1,21 @@
+.rating {
+    padding: 1px 3px 3px 3px;
+    border-radius: 5px;
+    background-color: aliceblue;
+    float: left;
+}
+
+.cell {
+    color: aliceblue;
+    font-size: 50px;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hat {
+    color: #FED501;
+    font-size: 10px;
+    background-color: aliceblue;
+    padding: 18px 0;
+    border-radius: 0 5px 5px 0;
+}
