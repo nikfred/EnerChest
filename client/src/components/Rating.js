@@ -20,17 +20,17 @@ const Rating = (value) => {
     }
 
     return (
-        <div>
-            <div className='rating'>
+        <div className='flex-column rating'>
+            <div className='battery'>
                 {rating.map(i => {
                         let style = {background: fill(i)}
                         if (i === 1) {
-                            style.borderRadius = '5px 0px 0px 5px'
+                            style.borderRadius = '0.25em 0px 0px 0.25em'
                         } else {
                             style.borderLeftStyle = 'dashed'
                             style.borderLeftColor = 'aliceblue'
                             if (i === 5) {
-                                style.borderRadius = '0px 5px 5px 0px'
+                                style.borderRadius = '0px 0.25em 0.25em 0px'
                             }
                         }
                         return <BsDot className="cell" key={i} style={style}/>

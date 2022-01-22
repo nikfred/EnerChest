@@ -18,6 +18,7 @@ import {useHistory, useParams} from "react-router-dom"
 import {observer} from "mobx-react-lite";
 import UpdateProduct from "../components/modals/updateProduct";
 import Rating from "../components/Rating";
+import ReviewList from "../components/ReviewList";
 
 
 const Product = observer(() => {
@@ -81,11 +82,13 @@ const Product = observer(() => {
                     </Card>
                 </Col>
                 <Col md={4} style={{
-                    fontSize: '34px',
+                    fontSize: '40px',
                     fontFamily: 'Montserrat Alternates',
                     color: '#508852'
                 }}>
-                    <div className="d-flex justify-content-center mt-3">
+                    <div className="d-flex justify-content-center mt-3" style={{
+                        color: '#39C829'
+                    }}>
                         <Rating value={rating}/>
                     </div>
                     <div className="d-flex justify-content-center mt-3">
@@ -213,7 +216,9 @@ const Product = observer(() => {
                     </Card>
                 </Col>
             </Row>
-
+            <Row style={{marginTop: '10%'}}>
+                <ReviewList reviews={reviews}/>
+            </Row>
         </Container>
     );
 });

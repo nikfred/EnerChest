@@ -1,21 +1,31 @@
 .rating {
-    padding: 1px 3px 3px 3px;
-    border-radius: 5px;
+    max-height: 46px;
+    height: 100%;
+    max-width: 230px;
+    width: 5.64em;
+    line-height: 0;
+}
+
+.battery {
+    padding: 1%;
+    border-radius: 0.25em;
+    width: 91%;
     background-color: aliceblue;
     float: left;
 }
 
 .cell {
     color: aliceblue;
-    font-size: 50px;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-size: 1em;
+    float: left;
 }
 
 .hat {
     color: #FED501;
-    font-size: 10px;
+    font-size: 0.15em;
     background-color: aliceblue;
-    padding: 18px 0;
-    border-radius: 0 5px 5px 0;
+    padding: 1.8em 0;
+    border-radius: 0 0.6em 0.6em 0;
+    margin: 1.95em 0;
+
 }

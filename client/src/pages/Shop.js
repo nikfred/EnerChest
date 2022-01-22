@@ -5,7 +5,7 @@ import SizeBar from "../components/SizeBar";
 import ProductList from "../components/ProductList";
 import {observer} from "mobx-react-lite";
 import {Context} from "../index";
-import {connectProducts, fetchBrands, fetchProduct, fetchSize} from "../http/productAPI";
+import {fetchBrands, fetchProduct, fetchSize} from "../http/productAPI";
 import Pages from "../components/Pages";
 import Button from "react-bootstrap/Button";
 
