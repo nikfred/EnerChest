@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Button from "react-bootstrap/Button";
 import {Offcanvas} from "react-bootstrap";
+import {BsPersonFill} from "react-icons/bs"
 import Account from "../pages/Account";
 
 function AccountBar() {
@@ -12,7 +13,7 @@ function AccountBar() {
     return (
         <>
             <Button variant="success" onClick={handleShow}>
-                Account
+                <BsPersonFill/> Account
             </Button>
 
             <Offcanvas show={show} onHide={handleClose} placement={'end'} className='bg-dark'>

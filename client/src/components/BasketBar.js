@@ -1,5 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react';
 import {Accordion, Button, Offcanvas} from "react-bootstrap";
+import {BsBasketFill} from "react-icons/bs"
 import {createOrder, deleteProductFromCard, fetchCart} from "../http/userAPI";
 import {Context} from "../index";
 
@@ -55,7 +56,7 @@ const BasketBar = () => {
     return (
         <>
             <Button variant="success" onClick={handleShow}>
-                Basket: {user.totalPrice} UAH
+                <BsBasketFill/> Basket: {user.totalPrice} UAH
             </Button>
 
 
