@@ -1,0 +1,33 @@
+@media (max-width: 500px) {
+    .review__body {
+        font-size: 6vw;
+    }
+
+    .review__rating {
+        font-size: 0.7em;
+    }
+
+    .review__img {
+        width: 20%;
+        margin: auto;
+    }
+
+
+}
+
+@media (min-width: 500px) {
+    .review__body {
+        font-size: 20px;
+    }
+
+    .review__img {
+        width: 100%;
+    }
+}
+
+@media (min-width: 1000px) {
+    .review__body {
+        font-size: 28px;
+    }
+}
+
