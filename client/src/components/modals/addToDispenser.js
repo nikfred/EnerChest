@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Dropdown, Form, FormCheck, FormControl, Modal} from "react-bootstrap";
+import {Button, Dropdown, Form, FormControl, Modal} from "react-bootstrap";
 import {addToDispenser, connectProducts, fetchDispensers} from "../../http/productAPI";
 import {observer} from "mobx-react-lite";
 

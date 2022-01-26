@@ -93,9 +93,6 @@ class ProductService {
                 : size
                     ? {size}
                     : {}
-        // console.log(filter)
-        // console.log('Skip = ' + skip)
-        // console.log('Limit = ' + limit)
         const count = (await Product.find(filter)).length
         const rawProducts = await Product.find(
             filter,
