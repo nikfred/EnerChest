@@ -29,7 +29,7 @@ const Auth = observer(()=> {
                 data = await registration(email, password, phone, firstname, lastname, gender, birth_date);
             }
             console.log(data)
-            user.setUser(user)
+            user.setUser(data)
             user.setIsAuth(true)
             history.push(SHOP_ROUTE)
             window.location.reload()
