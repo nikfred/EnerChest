@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
-import {Button, Form, FormCheck, FormControl, Modal} from "react-bootstrap";
+import {Button, Form,FormControl, Modal} from "react-bootstrap";
 import {observer} from "mobx-react-lite";
-import {createProducts, fetchOneProduct, updateProduct} from "../../http/productAPI";
+import {fetchOneProduct, updateProduct} from "../../http/productAPI";
 import {useParams} from "react-router-dom";
 
 const UpdateProduct = observer(({show, onHide}) => {

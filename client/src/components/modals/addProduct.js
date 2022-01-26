@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, {useState} from 'react';
 import {Button, Form, FormCheck, FormControl, Modal} from "react-bootstrap";
 import {createProducts} from "../../http/productAPI";
 import {observer} from "mobx-react-lite";
@@ -18,6 +18,7 @@ const AddProduct = observer(({show, onHide}) => {
 
     const selectFile = e => {
         setFile(e.target.files[0])
+        console.log("2")
     }
 
     const add = () =>{

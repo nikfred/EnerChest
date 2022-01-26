@@ -1,4 +1,4 @@
-import {$authHost, $host, deleteAllCookies} from "./index";
+import {$authHost, $host} from "./index";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
 
@@ -59,8 +59,8 @@ export const deleteProductFromCard = async (id) => {
     return data
 }
 
-export const updateUser = async (phone, firstname, lastname, gender, birth_date) =>{
-    const {data} = await $authHost.put('api/user', { phone, firstname, lastname, gender, birth_date})
+export const updateUser = async (user) =>{
+    const {data} = await $authHost.put('api/user', user)
     return data
 }
 

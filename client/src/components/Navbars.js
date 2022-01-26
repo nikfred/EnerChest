@@ -31,7 +31,11 @@ const Navbars = observer(() => {
                 <Image width={40} src={img}/>
                 {user.isAuth ?
                     <Nav className="ml-auto">
-                        <NavLink to='#' style={mystyle}><BasketBar/></NavLink>
+                        {user.isAdmin ?
+                            ' '
+                            :
+                            <NavLink to='#' style={mystyle}><BasketBar/></NavLink>
+                        }
                         <NavLink to='#' style={mystyle}><AccountBar/></NavLink>
                     </Nav>
                     :

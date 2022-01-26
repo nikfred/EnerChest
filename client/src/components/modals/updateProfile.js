@@ -12,6 +12,7 @@ const UpdateProfile = observer(({show, onHide}) => {
     const [lastname, setLastname] = useState('')
     const [gender, setGender] = useState('')
     const [birth_date, setBirth_date] = useState('')
+    const [file, setFile] = useState(null)
 
     useEffect(()=> {
         fetchUser().then(data=> {
@@ -19,8 +20,20 @@ const UpdateProfile = observer(({show, onHide}) => {
         })
     }, [])
 
+    const selectFile = e => {
+        setFile(e.target.files[0])
+        console.log("2")
+    }
+
     const update = () => {
-        updateUser(phone, firstname, lastname, gender, birth_date).then(data => onHide())
+        const formData = new FormData()
+        formData.append('phone', phone)
+        formData.append('firstname', firstname)
+        formData.append('lastname', lastname)
+        formData.append('gender', gender)
+        formData.append('birth_date', birth_date)
+        formData.append('img', file)
+        updateUser(formData).then(data => onHide())
     }
 
 
@@ -44,6 +57,7 @@ const UpdateProfile = observer(({show, onHide}) => {
                         placeholder={profile.phone}
                         value={phone}
                         onChange={e => setPhone(e.target.value)}
+                        type="number"
                     />
                     First name
                     <FormControl
@@ -75,6 +89,12 @@ const UpdateProfile = observer(({show, onHide}) => {
                         type='date'
                         value={birth_date}
                         onChange={e => setBirth_date(e.target.value)}
+                    />
+                    Profile image
+                    <FormControl
+                        className="mb-3"
+                        type="file"
+                        onChange={selectFile}
                     />
                 </Form>
             </Modal.Body>

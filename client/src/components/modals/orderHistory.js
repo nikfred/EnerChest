@@ -1,9 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {observer} from "mobx-react-lite";
 import {Accordion, Button, Modal} from "react-bootstrap";
-import {fetchOneProduct} from "../../http/productAPI";
 import {canceledOrder, completionOrder, fetchOrder} from "../../http/userAPI";
-import data from "bootstrap/js/src/dom/data";
 
 const OrderHistory = observer(({show, onHide}) => {
 
