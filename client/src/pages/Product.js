@@ -1,15 +1,5 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {
-    Button,
-    Card,
-    Col,
-    Container,
-    Dropdown,
-    FormControl,
-    Image, InputGroup,
-    ListGroup,
-    Row
-} from "react-bootstrap";
+import {Button, Card, Col, Container, Dropdown, FormControl, Image, InputGroup, ListGroup, Row} from "react-bootstrap";
 import {Context} from "../index";
 import {LOGIN_ROUTE, SHOP_ROUTE} from "../utils/consts";
 import {fetchDispensersWithProduct, fetchOneProduct, fetchRating, fetchReviews} from "../http/productAPI";
@@ -58,11 +48,19 @@ const Product = observer(() => {
 
 
     useEffect(() => {
+        user.setRating(0)
+        user.setIsSelectedRating(false)
         fetchOneProduct(id).then(data => setProduct(data))
         fetchDispensersWithProduct(id).then(data => setDispensers(data))
         fetchCart().then()
         fetchRating(id).then(data => setRating(data))
-        fetchReviews(id).then(data => setReviews(data))
+        fetchReviews(id).then(data => {
+            console.log(data.find(i => i.uid === {...user.user}.id));
+            if (user.isAuth && !data.find(i => i.uid === {...user.user}.id)) {
+                data.unshift({id: 'new', product_id: id})
+            }
+            setReviews(data)
+        })
         setIsTrue(false)
     }, [])
 
@@ -102,14 +100,14 @@ const Product = observer(() => {
 
                     {user.isAdmin ?
                         <div className="d-grid gap-2 mt-3">
-                            <Button className= "mt-2"  variant="danger" style={{
+                            <Button className="mt-2" variant="danger" style={{
                                 boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
                                 fontSize: '20px'
                             }}
                                     onClick={() => setUpdateVisible(true)}>
                                 Update product info
                             </Button>
-                            <UpdateProduct  show={updateVisible} onHide={() => setUpdateVisible(false)}/>
+                            <UpdateProduct show={updateVisible} onHide={() => setUpdateVisible(false)}/>
                         </div>
                         :
                         ' '
@@ -190,11 +188,11 @@ const Product = observer(() => {
                                             </div>
                                         }
                                     </div>
-                                :
-                                <div className="d-grid gap-2 mt-3">
-                                    <Button variant="success" style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
-                                            onClick={() => history.push(LOGIN_ROUTE)}>Buy now</Button>
-                                </div>
+                                    :
+                                    <div className="d-grid gap-2 mt-3">
+                                        <Button variant="success" style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
+                                                onClick={() => history.push(LOGIN_ROUTE)}>Buy now</Button>
+                                    </div>
                                 }
                             </div>
                         </ListGroup>
@@ -216,7 +214,7 @@ const Product = observer(() => {
                     </Card>
                 </Col>
             </Row>
-            <Row style={{marginTop: '10%'}}>
+            <Row style={{marginTop: '10%', marginBottom: '10%'}}>
                 <ReviewList reviews={reviews}/>
             </Row>
         </Container>

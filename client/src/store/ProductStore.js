@@ -47,7 +47,7 @@ export default class  ProductStore{
     setTotalCount(count){
         this._totalCount = count
     }
-    setLimit(limit){
+    setLimit(limit) {
         this._limit = limit
     }
 

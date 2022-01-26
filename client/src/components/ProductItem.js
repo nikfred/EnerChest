@@ -6,7 +6,6 @@ import {PRODUCT_ROUTE} from "../utils/consts";
 
 const ProductItem = ({product}) => {
     const history = useHistory()
-    console.log(history)
 
     return (
         <Col md={3} onClick={() => history.push(PRODUCT_ROUTE + '/' + product.id)}>

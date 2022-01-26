@@ -6,6 +6,8 @@ export default class  UserStore{
         this._isAuth = false
         this._totalPrice = 0
         this._user = {}
+        this._rating = 0
+        this._isSelectedRating = false
         makeAutoObservable(this)
     }
 
@@ -25,6 +27,14 @@ export default class  UserStore{
         this._user = user
     }
 
+    setRating(rating){
+        this._rating = rating
+    }
+
+    setIsSelectedRating(bool){
+        this._isSelectedRating = bool
+    }
+
     get isAdmin(){
         return this._isAdmin
     }
@@ -39,5 +49,13 @@ export default class  UserStore{
 
     get user(){
         return this._user
+    }
+
+    get rating(){
+        return this._rating
+    }
+
+    get isSelectedRating(){
+        return this._isSelectedRating
     }
 }
