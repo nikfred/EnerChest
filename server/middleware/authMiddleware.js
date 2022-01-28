@@ -14,7 +14,7 @@ module.exports = function (req, res, next) {
         }
 
         req.user = user
-        console.log(user);
+        console.log(`${user.email} - ${user.role}`);
         next()
     } catch (e) {
         console.log(e)

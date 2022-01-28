@@ -21,7 +21,6 @@ class ReviewService {
         const reviews = []
         let user, review
         const rawReviews = await Review.find({product_id})
-        console.log(rawReviews);
         for (const rawReview of rawReviews) {
             user = await userService.getUser(rawReview.uid)
             review = new ReviewDto({...rawReview._doc, ...user})
