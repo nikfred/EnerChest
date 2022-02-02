@@ -1,5 +1,5 @@
-const Router = require('express')
-const router = Router()
+const Express = require('express')
+const router = Express.Router()
 const userRouter = require('./userRouter')
 const productRouter = require('./productRouter')
 const cartRouter = require('./cartRouter')

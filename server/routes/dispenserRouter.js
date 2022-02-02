@@ -1,5 +1,5 @@
-const Router = require('express')
-const router = Router()
+const Express = require('express')
+const router = Express.Router()
 const dispenserController = require('../controllers/dispenserController')
 const authMiddleware = require('../middleware/authMiddleware')
 const staffMiddleware = require('../middleware/staffMiddleware')
