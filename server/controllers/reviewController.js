@@ -33,8 +33,8 @@ class ReviewController {
             if (!product_id) {
                 return next(ApiError.badRequest("Product is not specified"))
             }
-            const reviews = await reviewService.getByProductId(product_id)
-            return res.json(reviews)
+            res.body = await reviewService.getByProductId(product_id)
+            next()
         } catch (e) {
             console.log(e)
             next(e)
@@ -47,8 +47,8 @@ class ReviewController {
             if (!product_id) {
                 return next(ApiError.badRequest("Product is not specified"))
             }
-            const rating = await reviewService.getRating(product_id)
-            return res.json(rating)
+            res.body = await reviewService.getRating(product_id)
+            next()
         } catch (e) {
             console.log(e)
             next(e)

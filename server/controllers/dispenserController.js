@@ -16,16 +16,6 @@ class DispenserController {
         }
     }
 
-    async getAllDispenser(req, res, next){
-        try {
-            const dispensers = await dispenserService.getAllDispenser()
-            return res.json(dispensers)
-        } catch (e) {
-            console.log(e)
-            next(e)
-        }
-    }
-
     async addProduct(req, res, next){
         try {
             let {dispenser_id, product_id, quantityAdd, quantityRemove} = req.body
@@ -40,11 +30,21 @@ class DispenserController {
         }
     }
 
+    async getAllDispenser(req, res, next){
+        try {
+            res.body = await dispenserService.getAllDispenser()
+            next()
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
+
     async getProducts(req, res, next){
         try {
             const {dispenser_id} = req.params
-            const products = await dispenserService.getProducts(dispenser_id)
-            return res.json(products)
+            res.body = await dispenserService.getProducts(dispenser_id)
+            next()
         } catch (e) {
             console.log(e)
             next(e)
@@ -54,8 +54,8 @@ class DispenserController {
     async getDispensersWithProduct(req, res, next){
         try {
             const {product_id} = req.params
-            const dispensers = await dispenserService.getDispensersWithProduct(product_id)
-            return res.json(dispensers)
+            res.body = await dispenserService.getDispensersWithProduct(product_id)
+            next()
         } catch (e) {
             console.log(e)
             next(e)

@@ -4,8 +4,10 @@ const fs = require('fs')
 const Product = require('../models/product')
 const Brand = require('../models/brand')
 const Size = require('../models/size')
+const myCache = require('./cacheServise')
 const ProductDto = require('../dtos/productDto')
 const ApiError = require('../error/ApiError')
+
 
 class ProductService {
     async create(productData, img, newBrandFlag = false, newSizeFlag = false) {
@@ -83,8 +85,14 @@ class ProductService {
     }
 
     async search(brand = undefined, size = undefined, limit = 16, page = 1) {
+        //Check Cache
+        // if (!brand && !size && myCache.has(`search_${limit}_${page}`)) {
+        //     return myCache.get(`search_${limit}_${page}`)
+        // }
+        //calculate skip
         limit = +limit
         const skip = +limit * +page - +limit
+        //create filter
         const filter =
             brand
                 ? size

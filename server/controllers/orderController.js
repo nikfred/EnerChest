@@ -52,8 +52,8 @@ class OrderController {
     async getAllOrders(req, res, next) {
         try {
             const {status, limit, page} = req.query
-            const orders = await orderService.getAllOrders(status, limit, page)
-            return res.json(orders)
+            res.body = await orderService.getAllOrders(status, limit, page)
+            next()
         } catch (e) {
             console.log(e)
             next(e)
@@ -62,8 +62,8 @@ class OrderController {
 
     async getAllOrderStats(req, res, next) {
         try {
-            const stats = await orderService.getAllOrderStats()
-            return res.json(stats)
+            res.body = await orderService.getAllOrderStats()
+            next()
         } catch (e) {
             console.log(e)
             next(e)
@@ -72,8 +72,8 @@ class OrderController {
 
     async getAllProductStats(req, res, next) {
         try {
-            const products = await orderService.getAllProductStats()
-            return res.json(products)
+            res.body = await orderService.getAllProductStats()
+            next()
         } catch (e) {
             console.log(e)
             next(e)
@@ -82,8 +82,8 @@ class OrderController {
 
     async getAllDispenserStats(req, res, next) {
         try {
-            const dispensers = await orderService.getAllDispenserStats()
-            return res.json(dispensers)
+            res.body = await orderService.getAllDispenserStats()
+            next()
         } catch (e) {
             console.log(e)
             next(e)

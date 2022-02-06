@@ -27,7 +27,8 @@ class ProductController {
     async getAll(req, res, next){
         try {
             const products = await productService.getAll()
-            return res.json(products)
+            res.body = products
+            next()
         } catch (e) {
             console.log(e)
             next(e)
@@ -72,7 +73,8 @@ class ProductController {
         try {
             const {brand, size, limit, page} = req.query
             const products = await productService.search(brand, size, limit, page)
-            return res.json(products)
+            res.body = {products}
+            next()
         } catch (e) {
             console.log(e)
             next(e)
