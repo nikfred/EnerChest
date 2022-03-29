@@ -23,7 +23,7 @@ app.use(fileUpload({}))
 app.use(cookieParser())
 app.use(cors({
     credentials: true,
-    origin: [["http://20.52.25.145","http://localhost:3000"]]
+    origin: [["http://34.118.89.28","http://localhost:3000"]]
 }))
 
 app.use('/api', apiRouter)

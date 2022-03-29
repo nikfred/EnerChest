@@ -4,7 +4,7 @@ const fs = require('fs')
 const Product = require('../models/product')
 const Brand = require('../models/brand')
 const Size = require('../models/size')
-const myCache = require('./cacheServise')
+const fileService = require('./fileService')
 const ProductDto = require('../dtos/productDto')
 const ApiError = require('../error/ApiError')
 
@@ -41,8 +41,7 @@ class ProductService {
             throw ApiError.badRequest("Product is exist")
         }
 
-        productData.imageUrl = uuid.v4() + ".png"
-        await img.mv(path.resolve(__dirname, '../static', productData.imageUrl))
+        productData.imageUrl = await fileService.save(img, 'product')
         const product = await Product.create(productData)
         console.log("New Product:")
         console.log(product)
@@ -66,14 +65,9 @@ class ProductService {
                 discount: productData.discount || product.discount
             }
 
-            let imageUrl = null
             if (img) {
-                imageUrl = uuid.v4() + ".png"
-                await img.mv(path.resolve(__dirname, '../static', imageUrl))
-                if (product.imageUrl) {
-                    fs.unlinkSync(path.resolve(__dirname, "../static", product.imageUrl))
-                }
-                productData.imageUrl = imageUrl
+                productData.imageUrl = await fileService.save(img, 'product')
+                product.imageUrl && await fileService.remove(product.imageUrl)
             }
         }
         product = await Product.findOneAndUpdate(
@@ -147,9 +141,23 @@ class ProductService {
 
     async delete(product_id) {
         const product = await Product.findById(product_id)
-        fs.unlinkSync(path.resolve(__dirname, "../static", product.imageUrl))
+        // fs.unlinkSync(path.resolve(__dirname, "../static", product.imageUrl))
+        await fileService.remove(product.imageUrl)
         return Product.deleteOne({_id: product_id})
     }
+
+    // async discipline() {
+    //     let images = await Product.find({},'imageUrl')
+    //     images = images
+    //         .filter(i => i.imageUrl.indexOf('product'))
+    //         .map(i => i.imageUrl)
+    //     // await Product.updateMany({ imageUrl: { $in: images}}, {imageUrl: "product\\" + imageUrl})
+    //     for (const image of images) {
+    //         await Product.updateOne({imageUrl: image}, {imageUrl: })
+    //     }
+    //     await fileService.disciplineImage('product', images)
+    //     return
+    // }
 }
 
 module.exports = new ProductService()

@@ -10,6 +10,7 @@ const mailService = require('./mailService')
 const tokenService = require('./tokenService')
 const path = require("path");
 const fs = require("fs");
+const fileService = require("./fileService");
 
 
 class UserService {
@@ -102,14 +103,9 @@ class UserService {
                 phone: rawUser.phone || user.phone,
                 gender: rawUser.gender || user.gender
             }
-            let imageUrl = null
             if (img) {
-                imageUrl = uuid.v4() + ".png"
-                await img.mv(path.resolve(__dirname, '../static', imageUrl))
-                if (user.imageUrl) {
-                    fs.unlinkSync(path.resolve(__dirname, "../static", user.imageUrl))
-                }
-                rawUser.imageUrl = imageUrl
+                rawUser.imageUrl = await fileService.save(img, 'user')
+                user.imageUrl && await fileService.remove(user.imageUrl)
             }
         } else {
             throw ApiError.notFound('User not found')

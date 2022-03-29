@@ -1,4 +1,5 @@
 const productService = require('../services/productService')
+const fileService = require('../services/fileService')
 const ApiError = require("../error/ApiError");
 
 
@@ -26,8 +27,7 @@ class ProductController {
 
     async getAll(req, res, next){
         try {
-            const products = await productService.getAll()
-            res.body = products
+            res.body = await productService.getAll()
             next()
         } catch (e) {
             console.log(e)
@@ -72,8 +72,7 @@ class ProductController {
     async search(req, res, next){
         try {
             const {brand, size, limit, page} = req.query
-            const products = await productService.search(brand, size, limit, page)
-            res.body = {products}
+            res.body = await productService.search(brand, size, limit, page)
             next()
         } catch (e) {
             console.log(e)
@@ -115,6 +114,16 @@ class ProductController {
             const {product_id} = req.params
             const product = await productService.delete(product_id)
             return res.json(product)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
+
+    async discipline(req, res, next) {
+        try {
+            const result = await fileService.disciplineImage('product')
+            return res.json(result ? 'Discipline complete' : 'Discipline not complete')
         } catch (e) {
             console.log(e)
             next(e)

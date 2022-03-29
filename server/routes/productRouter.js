@@ -13,6 +13,7 @@ router.post('/create', ...admin, productController.createProduct)
 router.put('/update/:product_id', ...admin, productController.update)
 router.put('/activate/:product_id', ...admin, productController.activate)
 router.delete('/:product_id', ...admin, productController.delete)
+router.get('/discipline', ...admin, productController.discipline)
 
 router.get('/all', checkCacheMiddleware, productController.getAll, saveCacheMiddleware)
 router.get('/brands', productController.getAllBrands)
