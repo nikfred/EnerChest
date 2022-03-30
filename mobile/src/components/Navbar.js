@@ -7,7 +7,7 @@ const Navbar = ({title}) => {
     return (
         <View style={styles.navbar}>
             <Text style={styles.text}>{title}</Text>
-            <Image source={require('../../assets/img/logo192.png')} style={styles.image}/>
+            <Image source={require('../../assets/img/img.png')} style={styles.image}/>
         </View>
     );
 };
