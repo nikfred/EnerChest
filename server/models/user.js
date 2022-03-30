@@ -57,7 +57,10 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    activationLink: String
+    activationLink: String,
+    tempPassword: String,
+    updateLink: String,
+    updateCancel: Date
 })
 
 module.exports = mongoose.model('User', userSchema);

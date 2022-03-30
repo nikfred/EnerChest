@@ -8,12 +8,14 @@ const deleteCacheMiddleware = require('../middleware/deleteCacheMiddleware')
 
 router.post('/registration', userController.registration)
 router.get('/activate/:link', userController.activate)
+router.get('/password/:link', userController.activatePassword)
 router.post('/login', userController.login)
 router.post('/refresh', userController.refresh)
 
 router.post('/logout', authMiddleware, userController.logout)
 router.get('/all', authMiddleware, userController.getAll)
 router.get('/', authMiddleware, userController.getUser)
+router.put('/password', authMiddleware, userController.updatePassword)
 router.put('/', authMiddleware, deleteCacheMiddleware, userController.update)
 router.delete('/', authMiddleware, deleteCacheMiddleware, userController.deleteUser)
 

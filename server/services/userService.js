@@ -19,7 +19,7 @@ class UserService {
         if (user) {
             throw ApiError.badRequest("Email is exist")
         }
-        const hashPassword = await bcrypt.hash(password, 4)
+        const hashPassword = await bcrypt.hash(password, 5)
         const activationLink = uuid.v4()
 
         user = await User.create({...userData, password: hashPassword, activationLink})
@@ -114,6 +114,44 @@ class UserService {
         console.log(user);
         user = await User.findOneAndUpdate({_id: id}, rawUser, {upsert: true, new: true})
         return new UserProfileDto(user)
+    }
+
+    async updatePassword(id, password, newPassword) {
+        const user = await User.findById(id)
+        const equivalence = await bcrypt.compareSync(password, user.password)
+        if (!equivalence) throw ApiError.badRequest('Введен неверный пароль')
+        if (!user.isActivated) throw ApiError.forbidden('Аккаунт не активирован')
+
+        const updateLink = uuid.v4()
+        const updateCancel = new Date(+new Date() + 10 * 60 * 1000)
+        await mailService.sendUpdatePasswordMail(user.email, `${process.env.API_URL}/api/user/password/${updateLink}`)
+
+        const hash = await bcrypt.hash(newPassword, 5)
+        await User.findOneAndUpdate(
+            {_id: id},
+            {tempPassword: hash, updateLink, updateCancel},
+            {upsert: true, new: true}
+        )
+        return true
+    }
+
+    async activatePassword(updateLink) {
+        const user = await User.findOne({updateLink})
+        if (!user) {
+            throw ApiError.notFound("User not found")
+        }
+
+        if (+user.updateCancel < +Date.now()) {
+            await User.findOneAndUpdate({updateLink}, {tempPassword: null, updateLink: null, updateCancel: null})
+            return
+        }
+        await User.findOneAndUpdate({updateLink}, {
+            password: user.tempPassword,
+            tempPassword: null,
+            updateLink: null,
+            updateCancel: null
+        })
+        return true
     }
 
     async updateRole(id, role) {

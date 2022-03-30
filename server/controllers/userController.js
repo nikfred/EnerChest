@@ -112,6 +112,32 @@ class UserController {
         }
     }
 
+    async updatePassword(req, res, next) {
+        try {
+            const {id} = req.user
+            const {password, newPassword} = req.body
+            if (password === newPassword) {
+                return next(ApiError.badRequest('Passwords are the same'))
+            } else if (!newPassword || !checkPassword(newPassword)) {
+                return next(ApiError.badRequest('Неверный формат пароля'))
+            }
+            const user = await userService.updatePassword(id, password, newPassword)
+            return res.json(user ? 'Check email' : 'Something went wrong')
+        } catch (e) {
+            next(e)
+        }
+    }
+
+    async activatePassword(req, res, next) {
+        try {
+            const {link} = req.params
+            await userService.activatePassword(link)
+            return res.redirect(process.env.CLIENT_URL)
+        } catch (e) {
+            next(e)
+        }
+    }
+
     async updateRole(req, res, next) {
         try {
             const {id, role} = req.body

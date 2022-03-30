@@ -49,6 +49,43 @@ class MailService {
                 `
         })
     }
+
+    async sendUpdatePasswordMail(to, link){
+        await this.transporter.sendMail({
+            from: process.env.SMTP_USER,
+            to,
+            subject: "Изменение пароля аккаунта в сервисе EnerChest",
+            text: "",
+            html:
+                `
+                <center>
+                <div style="
+                    background-color: #856CA4;
+                    border-radius: 20px;
+                    padding: 1px;
+                ">
+                <h1 style="
+                    color: #fff;
+                    margin: 15px 20px;
+                ">Для подтверждения смены пароля перейдите по ссылке</h1>
+                <a href="${link}" style="
+                    text-decoration: none;
+                    display: inline-block;
+                    padding: 10px 30px;
+                    margin: 10px 20px;
+                    position: center;
+                    overflow: hidden;
+                    border: 2px solid #fe6637;
+                    border-radius: 8px;
+                    font-family: 'Montserrat', sans-serif;
+                    background: #F3A055;
+                    color: #fff;
+                ">Подтвердить</a>
+                </div>
+                </center>
+                `
+        })
+    }
 }
 
 module.exports = new MailService()
