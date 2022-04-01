@@ -15,7 +15,7 @@ const Navbar = ({title}) => {
 const styles = StyleSheet.create({
     navbar: {
         height: 80,
-        backgroundColor: '#131313',
+        backgroundColor: '#191919',
         justifyContent: 'flex-end',
         padding: 10,
         flexWrap: 'wrap',

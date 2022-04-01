@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const $host = axios.create({
-    baseURL: process.env.REACT_APP_API_URL
+    baseURL: 'http://34.118.89.28:5000/'
 })
 
 const $authHost = axios.create({
@@ -15,19 +15,7 @@ const authInterceptor = config => {
 
 $authHost.interceptors.request.use(authInterceptor)
 
-const deleteAllCookies = () => {
-    let cookies = document.cookie.split(";");
-
-    for (let i = 0; i < cookies.length; i++) {
-        let cookie = cookies[i];
-        let eqPos = cookie.indexOf("=");
-        let name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
-    }
-}
-
 export {
     $host,
-    $authHost,
-    deleteAllCookies
+    $authHost
 }

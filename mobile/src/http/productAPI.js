@@ -2,6 +2,7 @@ import {$authHost, $host} from "./index";
 
 export const fetchBrands = async (brands) => {
     const {data} = await $host.get('api/product/brands', brands)
+        .catch(e => console.log(e))
     return data
 }
 
@@ -22,6 +23,7 @@ export const connectProducts = async () => {
 
 export const fetchProduct = async (brand, size, page, limit = 8) => {
     const {data} = await $host.get('api/product/search', {params: {brand, size, page, limit}})
+        .catch(e => console.log(e))
     return data
 }
 
