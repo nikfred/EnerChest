@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, ScrollView} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {fetchBrands, fetchProduct, fetchSize} from "../http/productAPI";
-import ProductItem from "../components/ProductItem";
 import ProductList from "../components/ProductList";
 
 const Shop = () => {

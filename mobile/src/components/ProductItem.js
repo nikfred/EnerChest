@@ -25,9 +25,7 @@ const ProductItem = ({product}) => {
                     <Text style={modalStyles.close} onPress={() => setModalVisible(!modalVisible)}> &times; </Text>
 
                     <SafeAreaView style={modalStyles.content}>
-                        {/*<View style={modalStyles.infoCon}>*/}
-                            <Text style={modalStyles.name}>{product.brand} {product.name}</Text>
-                        {/*</View>*/}
+                        <Text style={modalStyles.name}>{product.brand} {product.name}</Text>
                         <Image source={{uri: product.imageUrl}} style={modalStyles.image}/>
                         <View style={modalStyles.infoCon}>
                             <Text style={modalStyles.info}>{product.size}</Text>
@@ -93,7 +91,6 @@ const modalStyles = StyleSheet.create({
     },
     content: {
         alignItems: 'center',
-        // margin: 10,
     },
     infoCon: {
         display: 'flex',
@@ -108,9 +105,7 @@ const modalStyles = StyleSheet.create({
         fontSize: 40,
         color: '#008000',
         fontWeight: "bold",
-        // textShadowColor: 'rgba(0, 128, 0, 0.75)',
         textShadowColor: '#00D000',
-        // textShadowOffset: {width: -1, height: 1},
         textShadowRadius: 15
     },
     info: {
