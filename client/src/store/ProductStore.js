@@ -10,7 +10,7 @@ export default class  ProductStore{
         this._selectedDispenser = {}
         this._page = 1
         this._totalCount = 0
-        this._limit = 8
+        this._limit = 12
 
         makeAutoObservable(this)
     }

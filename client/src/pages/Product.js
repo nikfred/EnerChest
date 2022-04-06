@@ -2,7 +2,13 @@ import React, {useContext, useEffect, useState} from 'react';
 import {Button, Card, Col, Container, Dropdown, FormControl, Image, InputGroup, ListGroup, Row} from "react-bootstrap";
 import {Context} from "../index";
 import {LOGIN_ROUTE, SHOP_ROUTE} from "../utils/consts";
-import {fetchDispensersWithProduct, fetchOneProduct, fetchRating, fetchReviews} from "../http/productAPI";
+import {
+    deleteProduct,
+    fetchDispensersWithProduct,
+    fetchOneProduct,
+    fetchRating,
+    fetchReviews
+} from "../http/productAPI";
 import {addToCart, fetchCart} from "../http/userAPI";
 import {useHistory, useParams} from "react-router-dom"
 import {observer} from "mobx-react-lite";
@@ -43,6 +49,11 @@ const Product = observer(() => {
             user.setTotalPrice(total)
         })
 
+        history.push(SHOP_ROUTE)
+    }
+
+    const deleteThisProduct = () => {
+        deleteProduct(id).then()
         history.push(SHOP_ROUTE)
     }
 
@@ -108,6 +119,7 @@ const Product = observer(() => {
                                 Update product info
                             </Button>
                             <UpdateProduct show={updateVisible} onHide={() => setUpdateVisible(false)}/>
+                            <Button variant="dark" onClick={deleteThisProduct}>Delete Product</Button>
                         </div>
                         :
                         ' '

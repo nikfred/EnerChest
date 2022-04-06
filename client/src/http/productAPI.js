@@ -50,6 +50,11 @@ export const updateProduct = async (id, product) => {
     return data
 }
 
+export const deleteProduct = async (id) => {
+    const {data} = await $authHost.delete('api/product/' + id)
+    return data
+}
+
 export const fetchRating = async (id) => {
     const {data} = await $host.get('api/review/rating/' + id)
     return data

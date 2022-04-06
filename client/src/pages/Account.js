@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import ListGroup from "react-bootstrap/ListGroup";
 import Image from "react-bootstrap/Image";
-import {NavLink} from "react-router-dom"
+import {useHistory} from "react-router-dom"
 import {ADMIN_ROUTE} from "../utils/consts";
 import {fetchUser, logout} from "../http/userAPI";
 import {Context} from "../index";
@@ -13,6 +13,7 @@ import OrderHistory from "../components/modals/orderHistory";
 
 const Account = () => {
     const {user} = useContext(Context)
+    const history = useHistory()
     const [profile, setProfile] = useState(' ')
     const [updateVisible, setUpdateVisible] = useState(false)
     const [orderVisible, setOrderVisible] = useState(false)
@@ -33,7 +34,6 @@ const Account = () => {
         user.setIsAuth(false)
         user.setIsAdmin(false)
     }
-
 
     return (
         <>
@@ -64,10 +64,9 @@ const Account = () => {
                         <ListGroup.Item> {profile.email} </ListGroup.Item>
                         <ListGroup.Item> {profile.phone} </ListGroup.Item>
                         <ListGroup.Item>
-                            <div className="d-grid gap-2">
+                            <div>
                                 <Button variant="success" style={{
                                     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                                    fontSize: '20px'
                                 }}
                                         onClick={() => {
                                             setUpdateVisible(true)
@@ -77,28 +76,19 @@ const Account = () => {
                                 <UpdateProfile show={updateVisible} onHide={() => setUpdateVisible(false)}/>
                             </div>
                         </ListGroup.Item>
-                        {user.isAdmin ? <ListGroup.Item>
-                                <div className="d-grid gap-2">
-                                    {/*<Button variant="success"*/}
-                                    {/*        style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}*/}
-                                    {/*onClick={() => history.push(ADMIN_ROUTE)}>*/}
-                                    {/*    Admin Panel*/}
-                                    {/*</Button>*/}
-                                    <NavLink to={ADMIN_ROUTE} style={{
-                                        fontFamily: 'Bebas Neue',
-                                        textDecoration: 'none',
-                                        backgroundColor: 'green',
-                                        color: 'white',
-                                        paddingLeft: '20px',
-                                        paddingRight: '6px',
-                                        fontSize: '28px'
-                                    }}>Admin panel</NavLink>
+                        <ListGroup.Item>
+                        {user.isAdmin ?
+                                <div>
+                                    <Button variant="success"
+                                            style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
+                                    onClick={() => history.push(ADMIN_ROUTE)}>
+                                        Admin Panel
+                                    </Button>
                                 </div>
-                            </ListGroup.Item>
-                            : <div className="d-grid gap-2">
+                            :
+                            <div>
                                 <Button variant="success" style={{
                                     boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-                                    fontSize: '20px'
                                 }}
                                         onClick={() => setOrderVisible(true)}>
                                     Order history
@@ -106,6 +96,7 @@ const Account = () => {
                                 <OrderHistory show={orderVisible} onHide={() => setOrderVisible(false)}/>
                             </div>
                         }
+                        </ListGroup.Item>
                         <ListGroup.Item>
                             <Button variant="success"
                                     style={{boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)'}}
