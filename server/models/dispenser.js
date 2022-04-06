@@ -5,6 +5,19 @@ const dispenserSchema = new mongoose.Schema({
         type: String,
         required: true,
         trim: true
+    },
+    latitude: {
+        type: String,
+        trim: true
+    },
+    longitude: {
+        type: String,
+        trim: true
+    },
+    status: {
+        type: Boolean,
+        required: true,
+        default: true
     }
 })
 
