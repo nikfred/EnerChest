@@ -113,7 +113,7 @@ class ProductController {
         try {
             const {product_id} = req.params
             const product = await productService.delete(product_id)
-            return res.json(product)
+            return res.json(product ? 'Successful deletion' : 'Failed deletion')
         } catch (e) {
             console.log(e)
             next(e)
