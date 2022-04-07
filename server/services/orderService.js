@@ -22,7 +22,7 @@ const transformationOrder = async (order, addProduct = false, addUser = false) =
     order._doc.address = (await Dispenser.findById(order.dispenser_id)).address
     if (addUser) {
         const user = await User.findById(order.uid)
-        order = new OrderUserDto({...order._doc, ...user._doc})
+        order = new OrderUserDto({...order._doc, ...user._doc, _id: order.id})
     } else {
         order = new OrderDto(order)
     }
