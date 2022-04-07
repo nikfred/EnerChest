@@ -2,13 +2,13 @@ const dispenserService = require('../services/dispenserService')
 const ApiError = require("../error/ApiError");
 
 class DispenserController {
-    async create(req, res, next){
+    async create(req, res, next) {
         try {
-            let {address} = req.body
+            const {address, latitude, longitude} = req.body
             if (!address || address.toString().trim() === "") {
                 return next(ApiError.badRequest('Address not specified'))
             }
-            const dispenser = await dispenserService.create(address)
+            const dispenser = await dispenserService.create({address, latitude, longitude})
             return res.json(dispenser)
         } catch (e) {
             console.log(e)
@@ -16,7 +16,19 @@ class DispenserController {
         }
     }
 
-    async addProduct(req, res, next){
+    async updateDispenser(req, res, next) {
+        try {
+            const {dispenser_id} = req.params
+            const {address, latitude, longitude} = req.body
+            const dispenser = await dispenserService.updateDispenser(dispenser_id, {address, latitude, longitude})
+            return res.json(dispenser)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
+
+    async addProduct(req, res, next) {
         try {
             let {dispenser_id, product_id, quantityAdd, quantityRemove} = req.body
             if (quantityAdd < quantityRemove) {
@@ -30,7 +42,7 @@ class DispenserController {
         }
     }
 
-    async getAllDispenser(req, res, next){
+    async getAllDispenser(req, res, next) {
         try {
             res.body = await dispenserService.getAllDispenser()
             next()
@@ -40,7 +52,7 @@ class DispenserController {
         }
     }
 
-    async getProducts(req, res, next){
+    async getProducts(req, res, next) {
         try {
             const {dispenser_id} = req.params
             res.body = await dispenserService.getProducts(dispenser_id)
@@ -51,7 +63,7 @@ class DispenserController {
         }
     }
 
-    async getDispensersWithProduct(req, res, next){
+    async getDispensersWithProduct(req, res, next) {
         try {
             const {product_id} = req.params
             res.body = await dispenserService.getDispensersWithProduct(product_id)

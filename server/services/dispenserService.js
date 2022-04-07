@@ -21,14 +21,24 @@ const findProductById = async (product_id) => {
 }
 
 class DispenserService {
-    async create(address) {
-        let dispenser = await Dispenser.findOne({address})
+    async create(dispenserData) {
+        let dispenser = await Dispenser.findOne({address: dispenserData.address})
         if (dispenser) {
             throw ApiError.badRequest("Dispenser exist")
         }
-        dispenser = await Dispenser.create({address})
+        dispenser = await Dispenser.create(dispenserData)
         console.log("New Dispenser: " + dispenser)
         return dispenser
+    }
+
+    async updateDispenser(id, dispenserData) {
+        let dispenser = await findDispenserById(id)
+        dispenserData = {
+            address: dispenserData.address || dispenser.address,
+            latitude: dispenserData.latitude || dispenser.latitude,
+            longitude: dispenserData.longitude || dispenser.longitude,
+        }
+        return Dispenser.findOneAndUpdate({_id: id}, dispenserData, {new: true, upsert: true})
     }
 
     async getAllDispenser() {

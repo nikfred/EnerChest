@@ -79,11 +79,6 @@ class ProductService {
     }
 
     async search(brand = undefined, size = undefined, limit = 16, page = 1) {
-        //Check Cache
-        // if (!brand && !size && myCache.has(`search_${limit}_${page}`)) {
-        //     return myCache.get(`search_${limit}_${page}`)
-        // }
-        //calculate skip
         limit = +limit
         const skip = +limit * +page - +limit
         //create filter
@@ -142,8 +137,18 @@ class ProductService {
     async delete(product_id) {
         const product = await Product.findById(product_id)
         // fs.unlinkSync(path.resolve(__dirname, "../static", product.imageUrl))
-        await fileService.remove(product.imageUrl)
-        return Product.deleteOne({_id: product_id})
+        product.imageUrl && await fileService.remove(product.imageUrl)
+        await Product.deleteOne({_id: product_id})
+
+        //check last example of brand
+        const lastBrand = (await Product.find({brand: product.brand}))[0]
+        !lastBrand && await Brand.deleteOne({brand: product.brand})
+
+        //check last example of size
+        const lastSize = (await Product.find({size: product.size}))[0]
+        !lastSize && await Size.deleteOne({value: product.size})
+
+        return true
     }
 
     // async discipline() {

@@ -21,10 +21,7 @@ app.use(express.json())
 app.use(express.static(path.resolve(__dirname, 'static')))
 app.use(fileUpload({}))
 app.use(cookieParser())
-app.use(cors({
-    credentials: true,
-    origin: [["http://34.118.89.28","http://localhost:3000"]]
-}))
+app.use(cors())
 
 app.use('/api', apiRouter)
 

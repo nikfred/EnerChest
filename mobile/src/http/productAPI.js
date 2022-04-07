@@ -32,21 +32,6 @@ export const fetchOneProduct = async (id) => {
     return data
 }
 
-export const fetchDispensers = async () => {
-    const {data} = await $host.get('api/dispenser/all')
-    return data
-}
-
-export const fetchDispensersWithProduct = async (id) => {
-    const {data} = await $host.get('api/dispenser/product/' + id)
-    return data
-}
-
-export const addToDispenser = async (product) => {
-    const {data} = await $authHost.post('api/dispenser/add/', product)
-    return data
-}
-
 export const updateProduct = async (id, product) => {
     const {data} = await $authHost.put('/api/product/update/' + id, product)
     return data
