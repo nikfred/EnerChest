@@ -75,8 +75,8 @@ const Maps = () => {
         <View style={styles.container}>
             <MapView
                 initialRegion={{
-                    latitude: 46.45735,
-                    longitude: 30.7444,
+                    latitude: 46.44349,
+                    longitude: 30.73628,
                     latitudeDelta: 0.0922,
                     longitudeDelta: 0.0421,
                 }}
@@ -90,6 +90,9 @@ const Maps = () => {
                             longitude: +dispenser.longitude,
                         }}
                         image={require('../../assets/img/maps.png')}
+                        // onPress={() => console.log('Marker ' + dispenser.address)}
+                        title={dispenser.address}
+                        onCalloutPress={() => console.log('Marker ' + dispenser.address)}
                     />
                 )}
 
