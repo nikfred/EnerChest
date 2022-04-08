@@ -43,7 +43,7 @@ class DispenserService {
 
     async updateStatus(id) {
         const dispenser = await findDispenserById(id)
-        return Dispenser.findOneAndUpdate({_id: id}, {status: !dispenser.status})
+        return Dispenser.findOneAndUpdate({_id: id}, {status: !dispenser.status}, {new: true})
     }
 
     async getAllDispenser() {
