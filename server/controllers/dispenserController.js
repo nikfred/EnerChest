@@ -28,6 +28,17 @@ class DispenserController {
         }
     }
 
+    async updateStatus(req, res, next) {
+        try {
+            const {dispenser_id} = req.params
+            const dispenser = await dispenserService.updateStatus(dispenser_id)
+            return res.json(dispenser)
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
+
     async addProduct(req, res, next) {
         try {
             let {dispenser_id, product_id, quantityAdd, quantityRemove} = req.body

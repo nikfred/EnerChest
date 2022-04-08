@@ -10,6 +10,7 @@ const deleteCacheMiddleware = require('../middleware/deleteCacheMiddleware')
 const staff = [authMiddleware, staffMiddleware, deleteCacheMiddleware]
 
 router.post('/create', ...staff, dispenserController.create)
+router.put('/status/:dispenser_id', ...staff, dispenserController.updateStatus)
 router.put('/:dispenser_id', ...staff, dispenserController.updateDispenser)
 router.post('/add',...staff, dispenserController.addProduct)
 router.get('/all', checkCacheMiddleware, dispenserController.getAllDispenser, saveCacheMiddleware)
