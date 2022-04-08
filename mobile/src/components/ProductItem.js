@@ -1,9 +1,15 @@
 import React, {useState} from 'react';
 import {Image, Modal, Pressable, SafeAreaView, StyleSheet, Text, View} from 'react-native';
+import {COLORS} from "../utils/consts";
+import BuyControl from "./BuyControl";
 
 const ProductItem = ({product}) => {
 
     const [modalVisible, setModalVisible] = useState(false)
+
+    const buy = () => {
+        setModalVisible(!modalVisible)
+    }
 
     return (
         <Pressable style={styles.item} onPress={() => setModalVisible(!modalVisible)}>
@@ -17,23 +23,31 @@ const ProductItem = ({product}) => {
 
 
             <Modal
-                animationType="fade"
+                animationType="slide"
                 presentationStyle="overFullScreen"
                 visible={modalVisible}
+                onRequestClose={() => setModalVisible(!modalVisible)}
             >
                 <SafeAreaView style={modalStyles.modal}>
-                    <Text style={modalStyles.close} onPress={() => setModalVisible(!modalVisible)}> &times; </Text>
+                    <SafeAreaView>
+                        <Text style={modalStyles.close} onPress={() => setModalVisible(!modalVisible)}> &times; </Text>
 
-                    <SafeAreaView style={modalStyles.content}>
-                        <Text style={modalStyles.name}>{product.brand} {product.name}</Text>
-                        <Image source={{uri: product.imageUrl}} style={modalStyles.image}/>
-                        <View style={modalStyles.infoCon}>
-                            <Text style={modalStyles.info}>{product.size}</Text>
-                            <Text style={modalStyles.info}>{product.price} UAH</Text>
-                        </View>
+                        <SafeAreaView style={modalStyles.content}>
+                            <Text style={modalStyles.name}>{product.brand} {product.name}</Text>
+                            <Image source={{uri: product.imageUrl}} style={modalStyles.image}/>
 
-                        <Text style={modalStyles.description}>{product.description}</Text>
+                            <View style={modalStyles.infoCon}>
+                                <View style={modalStyles.info}>
+                                    <Text style={modalStyles.infoText}>{product.size}</Text>
+                                    <Text style={modalStyles.infoText}>{product.price} ₴</Text>
+                                </View>
+                                <View style={modalStyles.hr}/>
+                                <Text style={modalStyles.description}>{product.description}</Text>
+                            </View>
+                        </SafeAreaView>
+
                     </SafeAreaView>
+                    <BuyControl onPress={buy}/>
                 </SafeAreaView>
 
             </Modal>
@@ -53,10 +67,10 @@ const styles = StyleSheet.create({
         marginTop: 16,
         padding: 8,
         borderRadius: 10,
-        backgroundColor: '#C4C4C4'
+        backgroundColor: COLORS.gray
     },
     name: {
-        color: '#008000',
+        color: COLORS.green,
         fontWeight: "bold",
         fontSize: 18,
     },
@@ -80,9 +94,12 @@ const styles = StyleSheet.create({
 
 const modalStyles = StyleSheet.create({
     modal: {
-        margin: 25,
-        backgroundColor: '#C4C4C4',
+        // margin: 25,
+        height: "100%",
+        backgroundColor: COLORS.gray,
         borderRadius: 10,
+        flex: 1,
+        // justifyContent: "space-between"
     },
     close: {
         fontSize: 30,
@@ -93,29 +110,39 @@ const modalStyles = StyleSheet.create({
         alignItems: 'center',
     },
     infoCon: {
+        width: "100%",
+        height: "100%",
+        backgroundColor: COLORS.darkgray,
+        borderTopEndRadius: 24,
+        borderTopStartRadius: 24,
+        alignItems: 'center',
+        padding: 8,
+
+    },
+    info: {
         display: 'flex',
         width: '80%',
         borderRadius: 10,
         flexDirection: "row",
         justifyContent: 'space-around',
         // marginBottom: 16,
-        backgroundColor: '#1B1B1B'
+        // backgroundColor: COLORS.black
     },
     name: {
         fontSize: 40,
-        color: '#008000',
+        color: COLORS.green,
         fontWeight: "bold",
         textShadowColor: '#00D000',
         textShadowRadius: 15
     },
-    info: {
+    infoText: {
         fontSize: 30,
         color: 'white'
     },
     description: {
         fontSize: 16,
         color: 'white',
-        padding: 16
+        paddingHorizontal: 8
     },
     image: {
         height: 340,
@@ -125,6 +152,14 @@ const modalStyles = StyleSheet.create({
         alignSelf: "center",
         margin: 10
     },
+    hr: {
+        borderBottomColor: COLORS.green,
+        width: "100%",
+        borderBottomWidth: 3,
+        borderStyle: "dotted",
+        marginVertical: 4,
+        borderRadius: 10,
+    }
 })
 
 export default ProductItem;
