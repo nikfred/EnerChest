@@ -19,6 +19,7 @@ const Shop = () => {
 
     const dispatch = useDispatch()
     const actual = useSelector(state => state.product.actual)
+    const dispenser = useSelector(state => state.product.dispenser)
     const brand = useSelector(state => state.product.brand)
     const size = useSelector(state => state.product.size)
 
@@ -32,7 +33,7 @@ const Shop = () => {
             console.log('useEffect')
             fetchBrands().then(data => setBrands(data)).catch(e => console.log(e))
             fetchSize().then(data => setSizes(data)).catch(e => console.log(e))
-            fetchProduct(brand, size, 1, 12).then(data => {
+            fetchProduct(brand, size, dispenser,1, 12).then(data => {
                 dispatch(addProductsAction(data.products))
                 // setProducts(data.products)
                 // setTotalCount(data.count)

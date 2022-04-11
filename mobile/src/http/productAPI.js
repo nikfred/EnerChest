@@ -21,7 +21,9 @@ export const connectProducts = async () => {
     return data
 }
 
-export const fetchProduct = async (brand, size, page, limit = 8) => {
+export const fetchProduct = async (brand, size, dispenser, page, limit = 8) => {
+    brand = brand[0] ? brand.join(',') : null
+    size = size[0] ? size.join(',') : null
     const {data} = await $host.get('api/product/search', {params: {brand, size, page, limit}})
         .catch(e => console.log(e))
     return data
