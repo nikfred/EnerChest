@@ -71,8 +71,12 @@ class ProductController {
 
     async search(req, res, next){
         try {
-            const {brand, size, limit, page} = req.query
-            res.body = await productService.search(brand, size, limit, page)
+            let {brand, size, dispenser, limit, page} = req.query
+            brand = brand?.split(',')
+            size = size?.split(',')
+            res.body = dispenser
+                ? await productService.searchInDispenser(brand, size, dispenser, limit, page)
+                : await productService.search(brand, size, limit, page)
             next()
         } catch (e) {
             console.log(e)

@@ -6,6 +6,8 @@ import Catalog from "./Catalog";
 import Filters from "./Filters";
 import Maps from "./Maps";
 import {COLORS} from "../utils/consts";
+import {useDispatch, useSelector} from "react-redux";
+import {addProductsAction} from "../store/productReducer";
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -13,27 +15,34 @@ const Shop = () => {
 
     const [brands, setBrands] = useState([])
     const [sizes, setSizes] = useState([])
-    const [products, setProducts] = useState([])
     const [totalCount, setTotalCount] = useState(0)
+
+    const dispatch = useDispatch()
+    const actual = useSelector(state => state.product.actual)
+    const brand = useSelector(state => state.product.brand)
+    const size = useSelector(state => state.product.size)
 
     useEffect(() => {
         fetchBrands().then(data => setBrands(data)).catch(e => console.log(e))
         fetchSize().then(data => setSizes(data)).catch(e => console.log(e))
-        fetchProduct(null, null, 1, 12).then(data => {
-            setProducts(data.products)
-            setTotalCount(data.count)
-        })
     }, [])
 
-    let CatalogStack = () => {
-        return (
-            <Catalog products={products}/>
-        )
-    }
+    useEffect(() => {
+        if (!actual) {
+            console.log('useEffect')
+            fetchBrands().then(data => setBrands(data)).catch(e => console.log(e))
+            fetchSize().then(data => setSizes(data)).catch(e => console.log(e))
+            fetchProduct(brand, size, 1, 12).then(data => {
+                dispatch(addProductsAction(data.products))
+                // setProducts(data.products)
+                // setTotalCount(data.count)
+            })
+        }
+    }, [actual, brand, size])
 
     let FilterStack = () => {
         return (
-            <Filters value={{brands, sizes}}/>
+            <Filters filters={{brands, sizes}}/>
         )
     }
 
@@ -41,17 +50,17 @@ const Shop = () => {
         <Tab.Navigator
             initialRouteName="Catalog"
             screenOptions={{
-                // tabBarShowLabel: false,
-                // headerShown: false,
-                // tabBarAccessibilityLabel: false,
-                style:{color: COLORS.green, background: COLORS.green, padding: 0, margin: 0},
                 tabBarActiveTintColor: COLORS.green,
                 tabBarInactiveTintColor: COLORS.gray,
-                tabBarPressColor: COLORS.green,
-                tabBarContentContainerStyle: {color: COLORS.green, background: COLORS.green, padding: 0, margin: 0},
+                tabBarIndicatorStyle: {
+                    backgroundColor: COLORS.green,
+                },
+                tabBarContentContainerStyle: {
+                    // height: 56
+                },
             }}>
             <Tab.Screen name="Filters" component={FilterStack}/>
-            <Tab.Screen name="Catalog" component={CatalogStack}/>
+            <Tab.Screen name="Catalog" component={Catalog}/>
             <Tab.Screen name="Maps" component={Maps}/>
         </Tab.Navigator>
 

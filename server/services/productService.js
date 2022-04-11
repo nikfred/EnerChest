@@ -1,10 +1,8 @@
-const uuid = require('uuid')
-const path = require('path')
-const fs = require('fs')
 const Product = require('../models/product')
 const Brand = require('../models/brand')
 const Size = require('../models/size')
 const fileService = require('./fileService')
+const dispenserService = require('./dispenserService')
 const ProductDto = require('../dtos/productDto')
 const ApiError = require('../error/ApiError')
 
@@ -78,27 +76,45 @@ class ProductService {
 
     }
 
-    async search(brand = undefined, size = undefined, limit = 16, page = 1) {
+    async search(brands = undefined, sizes = undefined, limit = 16, page = 1) {
         limit = +limit
         const skip = +limit * +page - +limit
         //create filter
         const filter =
-            brand
-                ? size
-                    ? {brand, size}
-                    : {brand}
-                : size
-                    ? {size}
+            brands
+                ? sizes
+                    ? {brand: {$in: brands}, size: {$in: sizes}}
+                    : {brand: {$in: brands}}
+                : sizes
+                    ? {size: {$in: sizes}}
                     : {}
+        console.log(filter)
         const count = (await Product.find(filter)).length
         const rawProducts = await Product.find(
             filter,
             {},
-            { sort: {brand: 'asc', name: 'asc', price: 'asc'}, skip, limit})
+            {sort: {brand: 'asc', name: 'asc', price: 'asc'}, skip, limit})
         const products = []
         for (const rawProduct of rawProducts) {
             products.push(new ProductDto(rawProduct))
         }
+        return {count, products}
+    }
+
+    async searchInDispenser(brands = [], sizes = [], dispenser_id, limit = 16, page = 1) {
+        limit = +limit
+        const skip = +limit * +page - +limit
+        let products = await dispenserService.getProducts(dispenser_id)
+        if (brands[0]) {
+            products = products.filter(i => brands.indexOf(i.brand) !== -1)
+        }
+        if (sizes[0]) {
+            products = products.filter(i => sizes.indexOf(i.size) !== -1)
+        }
+        const count = products.length
+        products = products
+            .slice(skip, skip + limit)
+            .sort((a, b) => a.brand > b.brand ? 1 : a.brand < b.brand ? -1 : 0)
         return {count, products}
     }
 
@@ -110,7 +126,7 @@ class ProductService {
         const rawProducts = await Product.find(
             {},
             {},
-            { sort: {brand: 'asc', name: 'asc', price: 'asc'}})
+            {sort: {brand: 'asc', name: 'asc', price: 'asc'}})
         const products = []
         for (const rawProduct of rawProducts) {
             products.push(new ProductDto(rawProduct))

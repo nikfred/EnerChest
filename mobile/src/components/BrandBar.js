@@ -1,29 +1,14 @@
 import React from 'react';
-import {FlatList, Pressable, Text, View} from "react-native";
-import {COLORS} from "../utils/consts";
-import {useDispatch} from "react-redux";
-import {setBrandAction} from "../store/productReducer";
+import {FlatList, View} from "react-native";
+import BrandItem from "./BrandItem";
 
 const BrandBar = ({brands}) => {
-
-    const dispatch = useDispatch()
-
-    const BrandItem = ({brandItem}) => {
-        return (
-            <Pressable style={{margin: 20, background: COLORS.gray}}
-                       onPress={() => {
-                           console.log(brandItem.brand)
-                           dispatch(setBrandAction(brandItem.brand))
-                       }}>
-                <Text>{brandItem.brand}</Text>
-            </Pressable>
-        )
-    }
 
     return (
         <View>
             <FlatList
-                horizontal={true}
+                columnWrapperStyle={{flex: 1, justifyContent: "space-around"}}
+                numColumns={3}
                 data={brands}
                 keyExtractor={item => item._id}
                 renderItem={({item}) => (
