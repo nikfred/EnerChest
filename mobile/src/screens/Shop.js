@@ -19,7 +19,7 @@ const Shop = () => {
     useEffect(() => {
         fetchBrands().then(data => setBrands(data)).catch(e => console.log(e))
         fetchSize().then(data => setSizes(data)).catch(e => console.log(e))
-        fetchProduct(null, null, 1, 100).then(data => {
+        fetchProduct(null, null, 1, 12).then(data => {
             setProducts(data.products)
             setTotalCount(data.count)
         })

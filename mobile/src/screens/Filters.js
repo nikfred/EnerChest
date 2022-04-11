@@ -1,10 +1,11 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
+import BrandBar from "../components/BrandBar";
 
-const Filters = (filter) => {
+const Filters = ({filters}) => {
     return (
         <View>
-            <Text>Фильтры</Text>
+            <BrandBar brands={filters.brands}/>
         </View>
     );
 };
