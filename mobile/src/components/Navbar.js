@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Image } from 'react-native';
 import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
+import {COLORS} from "../utils/consts";
 
 
 const Navbar = ({title}) => {
@@ -15,14 +16,14 @@ const Navbar = ({title}) => {
 const styles = StyleSheet.create({
     navbar: {
         height: 80,
-        backgroundColor: '#191919',
+        backgroundColor: COLORS.black,
         justifyContent: 'flex-end',
         padding: 10,
         flexWrap: 'wrap',
         alignContent: "space-between"
     },
     text: {
-        color: '#008000',
+        color: COLORS.green,
         // fontFamily: 'BebasNeue_400Regular',
         fontWeight: 'bold',
         fontSize: 28

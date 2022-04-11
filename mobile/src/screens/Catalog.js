@@ -1,12 +1,19 @@
 import React from 'react';
 import {FlatList, StyleSheet, Text, View} from 'react-native';
 import ProductList from "../components/ProductList";
+import {useSelector} from "react-redux";
 
-const Catalog = ({products}) => {
+const Catalog = () => {
+    const products = useSelector(state => state.product.products)
 
     return (
         <View style={styles.container}>
-            <ProductList products={products}/>
+            {products.length > 0
+                ?
+                <ProductList products={products}/>
+                :
+                <View/>
+            }
         </View>
     );
 };
