@@ -60,6 +60,6 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     content: {
-        color: '#C4C4C4'
+        color: COLORS.gray
     }
 });

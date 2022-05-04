@@ -3,7 +3,7 @@ import {Image, Modal, Pressable, SafeAreaView, StyleSheet, Text, View} from 'rea
 import {COLORS} from "../utils/consts";
 import BuyControl from "./BuyControl";
 
-const ProductItem = ({product}) => {
+const ProductItem = ({product, index}) => {
 
     const [modalVisible, setModalVisible] = useState(false)
 
@@ -60,11 +60,11 @@ const styles = StyleSheet.create({
     item: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: '45%',
+        width: '90%',
         display: 'flex',
         flexDirection: 'column',
-        marginHorizontal: 16,
-        marginTop: 16,
+        // marginHorizontal: 'auto',
+        marginVertical: 10,
         padding: 8,
         borderRadius: 10,
         backgroundColor: COLORS.gray
@@ -76,7 +76,7 @@ const styles = StyleSheet.create({
     },
     infoCon: {
         display: 'flex',
-        width: '80%',
+        width: '85%',
         flexDirection: "row",
         justifyContent: 'space-between',
     },

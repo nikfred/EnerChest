@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import MapView, {Marker} from 'react-native-maps';
 import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import {fetchDispensers} from "../http/dispenserAPI";
+import {useDispatch} from "react-redux";
+import {setDispenserAction} from "../store/productReducer";
 
 const mapStyle = [
     {
@@ -66,6 +68,7 @@ const mapStyle = [
 const Maps = () => {
 
     const [dispensers, setDispensers] = useState([])
+    const dispatch = useDispatch()
 
     useEffect(() => {
         fetchDispensers().then(data => setDispensers(data.filter(i => i.status)))
@@ -92,7 +95,7 @@ const Maps = () => {
                         image={require('../../assets/img/maps.png')}
                         // onPress={() => console.log('Marker ' + dispenser.address)}
                         title={dispenser.address}
-                        onCalloutPress={() => console.log('Marker ' + dispenser.address)}
+                        onCalloutPress={() => dispatch(setDispenserAction(dispenser))}
                     />
                 )}
 
