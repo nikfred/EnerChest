@@ -1,19 +1,22 @@
 import {StyleSheet, Image, Text, View, ScrollView, Button, Pressable} from 'react-native';
-import {AntDesign, FontAwesome} from "@expo/vector-icons";
+import {AntDesign, FontAwesome, MaterialIcons} from "@expo/vector-icons";
 import React, {useState} from "react";
+import Setting from "../components/Setting";
+import {COLORS} from "../utils/consts";
 
 const Account = () => {
     const [contact, setContact] = useState(true)
     const [information, setInformation] = useState(true)
     const [circleContact, setCircleContact] = useState("downcircle")
     const [circleInfo, setCircleInfo] = useState("downcircle")
+    const [visibleSetting, setVisibleSetting] = useState(false)
 
 
     const profile = {
         "id": "6184948d16b1dd7ba58e0e63",
         "email": "joker@gmail.ua",
-        "firstname": "Valerra",
-        "lastname": "White",
+        "firstname": "Vladik",
+        "lastname": "Loh",
         "phone": "+380500496028",
         "imageUrl": "http://34.118.89.28:5000/user/77f9c02f-8ca9-49f4-8733-bee703e69a49.jpg",
         "birth_date": "1912-02-01T00:00:00.000Z",
@@ -41,6 +44,7 @@ const Account = () => {
             <View style={styles.containerHead}>
                 <Image source={!profile.imageUrl ? {require: "../../assets/img/img.png"} : {uri: profile.imageUrl}} style={styles.image}/>
                 <View style={styles.containerInfo}>
+                    {profile.isActivated ? false : <Text>Please activated your account</Text>}
                     <Text
                         style={profile.role === 'ADMIN' ? styles.roleColor_admin : profile.role === 'USER' ? styles.roleColor_user : styles.roleColor_other}>
                         {profile.role}
@@ -74,13 +78,19 @@ const Account = () => {
                     <Text style={styles.accordion_title}>Edit profile</Text>
                     <AntDesign name="rightcircle" size={24} color="#318CE7"/>
                 </Pressable>
+                <Pressable style={styles.accordion} onPress={() => setVisibleSetting(!visibleSetting)}>
+                    <AntDesign name="setting" size={30} color="#5E4360" />
+                    <Text style={styles.accordion_title}>Setting</Text>
+                    <AntDesign name="rightcircle" size={24} color="#5E4360"/>
+                    <Setting show={visibleSetting} onHide={() => setVisibleSetting(false)}/>
+                </Pressable>
                 <Pressable style={styles.accordion}>
-                    <AntDesign name="link" size={30} color="#F4CA16"/>
+                    <MaterialIcons name="payment" size={30} color="#F4CA16" />
                     <Text style={styles.accordion_title}>Payment Setting</Text>
                     <AntDesign name="rightcircle" size={24} color="#F4CA16"/>
                 </Pressable>
                 <Pressable style={styles.accordion}>
-                    <AntDesign name="link" size={30} color="#DC5678"/>
+                    <AntDesign name="login" size={30} color="#DC5678" />
                     <Text style={styles.accordion_title}>Log Out</Text>
                     <AntDesign name="rightcircle" size={24} color="#DC5678"/>
                 </Pressable>
@@ -92,7 +102,7 @@ const Account = () => {
 const styles = StyleSheet.create(
     {
         background: {
-            backgroundColor: '#313131',
+            backgroundColor: COLORS.darkgray,
             height: '100%',
             width: '100%',
         },
@@ -117,7 +127,7 @@ const styles = StyleSheet.create(
             marginTop: 10,
             borderRadius: 30,
             backgroundColor: '#6C6C6C',
-            width: 310,
+            width: '90%',
             padding: 12,
             justifyContent: "space-between",
             flexDirection: "row",
@@ -133,10 +143,10 @@ const styles = StyleSheet.create(
             marginTop: 5,
             borderRadius: 20,
             backgroundColor: '#6C6C6C',
-            width: 260,
+            width: 300,
             padding: 8,
-            flexDirection: "row",
             justifyContent: "space-between",
+            flexDirection: "row",
             color: '#C4C4C4',
             fontSize: 16,
         },

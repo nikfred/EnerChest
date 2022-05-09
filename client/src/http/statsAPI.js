@@ -17,8 +17,8 @@ export const statsDispensers = async () => {
 }
 
 
-export const fetchAllOrders = async (status,  limit, page ) => {
-    const {data} = await $host.get('api/product/search',{params: {status, page, limit}})
+export const fetchAllOrders = async () => {
+    const {data} = await $host.get('api/product/search')
     return data
 }
 
