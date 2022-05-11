@@ -1,11 +1,11 @@
 import React from 'react';
-import {FlatList, View} from "react-native";
+import {FlatList, SafeAreaView} from "react-native";
 import BrandItem from "./BrandItem";
 
 const BrandBar = ({brands}) => {
 
     return (
-        <View>
+        <SafeAreaView>
             <FlatList
                 columnWrapperStyle={{flex: 1, justifyContent: "space-around"}}
                 numColumns={3}
@@ -15,7 +15,7 @@ const BrandBar = ({brands}) => {
                     <BrandItem brandItem={item}/>
                 )}
             />
-        </View>
+        </SafeAreaView>
     );
 };
 

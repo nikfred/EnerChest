@@ -1,23 +1,25 @@
 import React from 'react';
-import {FlatList, StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, SafeAreaView} from 'react-native';
 import BrandBar from "../components/BrandBar";
-import {COLORS} from "../utils/consts";
 import RemoveFilter from "../components/RemoveFilter";
+import SizeSlider from "../components/SizeSlider";
 
 const Filters = ({filters}) => {
+
     return (
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
+            <SizeSlider/>
             <BrandBar brands={filters.brands}/>
             <RemoveFilter/>
-        </View>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         alignItems: "center",
-        // backgroundColor: COLORS.gray,
-    }
+    },
 })
 
 export default Filters;

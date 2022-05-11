@@ -1,21 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View, Image } from 'react-native';
+import { StyleSheet, Text, View, Image, SafeAreaView} from 'react-native';
 import { useFonts, BebasNeue_400Regular } from '@expo-google-fonts/bebas-neue';
 import {COLORS} from "../utils/consts";
 
 
 const Navbar = ({title}) => {
     return (
-        <View style={styles.navbar}>
+        <SafeAreaView style={styles.navbar}>
             <Text style={styles.text}>{title}</Text>
             <Image source={require('../../assets/img/img.png')} style={styles.image}/>
-        </View>
+        </SafeAreaView>
     );
 };
 
 const styles = StyleSheet.create({
     navbar: {
-        height: 80,
+        height: '7%',
         backgroundColor: COLORS.black,
         justifyContent: 'flex-end',
         padding: 10,

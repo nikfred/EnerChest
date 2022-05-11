@@ -1,9 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import MapView, {Marker} from 'react-native-maps';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import {StyleSheet, Text, View, Dimensions, Pressable} from 'react-native';
 import {fetchDispensers} from "../http/dispenserAPI";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {setDispenserAction} from "../store/productReducer";
+import {COLORS} from "../utils/consts";
+import {AntDesign} from "@expo/vector-icons";
 
 const mapStyle = [
     {
@@ -69,6 +71,7 @@ const Maps = () => {
 
     const [dispensers, setDispensers] = useState([])
     const dispatch = useDispatch()
+    const isSelect = !!useSelector(state => state.product.dispenser)
 
     useEffect(() => {
         fetchDispensers().then(data => setDispensers(data.filter(i => i.status)))
@@ -100,6 +103,11 @@ const Maps = () => {
                 )}
 
             </MapView>
+            {isSelect &&
+                <Pressable style={styles.drop} onPress={() => dispatch(setDispenserAction(null))}>
+                    <AntDesign name="closecircle" size={40} color={COLORS.red} />
+                </Pressable>
+            }
         </View>
     );
 };
@@ -115,6 +123,13 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
     },
+    drop: {
+        position: "absolute",
+        top: 40,
+        left: 40,
+        backgroundColor: COLORS.gray,
+        borderRadius: 90
+    }
 });
 
 export default Maps;

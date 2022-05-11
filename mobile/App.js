@@ -1,4 +1,4 @@
-import {StyleSheet, View} from 'react-native';
+import {StyleSheet, View, SafeAreaView, StatusBar} from 'react-native';
 import React from "react";
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -24,7 +24,7 @@ const routers = {
 export default function App() {
     return (
         <Provider store={store}>
-            <View style={styles.app}>
+            <SafeAreaView style={styles.app}>
                 <Navbar title={'EnerChest'}/>
                 <NavigationContainer>
                     <Tab.Navigator
@@ -44,7 +44,8 @@ export default function App() {
                         <Tab.Screen name="Account" component={Account}/>
                     </Tab.Navigator>
                 </NavigationContainer>
-            </View>
+                <StatusBar style="auto"/>
+            </SafeAreaView>
         </Provider>
     );
 }

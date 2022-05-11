@@ -132,16 +132,16 @@ const modalStyles = StyleSheet.create({
         fontSize: 40,
         color: COLORS.green,
         fontWeight: "bold",
-        textShadowColor: '#00D000',
-        textShadowRadius: 15
+        // textShadowColor: '#00D000',
+        // textShadowRadius: 15
     },
     infoText: {
         fontSize: 30,
-        color: 'white'
+        color: COLORS.white
     },
     description: {
         fontSize: 16,
-        color: 'white',
+        color: COLORS.white,
         paddingHorizontal: 8
     },
     image: {

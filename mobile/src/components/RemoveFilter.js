@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         margin: 16,
         padding: 8,
-        backgroundColor: 'tomato',
+        backgroundColor: COLORS.red,
         borderWidth: 4,
         borderRadius: 16,
         borderStyle: "solid",

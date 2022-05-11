@@ -7,36 +7,32 @@ import Filters from "./Filters";
 import Maps from "./Maps";
 import {COLORS} from "../utils/consts";
 import {useDispatch, useSelector} from "react-redux";
-import {addProductsAction} from "../store/productReducer";
+import {addProductsAction, setSizesAction} from "../store/productReducer";
 
 const Tab = createMaterialTopTabNavigator();
 
 const Shop = () => {
 
     const [brands, setBrands] = useState([])
-    const [sizes, setSizes] = useState([])
-    const [totalCount, setTotalCount] = useState(0)
 
     const dispatch = useDispatch()
-    const {actual, dispenser, brand, size} = useSelector(state => state.product)
-    // const dispenser = useSelector(state => state.product.dispenser)
-    // const brand = useSelector(state => state.product.brand)
-    // const size = useSelector(state => state.product.size)
+    const {actual, dispenser, brand, selectedSizes, sizes} = useSelector(state => state.product)
 
     useEffect(() => {
         fetchBrands().then(data => setBrands(data)).catch(e => console.log(e))
-        fetchSize().then(data => setSizes(data)).catch(e => console.log(e))
-    }, [])
+        // fetchSize().then(data => setSizes(data)).catch(e => console.log(e))
+        fetchSize().then(data => {
+            dispatch(setSizesAction(data.map(i => i.value).sort()))
+        }).catch(e => console.log(e))
+    }, [false])
 
     useEffect(() => {
         if (!actual) {
-            fetchProduct(brand, size, dispenser?._id,1, 16).then(data => {
+            fetchProduct(brand, selectedSizes, dispenser?._id, 1, 16).then(data => {
                 dispatch(addProductsAction(data.products))
-                // setProducts(data.products)
-                // setTotalCount(data.count)
             })
         }
-    }, [actual, brand, size])
+    }, [actual, brand, selectedSizes])
 
     let FilterStack = () => {
         return (
