@@ -52,14 +52,15 @@ const SizeSlider = () => {
 
 const styles = StyleSheet.create({
     slider: {
-        height: '15%',
-        width: '80%',
-        marginVertical: 8,
+        width: '100%',
+        paddingVertical: 12,
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "center",
+        borderBottomWidth: 4,
+        borderColor: COLORS.black
     },
     sizes: {
-        width: '100%',
+        width: '80%',
         display: "flex",
         flexDirection: "row",
         justifyContent: "space-between"

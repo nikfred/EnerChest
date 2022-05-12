@@ -18,6 +18,7 @@ const SET_FINISH_SIZE = 'SET_FINISH_SIZE'
 const SET_BRANDS = 'SET_BRANDS'
 const ADD_BRAND = 'ADD_BRAND'
 const DELETE_BRAND = 'DELETE_BRAND'
+const REMOVE_BRANDS = 'REMOVE_BRANDS'
 const REMOVE_FILTERS = 'REMOVE_FILTERS'
 
 export const productReducer = (state = defaultState, action) => {
@@ -62,6 +63,9 @@ export const productReducer = (state = defaultState, action) => {
         case DELETE_BRAND:
             return {...state, selectedBrands: state.selectedBrands.filter(i => i !== action.payload), actual: false}
 
+        case REMOVE_BRANDS:
+            return {...state, selectedBrands: [], actual: false}
+
         case REMOVE_FILTERS:
             return {
                 ...state,
@@ -86,4 +90,5 @@ export const setFinishSizeAction = (payload) => ({type: SET_FINISH_SIZE, payload
 export const setBrandsAction = (payload) => ({type: SET_BRANDS, payload})
 export const addBrandAction = (payload) => ({type: ADD_BRAND, payload})
 export const deleteBrandAction = (payload) => ({type: DELETE_BRAND, payload})
+export const removeBrandsAction = () => ({type: REMOVE_BRANDS})
 export const removeFiltersAction = () => ({type: REMOVE_FILTERS})

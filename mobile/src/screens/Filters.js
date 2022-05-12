@@ -1,14 +1,15 @@
 import React from 'react';
 import {StyleSheet, SafeAreaView} from 'react-native';
-import BrandBar from "../components/BrandBar";
 import RemoveFilter from "../components/RemoveFilter";
 import SizeSlider from "../components/SizeSlider";
+import BrandBar from "../components/Brand/BrandBar";
 
 const Filters = () => {
+
     return (
         <SafeAreaView style={styles.container}>
-            <SizeSlider/>
             <BrandBar/>
+            <SizeSlider/>
             <RemoveFilter/>
         </SafeAreaView>
     );
