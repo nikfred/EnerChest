@@ -13,8 +13,6 @@ const Tab = createMaterialTopTabNavigator();
 
 const Shop = () => {
 
-    // const [brands, setBrands] = useState([])
-
     const dispatch = useDispatch()
     const {actual, dispenser, selectedBrands, selectedSizes} = useSelector(state => state.product)
 
@@ -33,12 +31,6 @@ const Shop = () => {
         }
     }, [actual, selectedBrands, selectedSizes])
 
-    // let FilterStack = () => {
-    //     return (
-    //         <Filters filters={{brands, sizes}}/>
-    //     )
-    // }
-
     return (
         <Tab.Navigator
             initialRouteName="Catalog"
@@ -47,10 +39,7 @@ const Shop = () => {
                 tabBarInactiveTintColor: COLORS.gray,
                 tabBarIndicatorStyle: {
                     backgroundColor: COLORS.green,
-                },
-                tabBarContentContainerStyle: {
-                    // height: 56
-                },
+                }
             }}>
             <Tab.Screen name="Filters" component={Filters}/>
             <Tab.Screen name="Catalog" component={Catalog}/>
@@ -59,14 +48,5 @@ const Shop = () => {
 
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1
-    },
-    content: {
-        color: '#C4C4C4'
-    }
-});
 
 export default Shop;
