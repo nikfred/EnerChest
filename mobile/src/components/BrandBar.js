@@ -1,8 +1,11 @@
 import React from 'react';
 import {FlatList, SafeAreaView} from "react-native";
 import BrandItem from "./BrandItem";
+import {useSelector} from "react-redux";
 
-const BrandBar = ({brands}) => {
+const BrandBar = () => {
+
+    const {brands} = useSelector(state => state.product)
 
     return (
         <SafeAreaView>

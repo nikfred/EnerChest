@@ -1,33 +1,24 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {addBrandAction, deleteBrandAction} from "../store/productReducer";
 import {Pressable, StyleSheet, Text} from "react-native";
 import {COLORS} from "../utils/consts";
 import {useDispatch, useSelector} from "react-redux";
 
 const BrandItem = ({brandItem}) => {
+
     const dispatch = useDispatch()
-    const brand = useSelector(state => state.product.brand)
+    const {selectedBrands} = useSelector(state => state.product)
 
     const press = () => {
-        return brand.indexOf(brandItem.brand) !== -1
+        return selectedBrands.indexOf(brandItem.brand) !== -1
     }
 
     const onPress = () => {
         if (press()) {
-            // console.log(`DELETE ${brandItem.brand}`)
             dispatch(deleteBrandAction(brandItem.brand))
         } else {
-            // console.log(`ADD ${brandItem.brand}`)
             dispatch(addBrandAction(brandItem.brand))
         }
-    }
-
-    const add = () => {
-        dispatch(addBrandAction(brandItem.brand))
-    }
-
-    const remove = () => {
-        dispatch(deleteBrandAction(brandItem.brand))
     }
 
     return (

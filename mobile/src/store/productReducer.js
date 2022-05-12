@@ -5,7 +5,8 @@ const defaultState = {
     startSize: 0,
     finishSize: 0,
     selectedSizes: [],
-    brand: [],
+    brands: [],
+    selectedBrands: [],
     actual: false,
 }
 
@@ -14,6 +15,7 @@ const SET_DISPENSER = 'SET_DISPENSER'
 const SET_SIZES = 'SET_SIZES'
 const SET_START_SIZE = 'SET_START_SIZE'
 const SET_FINISH_SIZE = 'SET_FINISH_SIZE'
+const SET_BRANDS = 'SET_BRANDS'
 const ADD_BRAND = 'ADD_BRAND'
 const DELETE_BRAND = 'DELETE_BRAND'
 const REMOVE_FILTERS = 'REMOVE_FILTERS'
@@ -27,7 +29,13 @@ export const productReducer = (state = defaultState, action) => {
             return {...state, dispenser: action.payload, actual: false}
 
         case SET_SIZES:
-            return {...state, sizes: action.payload, startSize: 0, finishSize: action.payload?.length - 1, actual: false}
+            return {
+                ...state,
+                sizes: action.payload,
+                startSize: 0,
+                finishSize: action.payload?.length - 1,
+                actual: false
+            }
 
         case SET_START_SIZE:
             return {
@@ -45,14 +53,25 @@ export const productReducer = (state = defaultState, action) => {
                 actual: false
             }
 
+        case SET_BRANDS:
+            return {...state, brands: action.payload, actual: false}
+
         case ADD_BRAND:
-            return {...state, brand: [...state.brand, action.payload], actual: false}
+            return {...state, selectedBrands: [...state.selectedBrands, action.payload], actual: false}
 
         case DELETE_BRAND:
-            return {...state, brand: state.brand.filter(i => i !== action.payload), actual: false}
+            return {...state, selectedBrands: state.selectedBrands.filter(i => i !== action.payload), actual: false}
 
         case REMOVE_FILTERS:
-            return {...state, dispenser: null, brand: [], startSize: 0, finishSize: state.sizes.length, actual: false}
+            return {
+                ...state,
+                dispenser: null,
+                selectedBrands: [],
+                selectedSizes: [],
+                startSize: 0,
+                finishSize: state.sizes.length - 1,
+                actual: false
+            }
 
         default:
             return state
@@ -64,6 +83,7 @@ export const setDispenserAction = (payload) => ({type: SET_DISPENSER, payload})
 export const setSizesAction = (payload) => ({type: SET_SIZES, payload})
 export const setStartSizeAction = (payload) => ({type: SET_START_SIZE, payload})
 export const setFinishSizeAction = (payload) => ({type: SET_FINISH_SIZE, payload})
+export const setBrandsAction = (payload) => ({type: SET_BRANDS, payload})
 export const addBrandAction = (payload) => ({type: ADD_BRAND, payload})
 export const deleteBrandAction = (payload) => ({type: DELETE_BRAND, payload})
 export const removeFiltersAction = () => ({type: REMOVE_FILTERS})

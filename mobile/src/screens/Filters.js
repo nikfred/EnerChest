@@ -4,12 +4,11 @@ import BrandBar from "../components/BrandBar";
 import RemoveFilter from "../components/RemoveFilter";
 import SizeSlider from "../components/SizeSlider";
 
-const Filters = ({filters}) => {
-
+const Filters = () => {
     return (
         <SafeAreaView style={styles.container}>
             <SizeSlider/>
-            <BrandBar brands={filters.brands}/>
+            <BrandBar/>
             <RemoveFilter/>
         </SafeAreaView>
     );

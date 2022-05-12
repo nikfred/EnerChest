@@ -27,22 +27,27 @@ const Account = () => {
 
     const contact_visible = () => {
         setContact(!contact)
-        if (circleContact === "downcircle"){
+        if (circleContact === "downcircle") {
             setCircleContact("upcircle")
-        }else{ setCircleContact("downcircle")}
+        } else {
+            setCircleContact("downcircle")
+        }
     }
 
     const info_visible = () => {
         setInformation(!information)
-        if (circleInfo === "downcircle"){
+        if (circleInfo === "downcircle") {
             setCircleInfo("upcircle")
-        }else{ setCircleInfo("downcircle")}
+        } else {
+            setCircleInfo("downcircle")
+        }
     }
 
     return (
         <View style={styles.background}>
             <View style={styles.containerHead}>
-                <Image source={!profile.imageUrl ? {require: "../../assets/img/img.png"} : {uri: profile.imageUrl}} style={styles.image}/>
+                <Image source={!profile.imageUrl ? {require: "../../assets/img/img.png"} : {uri: profile.imageUrl}}
+                       style={styles.image}/>
                 <View style={styles.containerInfo}>
                     {profile.isActivated ? false : <Text>Please activated your account</Text>}
                     <Text
@@ -61,8 +66,12 @@ const Account = () => {
                     <AntDesign name={circleContact} size={24} color="#50C878"/>
                 </Pressable>
                 <View style={contact ? styles.contact_v : false}>
-                    <Text style={[styles.content, styles.accordion_item]}><AntDesign name="phone" size={18} color="#50C878" /> {profile.phone}</Text>
-                    <Text style={[styles.content, styles.accordion_item]}><AntDesign name="mail" size={18} color="#50C878" />  {profile.email}</Text>
+                    <Text style={[styles.content, styles.accordion_item]}><AntDesign name="phone" size={18}
+                                                                                     color="#50C878"/> {profile.phone}
+                    </Text>
+                    <Text style={[styles.content, styles.accordion_item]}><AntDesign name="mail" size={18}
+                                                                                     color="#50C878"/> {profile.email}
+                    </Text>
                 </View>
                 <Pressable style={styles.accordion} onPress={info_visible}>
                     <AntDesign name="contacts" size={30} color="#50C878"/>
@@ -70,27 +79,31 @@ const Account = () => {
                     <AntDesign name={circleInfo} size={24} color="#50C878"/>
                 </Pressable>
                 <View style={information ? styles.info_v : false}>
-                    <Text style={[styles.content, styles.accordion_item]}><FontAwesome name="birthday-cake" size={18} color="#50C878" />  {profile.birth_date?.substring(0, 10)}</Text>
-                    <Text style={[styles.content, styles.accordion_item]}><FontAwesome name="genderless" size={18} color="#50C878" />  {profile.gender}</Text>
+                    <Text style={[styles.content, styles.accordion_item]}><FontAwesome name="birthday-cake" size={18}
+                                                                                       color="#50C878"/> {profile.birth_date?.substring(0, 10)}
+                    </Text>
+                    <Text style={[styles.content, styles.accordion_item]}><FontAwesome name="genderless" size={18}
+                                                                                       color="#50C878"/> {profile.gender}
+                    </Text>
                 </View>
                 <Pressable style={styles.accordion}>
-                    <AntDesign name="edit" size={30} color="#318CE7" />
+                    <AntDesign name="edit" size={30} color="#318CE7"/>
                     <Text style={styles.accordion_title}>Edit profile</Text>
                     <AntDesign name="rightcircle" size={24} color="#318CE7"/>
                 </Pressable>
                 <Pressable style={styles.accordion} onPress={() => setVisibleSetting(!visibleSetting)}>
-                    <AntDesign name="setting" size={30} color="#5E4360" />
+                    <AntDesign name="setting" size={30} color="#5E4360"/>
                     <Text style={styles.accordion_title}>Setting</Text>
                     <AntDesign name="rightcircle" size={24} color="#5E4360"/>
                     <Setting show={visibleSetting} onHide={() => setVisibleSetting(false)}/>
                 </Pressable>
                 <Pressable style={styles.accordion}>
-                    <MaterialIcons name="payment" size={30} color="#F4CA16" />
+                    <MaterialIcons name="payment" size={30} color="#F4CA16"/>
                     <Text style={styles.accordion_title}>Payment Setting</Text>
                     <AntDesign name="rightcircle" size={24} color="#F4CA16"/>
                 </Pressable>
                 <Pressable style={styles.accordion}>
-                    <AntDesign name="login" size={30} color="#DC5678" />
+                    <AntDesign name="login" size={30} color="#DC5678"/>
                     <Text style={styles.accordion_title}>Log Out</Text>
                     <AntDesign name="rightcircle" size={24} color="#DC5678"/>
                 </Pressable>
@@ -155,10 +168,10 @@ const styles = StyleSheet.create(
             fontSize: 28,
             fontFamily: ""
         },
-        contact_v:{
+        contact_v: {
             display: "none"
         },
-        info_v:{
+        info_v: {
             display: "none"
         },
         firstname: {

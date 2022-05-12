@@ -18,7 +18,7 @@ const SizeSlider = () => {
                 min={0}
                 max={(sizes.length - 1) * 100}
                 step={1}
-                trackStyle={{borderRadius: 8, height: 12}}
+                trackStyle={{borderRadius: 8, height: 8}}
                 selectedStyle={{backgroundColor: COLORS.green}}
                 unselectedStyle={{backgroundColor: COLORS.gray}}
                 markerStyle={{
@@ -28,7 +28,7 @@ const SizeSlider = () => {
                     backgroundColor: COLORS.green,
                     borderColor: COLORS.gray,
                     borderWidth: 2,
-                    marginTop: '25%'
+                    marginTop: 8
                 }}
                 touchDimensions={{height: 60, width: 60, borderRadius: 15, slipDisplacement: 600}}
 
