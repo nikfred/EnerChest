@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {createRef, useEffect, useRef, useState} from 'react';
 import MapView, {Callout, Marker} from 'react-native-maps';
 import {StyleSheet, Text, View, Dimensions, Pressable} from 'react-native';
 import {fetchDispensers} from "../http/dispenserAPI";
@@ -78,6 +78,21 @@ const Maps = () => {
         fetchDispensers().then(data => setDispensers(data.filter(i => i.status)))
     }, [])
 
+
+    const [elRefs, setElRefs] = React.useState([]);
+    const arrLength = dispensers.length
+
+    useEffect(() => {
+        setElRefs(() =>
+            Array(arrLength)
+                .fill()
+                .map((_, i) => elRefs[i] || createRef()))
+    }, [arrLength])
+
+    const show = (index) => {
+        setTimeout(() => elRefs[index].current.showCallout(), 0);
+    }
+
     return (
         <View style={styles.container}>
             <MapView
@@ -88,9 +103,11 @@ const Maps = () => {
                     longitudeDelta: 0.0421,
                 }}
                 customMapStyle={mapStyle}
-                style={styles.map}>
-                {dispensers.map(dispenser =>
+                style={styles.map}
+            >
+                {dispensers.map((dispenser, i) =>
                     <Marker
+                        ref={elRefs[i]}
                         key={dispenser._id}
                         coordinate={{
                             latitude: +dispenser.latitude,
@@ -100,6 +117,7 @@ const Maps = () => {
                         title={dispenser.address}
                         onCalloutPress={() => {
                             dispatch(setDispenserAction(dispenser))
+                            show(i)
                         }}
                     >
                         <Callout tooltip>
@@ -121,7 +139,7 @@ const Maps = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
+        backgroundColor: COLORS.darkgray,
         alignItems: 'center',
         justifyContent: 'center',
     },

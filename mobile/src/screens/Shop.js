@@ -36,10 +36,14 @@ const Shop = () => {
             initialRouteName="Catalog"
             screenOptions={{
                 tabBarActiveTintColor: COLORS.green,
-                tabBarInactiveTintColor: COLORS.gray,
+                tabBarInactiveTintColor: COLORS.lightgray,
                 tabBarIndicatorStyle: {
                     backgroundColor: COLORS.green,
-                }
+
+                },
+                tabBarStyle: {
+                    backgroundColor: COLORS.black
+                },
             }}>
             <Tab.Screen name="Filters" component={Filters}/>
             <Tab.Screen name="Catalog" component={Catalog}/>

@@ -13,7 +13,6 @@ const Catalog = () => {
 
     return (
         <ScrollView style={styles.container}>
-            {/*<ProductList products={products}/>*/}
 
             <View style={styles.list}>
                 <View style={styles.colum}>
@@ -40,6 +39,8 @@ const Catalog = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: COLORS.darkgray,
+        // marginBottom: 10
     },
     content: {
         color: '#C4C4C4'

@@ -26,17 +26,20 @@ export default function App() {
         <Provider store={store}>
             <SafeAreaView style={styles.app}>
                 <Navbar title={'EnerChest'}/>
-                <NavigationContainer>
+                <NavigationContainer theme={{colors:{ background: COLORS.black}}}>
                     <Tab.Navigator
                         screenOptions={({route}) => ({
                             tabBarIcon: ({focused, color, size}) => {
                                 return (
                                     <AntDesign name={routers[route.name]} size={36}
-                                               color={focused ? COLORS.green : COLORS.gray}/>
+                                               color={focused ? COLORS.green : COLORS.lightgray}/>
                                 );
                             },
                             tabBarShowLabel: false,
-                            headerShown: false
+                            headerShown: false,
+                            tabBarStyle: {
+                                backgroundColor: COLORS.black,
+                            },
                         })}>
                         <Tab.Screen name="Shop" component={Shop}/>
                         <Tab.Screen name="Basket" component={Basket}/>
@@ -53,14 +56,7 @@ export default function App() {
 const styles = StyleSheet.create({
     app: {
         flex: 1,
-        justifyContent: "space-between"
+        justifyContent: "space-between",
+        backgroundColor: COLORS.black
     },
-    container: {
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    content: {
-        color: COLORS.gray
-    }
 });

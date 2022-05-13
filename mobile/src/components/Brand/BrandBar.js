@@ -15,14 +15,10 @@ const BrandBar = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <SafeAreaView style={styles.brands}>
+            <Pressable style={styles.brands}  onPress={() => setModalVisible(!modalVisible)}>
                 <Text style={styles.content}>Brand</Text>
-
-                <Pressable onPress={() => setModalVisible(!modalVisible)}>
-                    {/*<Text>View all</Text>*/}
                     <AntDesign name="right" size={24} color={COLORS.white} />
-                </Pressable>
-            </SafeAreaView>
+            </Pressable>
 
             <FlatList
                 data={selectedBrands}
@@ -31,7 +27,7 @@ const BrandBar = () => {
                 keyExtractor={(item, index) => item + index}
                 renderItem={({item}) =>
                     <Pressable style={styles.selected} onPress={() => dispatch(deleteBrandAction(item))}>
-                        <Text>{item}  </Text>
+                        <Text style={{color: COLORS.white}}>{item}  </Text>
                         <AntDesign name="check" size={18} color={COLORS.white}/>
                     </Pressable>
                 }
@@ -66,7 +62,8 @@ const styles = StyleSheet.create({
         width: '100%',
         padding: 16,
         borderBottomWidth: 4,
-        borderColor: COLORS.black
+        borderColor: COLORS.black,
+        // backgroundColor: COLORS.darkgray
     },
     brands: {
         flexDirection: 'row',
@@ -84,7 +81,8 @@ const styles = StyleSheet.create({
         borderRadius: 16
     },
     content: {
-        fontSize: 20
+        fontSize: 20,
+        color: COLORS.white
     },
     modal: {
         backgroundColor: COLORS.darkgray

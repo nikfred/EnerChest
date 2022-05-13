@@ -9,7 +9,7 @@ const RemoveFilter = () => {
 
     return (
         <Pressable style={styles.container} onPress={() => dispatch(removeFiltersAction())}>
-            <Text>Remove Filters</Text>
+            <Text style={{color: COLORS.white}}>Remove Filters</Text>
         </Pressable>
     );
 };
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         borderWidth: 4,
         borderRadius: 16,
         borderStyle: "solid",
-        borderColor: COLORS.darkgray,
+        borderColor: COLORS.gray,
         // borderColor: 'tomato',
         height: "10%",
         position: "absolute",
