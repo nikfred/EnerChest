@@ -1,11 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import MapView, {Marker} from 'react-native-maps';
+import MapView, {Callout, Marker} from 'react-native-maps';
 import {StyleSheet, Text, View, Dimensions, Pressable} from 'react-native';
 import {fetchDispensers} from "../http/dispenserAPI";
 import {useDispatch, useSelector} from "react-redux";
 import {setDispenserAction} from "../store/productReducer";
 import {COLORS} from "../utils/consts";
 import {AntDesign} from "@expo/vector-icons";
+import CustomCallout from "../components/CustomCallout";
 
 const mapStyle = [
     {
@@ -87,8 +88,8 @@ const Maps = () => {
                     longitudeDelta: 0.0421,
                 }}
                 customMapStyle={mapStyle}
-                style={styles.map} >
-                {dispensers.map( dispenser =>
+                style={styles.map}>
+                {dispensers.map(dispenser =>
                     <Marker
                         key={dispenser._id}
                         coordinate={{
@@ -96,16 +97,21 @@ const Maps = () => {
                             longitude: +dispenser.longitude,
                         }}
                         image={require('../../assets/img/maps.png')}
-                        // onPress={() => console.log('Marker ' + dispenser.address)}
                         title={dispenser.address}
-                        onCalloutPress={() => dispatch(setDispenserAction(dispenser))}
-                    />
+                        onCalloutPress={() => {
+                            dispatch(setDispenserAction(dispenser))
+                        }}
+                    >
+                        <Callout tooltip>
+                            <CustomCallout dispenser={dispenser}/>
+                        </Callout>
+                    </Marker>
                 )}
 
             </MapView>
             {isSelect &&
                 <Pressable style={styles.drop} onPress={() => dispatch(setDispenserAction(null))}>
-                    <AntDesign name="closecircle" size={40} color={COLORS.red} />
+                    <AntDesign name="closecircle" size={40} color={COLORS.red}/>
                 </Pressable>
             }
         </View>
@@ -129,6 +135,10 @@ const styles = StyleSheet.create({
         left: 40,
         backgroundColor: COLORS.gray,
         borderRadius: 90
+    },
+    custom: {
+        borderRadius: 20,
+        backgroundColor: COLORS.lightgray,
     }
 });
 
