@@ -1,11 +1,10 @@
 import React from 'react';
-import {FlatList, Image, StyleSheet, Text, View, ScrollView} from 'react-native';
-import ProductList from "../components/ProductList";
+import {FlatList, Image, StyleSheet, Text, View, ScrollView, Pressable} from 'react-native';
 import {useSelector} from "react-redux";
 import {COLORS} from "../utils/consts";
 import ProductItem from "../components/ProductItem";
 
-const Catalog = () => {
+const Catalog = ({ navigation: {navigate}}) => {
     const products1 = useSelector(state => state.product.products.filter((_, index) => index % 2 !== 0))
     const products2 = useSelector(state => state.product.products.filter((_, index) => index % 2 === 0))
     const dispenser = useSelector(state => state.product.dispenser)
@@ -16,18 +15,16 @@ const Catalog = () => {
 
             <View style={styles.list}>
                 <View style={styles.colum}>
-                    <View style={styles.item}>
+                    <Pressable style={styles.item} onPress={() => navigate('Maps')}>
                         <Text style={styles.text}>{dispenser ? dispenser.address : 'Select dispenser'}</Text>
-                        {/*<Text style={styles.text}>Found</Text>*/}
-                        {/*<Text style={styles.text}>{products1.length + products2.length} Results</Text>*/}
-                    </View>
-                    {products1.map((product, index) =>
+                    </Pressable>
+                    {products1.map((product) =>
                         <ProductItem product={product} key={product.id}/>
                     )}
                 </View>
 
                 <View style={styles.colum}>
-                    {products2.map((product, index) =>
+                    {products2.map((product) =>
                         <ProductItem product={product} key={product.id}/>
                     )}
                 </View>
@@ -40,10 +37,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: COLORS.darkgray,
-        // marginBottom: 10
-    },
-    content: {
-        color: '#C4C4C4'
     },
     list: {
         display: "flex",
@@ -62,11 +55,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 16,
         paddingVertical: 4,
         backgroundColor: COLORS.gray,
-    },
-    image: {
-        height: 200,
-        width: 100,
-        resizeMode: "contain"
     },
     text: {
         fontSize: 20,

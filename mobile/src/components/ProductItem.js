@@ -3,7 +3,7 @@ import {Image, Modal, Pressable, SafeAreaView, StyleSheet, Text, View} from 'rea
 import {COLORS} from "../utils/consts";
 import BuyControl from "./BuyControl";
 
-const ProductItem = ({product, index}) => {
+const ProductItem = ({product}) => {
 
     const [modalVisible, setModalVisible] = useState(false)
 
@@ -47,7 +47,7 @@ const ProductItem = ({product, index}) => {
                         </SafeAreaView>
 
                     </SafeAreaView>
-                    <BuyControl onPress={buy}/>
+                    <BuyControl onPress={buy} quantityAll={product?.quantityAll} quantityFree={product?.quantityFree}/>
                 </SafeAreaView>
 
             </Modal>
