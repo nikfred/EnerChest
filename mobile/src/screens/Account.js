@@ -1,28 +1,36 @@
 import {StyleSheet, Image, Text, View, ScrollView, Button, Pressable} from 'react-native';
 import {AntDesign, FontAwesome, MaterialIcons} from "@expo/vector-icons";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import Setting from "../components/Setting";
 import {COLORS} from "../utils/consts";
+import {useDispatch, useSelector} from "react-redux";
+import Auth from "./Auth";
+import {fetchUser, logout} from "../http/userAPI";
+import {setAdminAction, setAuthAction, setUserAction} from "../store/userReducer";
 
-const Account = () => {
+const Account = ({ navigation: {navigate}}) => {
     const [contact, setContact] = useState(true)
     const [information, setInformation] = useState(true)
     const [circleContact, setCircleContact] = useState("downcircle")
     const [circleInfo, setCircleInfo] = useState("downcircle")
     const [visibleSetting, setVisibleSetting] = useState(false)
+    const [profile, setProfile] = useState(' ')
+
+    const dispatch = useDispatch()
+    const login = useSelector(state => state.user.isAuth)
 
 
-    const profile = {
-        "id": "6184948d16b1dd7ba58e0e63",
-        "email": "joker@gmail.ua",
-        "firstname": "Vladik",
-        "lastname": "Loh",
-        "phone": "+380500496028",
-        "imageUrl": "http://34.118.89.28:5000/user/77f9c02f-8ca9-49f4-8733-bee703e69a49.jpg",
-        "birth_date": "1912-02-01T00:00:00.000Z",
-        "gender": "Мужской",
-        "isActivated": true,
-        "role": "KIBORG"
+    useEffect(() => {
+        fetchUser().then(data => {
+            setProfile(data)
+        })
+    }, [])
+
+    const logOut = () => {
+        logout().then(r => console.log(r))
+        dispatch(setAuthAction(false))
+        dispatch(setUserAction(' '))
+        dispatch(setAdminAction(false))
     }
 
     const contact_visible = () => {
@@ -46,8 +54,9 @@ const Account = () => {
     return (
         <View style={styles.background}>
             <View style={styles.containerHead}>
-                <Image source={!profile.imageUrl ? {require: "../../assets/img/img.png"} : {uri: profile.imageUrl}}
-                       style={styles.image}/>
+                <Image
+                    source={!profile.imageUrl ? require('../../assets/img/img.png')  : {uri: profile.imageUrl}}
+                    style={styles.image}/>
                 <View style={styles.containerInfo}>
                     {profile.isActivated ? false : <Text>Please activated your account</Text>}
                     <Text
@@ -59,55 +68,69 @@ const Account = () => {
                 </View>
             </View>
 
-            <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'center'}}>
-                <Pressable style={styles.accordion} onPress={contact_visible}>
-                    <AntDesign name="link" size={30} color="#50C878"/>
-                    <Text style={styles.accordion_title}>Contact</Text>
-                    <AntDesign name={circleContact} size={24} color="#50C878"/>
-                </Pressable>
-                <View style={contact ? styles.contact_v : false}>
-                    <Text style={[styles.content, styles.accordion_item]}><AntDesign name="phone" size={18}
-                                                                                     color="#50C878"/> {profile.phone}
-                    </Text>
-                    <Text style={[styles.content, styles.accordion_item]}><AntDesign name="mail" size={18}
-                                                                                     color="#50C878"/> {profile.email}
-                    </Text>
-                </View>
-                <Pressable style={styles.accordion} onPress={info_visible}>
-                    <AntDesign name="contacts" size={30} color="#50C878"/>
-                    <Text style={styles.accordion_title}>Info</Text>
-                    <AntDesign name={circleInfo} size={24} color="#50C878"/>
-                </Pressable>
-                <View style={information ? styles.info_v : false}>
-                    <Text style={[styles.content, styles.accordion_item]}><FontAwesome name="birthday-cake" size={18}
-                                                                                       color="#50C878"/> {profile.birth_date?.substring(0, 10)}
-                    </Text>
-                    <Text style={[styles.content, styles.accordion_item]}><FontAwesome name="genderless" size={18}
-                                                                                       color="#50C878"/> {profile.gender}
-                    </Text>
-                </View>
-                <Pressable style={styles.accordion}>
-                    <AntDesign name="edit" size={30} color="#318CE7"/>
-                    <Text style={styles.accordion_title}>Edit profile</Text>
-                    <AntDesign name="rightcircle" size={24} color="#318CE7"/>
-                </Pressable>
-                <Pressable style={styles.accordion} onPress={() => setVisibleSetting(!visibleSetting)}>
-                    <AntDesign name="setting" size={30} color="#5E4360"/>
-                    <Text style={styles.accordion_title}>Setting</Text>
-                    <AntDesign name="rightcircle" size={24} color="#5E4360"/>
-                    <Setting show={visibleSetting} onHide={() => setVisibleSetting(false)}/>
-                </Pressable>
-                <Pressable style={styles.accordion}>
-                    <MaterialIcons name="payment" size={30} color="#F4CA16"/>
-                    <Text style={styles.accordion_title}>Payment Setting</Text>
-                    <AntDesign name="rightcircle" size={24} color="#F4CA16"/>
-                </Pressable>
-                <Pressable style={styles.accordion}>
-                    <AntDesign name="login" size={30} color="#DC5678"/>
-                    <Text style={styles.accordion_title}>Log Out</Text>
-                    <AntDesign name="rightcircle" size={24} color="#DC5678"/>
-                </Pressable>
-            </ScrollView>
+            {!login ?
+                <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'center'}}>
+                    <Pressable style={styles.accordion} onPress={() => navigate('Auth')}>
+                        <AntDesign name="edit" size={30} color="#318CE7"/>
+                        <Text style={styles.accordion_title}>Edit profile</Text>
+                        <AntDesign name="rightcircle" size={24} color="#318CE7"/>
+                    </Pressable>
+                </ScrollView>
+                :
+
+                <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'center'}}>
+                    <Pressable style={styles.accordion} onPress={contact_visible}>
+                        <AntDesign name="link" size={30} color="#50C878"/>
+                        <Text style={styles.accordion_title}>Contact</Text>
+                        <AntDesign name={circleContact} size={24} color="#50C878"/>
+                    </Pressable>
+                    <View style={contact ? styles.contact_v : false}>
+                        <Text style={[styles.content, styles.accordion_item]}><AntDesign name="phone" size={18}
+                                                                                         color="#50C878"/> {profile.phone}
+                        </Text>
+                        <Text style={[styles.content, styles.accordion_item]}><AntDesign name="mail" size={18}
+                                                                                         color="#50C878"/> {profile.email}
+                        </Text>
+                    </View>
+                    <Pressable style={styles.accordion} onPress={info_visible}>
+                        <AntDesign name="contacts" size={30} color="#50C878"/>
+                        <Text style={styles.accordion_title}>Info</Text>
+                        <AntDesign name={circleInfo} size={24} color="#50C878"/>
+                    </Pressable>
+                    <View style={information ? styles.info_v : false}>
+                        <Text style={[styles.content, styles.accordion_item]}><FontAwesome name="birthday-cake"
+                                                                                           size={18}
+                                                                                           color="#50C878"/> {profile.birth_date?.substring(0, 10)}
+                        </Text>
+                        <Text style={[styles.content, styles.accordion_item]}><FontAwesome name="genderless"
+                                                                                           size={18}
+                                                                                           color="#50C878"/> {profile.gender}
+                        </Text>
+                    </View>
+                    <Pressable style={styles.accordion}>
+                        <AntDesign name="edit" size={30} color="#318CE7"/>
+                        <Text style={styles.accordion_title}>Edit profile</Text>
+                        <AntDesign name="rightcircle" size={24} color="#318CE7"/>
+                    </Pressable>
+                    <Pressable style={styles.accordion} onPress={() => setVisibleSetting(!visibleSetting)}>
+                        <AntDesign name="setting" size={30} color="#5E4360"/>
+                        <Text style={styles.accordion_title}>Setting</Text>
+                        <AntDesign name="rightcircle" size={24} color="#5E4360"/>
+                        <Setting show={visibleSetting} onHide={() => setVisibleSetting(false)}/>
+                    </Pressable>
+                    <Pressable style={styles.accordion}>
+                        <MaterialIcons name="payment" size={30} color="#F4CA16"/>
+                        <Text style={styles.accordion_title}>Payment Setting</Text>
+                        <AntDesign name="rightcircle" size={24} color="#F4CA16"/>
+                    </Pressable>
+                    <Pressable style={styles.accordion} onPress={() => logOut()}>
+                        <AntDesign name="login" size={30} color="#DC5678"/>
+                        <Text style={styles.accordion_title}>Log Out</Text>
+                        <AntDesign name="rightcircle" size={24} color="#DC5678"/>
+                    </Pressable>
+
+                </ScrollView>
+            }
         </View>
     );
 };
@@ -130,8 +153,8 @@ const styles = StyleSheet.create(
         },
         container: {
             marginTop: 10,
-            borderTopRightRadius: 40,
-            borderTopLeftRadius: 40,
+            borderTopRightRadius: 25,
+            borderTopLeftRadius: 25,
             backgroundColor: '#505050',
             height: '100%'
         },

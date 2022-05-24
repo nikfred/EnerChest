@@ -1,15 +1,16 @@
 import axios from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const $host = axios.create({
     baseURL: 'http://34.118.89.28:5000/'
 })
 
 const $authHost = axios.create({
-    baseURL: process.env.REACT_APP_API_URL
+    baseURL: 'http://34.118.89.28:5000/'
 })
 
-const authInterceptor = config => {
-    config.headers.authorization = `Bearer ${localStorage.getItem('accessToken')} `
+const authInterceptor = async (config) => {
+    config.headers.authorization = `Bearer ${await AsyncStorage.getItem('accessToken')} `
     return config
 }
 
