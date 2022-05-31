@@ -2,17 +2,35 @@ import React, {useState} from 'react';
 import {Pressable, SafeAreaView, StyleSheet, Text} from "react-native";
 import {AntDesign} from "@expo/vector-icons";
 import {COLORS} from "../utils/consts";
+import {useDispatch, useSelector} from "react-redux";
+import {fetchDispensersWithProduct} from "../http/dispenserAPI";
+import {setDispensersInfoAction, setProductAction} from "../store/productReducer";
 
-const BuyControl = ({onPress}) => {
+const BuyControl = ({onHide, quantityAll = 0, quantityFree = 0, navigate}) => {
 
+    const dispatch = useDispatch()
+    const {dispenser, product} = useSelector(state => state.product)
     const [quantity, setQuantity] = useState(1)
 
+    const checkMin = () => quantity === 1
+    const checkMax = () => quantity >= quantityFree
+
+    const onPress = () => {
+        fetchDispensersWithProduct(product.id).then(data => {
+
+            onHide()
+            dispatch(setProductAction(product))
+            dispatch(setDispensersInfoAction(data?.filter(i => i.status)))
+            navigate("Maps")
+        })
+    }
+
     const decrement = () => {
-        if (quantity > 0) setQuantity(quantity - 1)
+        if (!checkMin()) setQuantity(quantity - 1)
     }
 
     const increment = () => {
-        setQuantity(quantity + 1)
+        if (!checkMax()) setQuantity(quantity + 1)
     }
 
     return (
@@ -20,17 +38,28 @@ const BuyControl = ({onPress}) => {
 
             <SafeAreaView style={styles.quantity}>
                 <Pressable onPress={decrement}>
-                    <AntDesign name="minuscircle" size={36} color={COLORS.green} />
+                    <AntDesign name="minuscircle" size={36} color={checkMin() ? COLORS.gray : COLORS.green} />
                 </Pressable>
                 <Text style={styles.buttonText}>{quantity}</Text>
                 <Pressable onPress={increment}>
-                    <AntDesign name="pluscircle" size={36} color={COLORS.green} />
+                    <AntDesign name="pluscircle" size={36} color={checkMax() ? COLORS.gray : COLORS.green} />
                 </Pressable>
             </SafeAreaView>
+            {dispenser &&
+                <Text>{quantityFree}/{quantityAll}</Text>
+            }
 
-            <Pressable style={styles.button} onPress={onPress}>
-                <Text style={styles.buttonText}>Add to Cart</Text>
-            </Pressable>
+            {dispenser
+                ?
+                <Pressable style={styles.button} onPress={onHide}>
+                    <Text style={styles.buttonText}>Add to Cart</Text>
+                </Pressable>
+                :
+                <Pressable style={styles.button} onPress={onPress}>
+                    <Text style={styles.buttonText}>Select Dispenser</Text>
+                </Pressable>
+            }
+
         </SafeAreaView>
     );
 };

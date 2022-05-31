@@ -5,8 +5,8 @@ import {useDispatch, useSelector} from "react-redux";
 
 const CustomCallout = ({dispenser}) => {
 
-    const dispatch = useDispatch()
     const isSelect = useSelector(state => state.product.dispenser?._id) === dispenser?._id
+    const dispenserInfo = useSelector(state => state.product.dispensersInfo?.filter(i => i.dispenser_id === dispenser._id)[0])
 
     return (
         <View style={styles.container}>
@@ -21,7 +21,9 @@ const CustomCallout = ({dispenser}) => {
                     </View>
                     :
                     <View style={styles.button}>
-                        <Text style={{color: COLORS.white}}>Select</Text>
+                        <Text style={{color: COLORS.white}}>
+                            Select {dispenserInfo && `${dispenserInfo.quantityFree}/${dispenserInfo.quantityAll}`}
+                        </Text>
                     </View>
                 }
 

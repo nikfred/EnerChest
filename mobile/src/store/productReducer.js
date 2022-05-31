@@ -1,6 +1,11 @@
 const defaultState = {
     products: [],
+    product: {},
+    modalVisible: false,
+
     dispenser: null,
+    dispensersInfo: [],
+
     sizes: [],
     startSize: 0,
     finishSize: 0,
@@ -10,24 +15,38 @@ const defaultState = {
     actual: false,
 }
 
-const ADD_PRODUCTS = 'ADD_PRODUCTS'
-const SET_DISPENSER = 'SET_DISPENSER'
-const SET_SIZES = 'SET_SIZES'
-const SET_START_SIZE = 'SET_START_SIZE'
-const SET_FINISH_SIZE = 'SET_FINISH_SIZE'
-const SET_BRANDS = 'SET_BRANDS'
-const ADD_BRAND = 'ADD_BRAND'
-const DELETE_BRAND = 'DELETE_BRAND'
-const REMOVE_BRANDS = 'REMOVE_BRANDS'
-const REMOVE_FILTERS = 'REMOVE_FILTERS'
+const ADD_PRODUCTS          = 'ADD_PRODUCTS'
+const SET_PRODUCT           = 'SET_PRODUCT'
+const SET_MODAL_VISIBLE     = 'SET_MODAL_VISIBLE'
+
+const SET_DISPENSER         = 'SET_DISPENSER'
+const SET_DISPENSERS_INFO   = 'SET_DISPENSERS_INFO'
+
+const SET_SIZES             = 'SET_SIZES'
+const SET_START_SIZE        = 'SET_START_SIZE'
+const SET_FINISH_SIZE       = 'SET_FINISH_SIZE'
+const SET_BRANDS            = 'SET_BRANDS'
+const ADD_BRAND             = 'ADD_BRAND'
+const DELETE_BRAND          = 'DELETE_BRAND'
+const REMOVE_BRANDS         = 'REMOVE_BRANDS'
+const REMOVE_FILTERS        = 'REMOVE_FILTERS'
 
 export const productReducer = (state = defaultState, action) => {
     switch (action.type) {
         case ADD_PRODUCTS:
             return {...state, products: action.payload, actual: true}
 
+        case SET_PRODUCT:
+            return {...state, product: action.payload}
+
+        case SET_MODAL_VISIBLE:
+            return {...state, modalVisible: action.payload}
+
         case SET_DISPENSER:
             return {...state, dispenser: action.payload, actual: false}
+
+        case SET_DISPENSERS_INFO:
+            return {...state, dispensersInfo: action.payload}
 
         case SET_SIZES:
             return {
@@ -83,7 +102,12 @@ export const productReducer = (state = defaultState, action) => {
 }
 
 export const addProductsAction = (payload) => ({type: ADD_PRODUCTS, payload})
+export const setProductAction = (payload) => ({type: SET_PRODUCT, payload})
+export const setModalVisibleAction = (payload) => ({type: SET_MODAL_VISIBLE, payload})
+
 export const setDispenserAction = (payload) => ({type: SET_DISPENSER, payload})
+export const setDispensersInfoAction = (payload) => ({type: SET_DISPENSERS_INFO, payload})
+
 export const setSizesAction = (payload) => ({type: SET_SIZES, payload})
 export const setStartSizeAction = (payload) => ({type: SET_START_SIZE, payload})
 export const setFinishSizeAction = (payload) => ({type: SET_FINISH_SIZE, payload})

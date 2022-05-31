@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, Image, StyleSheet, Text, View, ScrollView, Pressable} from 'react-native';
+import {StyleSheet, Text, View, ScrollView, Pressable} from 'react-native';
 import {useSelector} from "react-redux";
 import {COLORS} from "../utils/consts";
 import ProductItem from "../components/ProductItem";
@@ -19,13 +19,13 @@ const Catalog = ({ navigation: {navigate}}) => {
                         <Text style={styles.text}>{dispenser ? dispenser.address : 'Select dispenser'}</Text>
                     </Pressable>
                     {products1.map((product) =>
-                        <ProductItem product={product} key={product.id}/>
+                        <ProductItem product={product} key={product.id} navigate={navigate}/>
                     )}
                 </View>
 
                 <View style={styles.colum}>
                     {products2.map((product) =>
-                        <ProductItem product={product} key={product.id}/>
+                        <ProductItem product={product} key={product.id} navigate={navigate}/>
                     )}
                 </View>
             </View>
