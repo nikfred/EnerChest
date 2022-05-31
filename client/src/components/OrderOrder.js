@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {fetchAllOrders} from "../http/statsAPI";
 import {Accordion, Pagination, Table} from "react-bootstrap";
 
-const AllOrder = () => {
+const OrderOrder = () => {
 
     const [allOrders, setAllOrders] = useState([])
 
@@ -38,4 +38,4 @@ const AllOrder = () => {
     );
 };
 
-export default AllOrder;
+export default OrderOrder;

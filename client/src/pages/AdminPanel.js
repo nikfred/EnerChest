@@ -3,7 +3,7 @@ import {Button, Col, Container, Row} from "react-bootstrap";
 import AddProduct from "../components/modals/addProduct";
 import AddToDispenser from "../components/modals/addToDispenser";
 import Monitoring from "../components/Monitoring";
-import AllOrder from "../components/AllOrder";
+import OrderOrder from "../components/OrderOrder";
 
 
 const AdminPanel = () => {
@@ -28,8 +28,8 @@ const AdminPanel = () => {
                 <Col md={10} className="d-flex justify-content-center mt-4">
                     <Container>
                     <div className="mt-2 align-items-center "
-                         style={{ height: '110 %', background: "#C4C4C4", borderRadius: '10px', padding:" 10px 10px 10px 10px"}}>
-                        <div style={{width:"100 %", background: 'purple', fontSize:'30px', color:"white", textAlign:"center", fontFamily: 'Bebas Neue'}}>
+                         style={{ height: '110 %', background: "#C4C4C4", borderRadius: '10px'}}>
+                        <div style={{width:"100 %", background: 'purple', borderRadius: '10px 10px 0 0', fontSize:'30px', color:"white", textAlign:"center", fontFamily: 'Bebas Neue'}}>
                             {page}
                         </div>
                         {page === 'Add Product' ?
@@ -37,7 +37,7 @@ const AdminPanel = () => {
                             : page === 'Add To Dispenser' ?
                                 <AddToDispenser/>
                                 : page === 'All Order' ?
-                                    <AllOrder/>
+                                    <OrderOrder/>
                                     : page === 'Monitoring' ?
                                         <Monitoring/>
                                         : 'SELECT PARAM'

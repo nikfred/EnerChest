@@ -1,19 +1,16 @@
 import React, {useEffect, useState} from 'react';
 import {Card, Col, Container, Row, Table} from "react-bootstrap";
 import {statsDispensers, statsOrder, statsProduct} from "../http/statsAPI";
-import data from "bootstrap/js/src/dom/data";
-import ProductItem from "./ProductItem";
 import Image from "react-bootstrap/Image";
-import {PRODUCT_ROUTE} from "../utils/consts";
+import StatsOrder from "./StatsOrder";
+
 
 const Monitoring = () => {
 
-    const [orderStats, setOrderStats] = useState({})
     const [dispenserStats, setDispenserStats] = useState([])
     const [productStats, setProductStats] = useState([])
 
     useEffect(() => {
-        statsOrder().then(data => setOrderStats(data))
         statsDispensers().then(data => setDispenserStats(data))
         statsProduct().then(data => setProductStats(data))
     }, [])
@@ -24,36 +21,7 @@ const Monitoring = () => {
             <Container>
                 <Row className='d-flex justify-content-between'>
                     <Col md={4} style={{background:'#C4C4C4'}}>
-                        <div style={{
-                            width: '100%',
-                            background: 'purple',
-                            fontFamily: 'Bebas Neue',
-                            fontSize: '20px',
-                            color: 'white'
-                        }} className='mt-2 align-items-center'>
-                            STATS
-                        </div>
-                        <Table striped bordered hover size='sm'>
-                            <tbody>
-                            <tr>
-                                <th>Complete Total</th>
-                                <th>{orderStats.completeTotal} UAH</th>
-                            </tr>
-
-                            <tr>
-                                <th>Complete Count</th>
-                                <th>{orderStats.completeCount}</th>
-                            </tr>
-                            <tr>
-                                <th>Cancel Total</th>
-                                <th>{orderStats.cancelTotal} UAH</th>
-                            </tr>
-                            <tr>
-                                <th>Cancel Count</th>
-                                <th>{orderStats.cancelCount}</th>
-                            </tr>
-                            </tbody>
-                        </Table>
+                        <StatsOrder/>
                     </Col>
                     <Col md={7} style={{background:'#C4C4C4'}}>
                         <div style={{
@@ -90,11 +58,11 @@ const Monitoring = () => {
                     }} className='mt-2 align-items-center'>
                         PRODUCT
                     </div>
-                    <Col  style={{overflowX: 'scroll', maxWidth: '1000px', background: "#818181"}}>
+                    <Col  style={{overflowX: 'scroll', maxWidth: '100%', background: "#818181"}}>
                             {productStats.map(item =>
                                 <th className='p-3'>
                                     <Card style={{
-                                        width: '250px', cursor: 'pointer', backgroundColor: '#656565',
+                                        width: '200px', cursor: 'pointer', backgroundColor: '#656565',
                                         boxShadow: '0px 3px 15px 1px rgba(0, 0, 0, 0.92) inset'
                                     }} className='mt-3'>
                                         <div className="d-flex justify-content-center">
