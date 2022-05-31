@@ -40,11 +40,11 @@ const BasketBar = () => {
         console.log(removeItem)
         console.log(`tmp = `)
         console.log(tmp)
-        deleteProductFromCard(tmp.id).then()
+        deleteProductFromCard(tmp.item_id).then()
     }
 
     const order = () => {
-        createOrder().then(data => handleClose())
+        createOrder(cartItems[0]?.dispenser_id).then(data => handleClose())
     }
 
     const setItem = () => {

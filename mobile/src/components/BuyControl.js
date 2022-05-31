@@ -5,6 +5,7 @@ import {COLORS} from "../utils/consts";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchDispensersWithProduct} from "../http/dispenserAPI";
 import {setDispensersInfoAction, setProductAction} from "../store/productReducer";
+import {addToCart} from "../http/userAPI";
 
 const BuyControl = ({onHide, quantityAll = 0, quantityFree = 0, navigate}) => {
 
@@ -17,12 +18,15 @@ const BuyControl = ({onHide, quantityAll = 0, quantityFree = 0, navigate}) => {
 
     const onPress = () => {
         fetchDispensersWithProduct(product.id).then(data => {
-
             onHide()
             dispatch(setProductAction(product))
             dispatch(setDispensersInfoAction(data?.filter(i => i.status)))
             navigate("Maps")
         })
+    }
+
+    const buy = () => {
+        addToCart({product_id: product.id ,dispenser_id: dispenser._id, quantity}).then(data => onHide())
     }
 
     const decrement = () => {
@@ -51,7 +55,7 @@ const BuyControl = ({onHide, quantityAll = 0, quantityFree = 0, navigate}) => {
 
             {dispenser
                 ?
-                <Pressable style={styles.button} onPress={onHide}>
+                <Pressable style={styles.button} onPress={buy}>
                     <Text style={styles.buttonText}>Add to Cart</Text>
                 </Pressable>
                 :
