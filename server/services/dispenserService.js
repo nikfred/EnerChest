@@ -46,7 +46,15 @@ class DispenserService {
         return Dispenser.findOneAndUpdate({_id: id}, {status: !dispenser.status}, {new: true})
     }
 
-    async getAllDispenser() {
+    async getOne(id) {
+        const dispenser = await Dispenser.findById(id)
+        if (!dispenser) {
+            throw ApiError.notFound("Dispenser not found")
+        }
+        return dispenser
+    }
+
+    async getAll() {
         return Dispenser.find()
     }
 
@@ -140,6 +148,7 @@ class DispenserService {
                 address: dispenser.address,
                 latitude: dispenser.latitude,
                 longitude: dispenser.longitude,
+                status: dispenser.status,
                 product_id,
                 quantityAll: dispensers[i].quantityAll,
                 quantityFree: dispensers[i].quantityFree

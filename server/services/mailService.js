@@ -14,6 +14,7 @@ class MailService {
     }
 
     async sendActivationMail(to, link){
+        return true
         await this.transporter.sendMail({
             from: process.env.SMTP_USER,
             to,
@@ -51,6 +52,7 @@ class MailService {
     }
 
     async sendUpdatePasswordMail(to, link){
+        return true
         await this.transporter.sendMail({
             from: process.env.SMTP_USER,
             to,

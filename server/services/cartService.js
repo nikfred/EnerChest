@@ -66,6 +66,7 @@ class CartService {
             }
             product = new ProductDto(product)
             product.quantity = cartItem.quantity
+            product.dispenser_id = cartItem.dispenser_id
             products.push(product)
         }
         return {cart, products}

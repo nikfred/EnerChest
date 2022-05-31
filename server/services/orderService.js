@@ -7,10 +7,13 @@ const Dispenser = require('../models/dispenser')
 const DispenserItem = require('../models/dispenserItem')
 const Product = require('../models/product')
 const User = require('../models/user')
+
 const dispenserService = require('../services/dispenserService')
 const productService = require('../services/productService')
 const cartService = require('../services/cartService')
+const numberGenerator = require('../utils/numberGenerator')
 const ApiError = require('../error/ApiError')
+
 const ProductDto = require("../dtos/productDto");
 const OrderDto = require("../dtos/orderDto")
 const OrderUserDto = require("../dtos/orderUserDto")
@@ -20,11 +23,12 @@ const maxTime = 12
 
 const transformationOrder = async (order, addProduct = false, addUser = false) => {
     order._doc.address = (await Dispenser.findById(order.dispenser_id)).address
+    console.log(order)
     if (addUser) {
         const user = await User.findById(order.uid)
         order = new OrderUserDto({...order._doc, ...user._doc, _id: order.id})
     } else {
-        order = new OrderDto(order)
+        order = new OrderDto(order._doc)
     }
     if (addProduct) {
         const orderItems = await OrderItem.find({order_id: order.id})
@@ -59,8 +63,16 @@ class OrderService {
             throw ApiError.notFound("Cart is empty")
         }
 
+        let number
+        do {
+            number = numberGenerator(6)
+            console.log(number)
+            console.log(await Order.findOne({number}))
+        } while (await Order.findOne({number}))
+
         let order = new Order({
             uid,
+            number,
             dispenser_id: cartItems[0].dispenser_id,
             dateCancel: new Date(+new Date() + time * 60 * 60 * 1000)
         })
@@ -96,14 +108,22 @@ class OrderService {
         }
         if (order.total > 0) {
             await order.save()
-            await ReadyOrder.create({_id: order._id, dateCancel: order.dateCancel})
+            await ReadyOrder.create({_id: order._id, dateCancel: order.dateCancel, number})
         }
         return {order, blockedItems}
     }
 
     async getReadyOrder(order_id, uid) {
-        const order = await Order.findById(order_id)
-        if (!order || order.uid.toString().indexOf(uid) === -1 || order.status !== "Ready") {
+        let order
+        if (order_id.length === 6) {
+            order = await Order.findOne({number: +order_id})
+        } else {
+            order = await Order.findById(order_id)
+        }
+
+        console.log(order)
+
+        if (!order || order.status !== "Ready" || uid && order.uid.toString().indexOf(uid) === -1) {
             throw ApiError.notFound("Order not found")
         }
         return order
@@ -112,26 +132,21 @@ class OrderService {
     async completion(order_id, uid) {
         console.log('Complete order: ' + order_id)
         const order = await this.getReadyOrder(order_id, uid)
-        const orderItems = await OrderItem.find({order_id})
+        const orderItems = await OrderItem.find({order_id: order._id})
         for (const orderItem of orderItems) {
             await dispenserService.delivery(order.dispenser_id, orderItem.product_id, orderItem.quantity)
         }
-        return this.deleteReadyOrder(order_id, 'Complete')
+        return this.deleteReadyOrder(order._id, 'Complete')
     }
 
     async canceled(order_id, uid = null) {
         console.log('Cancel order: ' + order_id)
-        let order
-        if (uid) {
-            order = await this.getReadyOrder(order_id, uid)
-        } else {
-            order = await Order.findById(order_id)
-        }
-        const orderItems = await OrderItem.find({order_id})
+        let order = await this.getReadyOrder(order_id, uid)
+        const orderItems = await OrderItem.find({order_id: order._id})
         for (const orderItem of orderItems) {
             await dispenserService.returned(order.dispenser_id, orderItem.product_id, orderItem.quantity)
         }
-        return this.deleteReadyOrder(order_id, 'Cancel')
+        return this.deleteReadyOrder(order._id, 'Cancel')
     }
 
     async deleteReadyOrder(order_id, status = 'Cancel') {
@@ -144,7 +159,6 @@ class OrderService {
     }
 
     async checkReadyOrder() {
-        //console.log('Check Ready Order')
         const orders = await ReadyOrder.find().sort({dateCancel: 'asc'})
         const dateNow = +Date.now()
         for (const order of orders) {

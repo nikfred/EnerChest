@@ -11,6 +11,7 @@ const apiRouter = require("./routes/apiRouter")
 const orderService = require('./services/orderService')
 const dispenserService = require('./services/dispenserService')
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
+const pid = process.pid
 
 const PORT = process.env.PORT || 5000
 
@@ -42,7 +43,7 @@ start = async () => {
     try {
         await mongoose.connect(process.env.MONGO_URL)
         job.start();
-        app.listen(PORT, () => console.log('Server start on port ' + PORT))
+        app.listen(PORT, () => console.log(`Server start on port = ${PORT}, pid = ${pid}`))
     } catch (e) {
         console.log(e)
     }

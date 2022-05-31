@@ -11,6 +11,10 @@ const orderSchema = new mongoose.Schema({
         ref: 'Dispenser',
         required: true
     },
+    number: {
+        type: Number,
+        unique: true
+    },
     total: {
         type: mongoose.Types.Decimal128,
         default: 0

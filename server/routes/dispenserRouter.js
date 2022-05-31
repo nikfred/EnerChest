@@ -13,8 +13,9 @@ router.post('/create', ...staff, dispenserController.create)
 router.put('/status/:dispenser_id', ...staff, dispenserController.updateStatus)
 router.put('/:dispenser_id', ...staff, dispenserController.updateDispenser)
 router.post('/add',...staff, dispenserController.addProduct)
-router.get('/all', checkCacheMiddleware, dispenserController.getAllDispenser, saveCacheMiddleware)
+router.get('/all', checkCacheMiddleware, dispenserController.getAll, saveCacheMiddleware)
+router.get('/:dispenser_id', checkCacheMiddleware, dispenserController.getOne, saveCacheMiddleware)
 router.get('/product/:product_id', checkCacheMiddleware, dispenserController.getDispensersWithProduct, saveCacheMiddleware)
-router.get('/:dispenser_id', checkCacheMiddleware, dispenserController.getProducts, saveCacheMiddleware)
+router.get('/filling/:dispenser_id', checkCacheMiddleware, dispenserController.getProducts, saveCacheMiddleware)
 
 module.exports = router

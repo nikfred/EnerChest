@@ -53,9 +53,20 @@ class DispenserController {
         }
     }
 
-    async getAllDispenser(req, res, next) {
+    async getOne(req, res, next) {
         try {
-            res.body = await dispenserService.getAllDispenser()
+            const {dispenser_id} = req.params
+            res.body = await dispenserService.getOne(dispenser_id)
+            next()
+        } catch (e) {
+            console.log(e)
+            next(e)
+        }
+    }
+
+    async getAll(req, res, next) {
+        try {
+            res.body = await dispenserService.getAll()
             next()
         } catch (e) {
             console.log(e)

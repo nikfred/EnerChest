@@ -2,7 +2,7 @@ module.exports = class UserDto{
     email;
     id;
     isActivated;
-    role;;
+    role;
 
     constructor(model) {
         this.email = model.email;
