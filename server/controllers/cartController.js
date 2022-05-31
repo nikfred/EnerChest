@@ -30,11 +30,11 @@ class CartController {
         }
     }
 
-    async deleteProduct(req, res, next){
+    async deleteItem(req, res, next){
         try {
             const {id} = req.user
-            let {product_id} = req.params
-            const cart = await cartService.deleteProduct(product_id, id)
+            let {item_id} = req.params
+            const cart = await cartService.deleteItem(item_id, id)
             return res.json(cart)
         } catch (e) {
             console.log(e)

@@ -50,7 +50,7 @@ class CartService {
         return cart
     }
 
-    async getCart (uid) {
+    async getCart(uid) {
         const cart = await Cart.findOne({uid})
         if (!cart) {
             throw ApiError.notFound("Cart not found")
@@ -65,6 +65,7 @@ class CartService {
                 throw ApiError.notFound("Product not found")
             }
             product = new ProductDto(product)
+            product.item_id = cartItem._id
             product.quantity = cartItem.quantity
             product.dispenser_id = cartItem.dispenser_id
             products.push(product)
@@ -72,27 +73,28 @@ class CartService {
         return {cart, products}
     }
 
-    async deleteProduct(product_id, uid) {
-        const product = await Product.findById(product_id)
+    async deleteItem(id, uid) {
         let cart = await Cart.findOne({uid})
         if (!cart) {
             throw ApiError.notFound("Cart not found")
         }
 
-        const cartItem = await CartItem.findOne({cart_id: cart._id, product_id})
+        const cartItem = await CartItem.findById(id)
         if (!cartItem) {
             throw ApiError.notFound("Cart Item not found")
         }
 
-        cart = await Cart.findOneAndUpdate(
+        const product = await Product.findById(cartItem.product_id)
+
+        await Cart.updateOne(
             {_id: cart._id},
             {
                 total: +(cart.total - product.price * cartItem.quantity),
                 quantity: +(cart.quantity - cartItem.quantity)
             },
-            {new: true, upsert: true}
+            {upsert: true}
         )
-        return CartItem.findOneAndDelete({cart_id: cart._id, product_id})
+        return CartItem.deleteOne({_id: id})
     }
 }
 

@@ -49,7 +49,7 @@ const transformationOrder = async (order, addProduct = false, addUser = false) =
 }
 
 class OrderService {
-    async create(uid, time = minTime) {
+    async create(uid, dispenser_id, time = minTime) {
         time =
             time <= minTime
                 ? minTime
@@ -58,7 +58,7 @@ class OrderService {
                     : time
 
         let cart = await Cart.findOne({uid})
-        const cartItems = await CartItem.find({cart_id: cart._id})
+        const cartItems = await CartItem.find({cart_id: cart._id, dispenser_id})
         if (cartItems.length === 0) {
             throw ApiError.notFound("Cart is empty")
         }
@@ -66,23 +66,22 @@ class OrderService {
         let number
         do {
             number = numberGenerator(6)
-            console.log(number)
-            console.log(await Order.findOne({number}))
         } while (await Order.findOne({number}))
 
         let order = new Order({
             uid,
             number,
-            dispenser_id: cartItems[0].dispenser_id,
+            dispenser_id,
             dateCancel: new Date(+new Date() + time * 60 * 60 * 1000)
         })
-        const dispenserItems = await DispenserItem.find({dispenser_id: order.dispenser_id})
+        const dispenserItems = await DispenserItem.find({dispenser_id})
         let blockedItems = []
         let product, dispenserItem
         for (const cartItem of cartItems) {
-            if (order.dispenser_id.toString() === cartItem.dispenser_id.toString()) {
+            if (dispenser_id.toString() === cartItem.dispenser_id.toString()) {
                 dispenserItem = dispenserItems
                     .filter(i => i.product_id.toString() === cartItem.product_id.toString())[0]
+
                 if (+dispenserItem.quantityFree >= +cartItem.quantity) {
                     product = await Product.findById(cartItem.product_id)
                     order.total = +order.total + product.price * +cartItem.quantity
@@ -95,10 +94,10 @@ class OrderService {
                     })
 
                     // product booking
-                    await dispenserService.reservation(order.dispenser_id, cartItem.product_id, cartItem.quantity)
+                    await dispenserService.reservation(dispenser_id, cartItem.product_id, cartItem.quantity)
 
                     // delete product from cart
-                    await cartService.deleteProduct(product._id, uid)
+                    await cartService.deleteItem(cartItem._id, uid)
                 } else {
                     blockedItems.push(cartItem._doc)
                 }
@@ -110,7 +109,7 @@ class OrderService {
             await order.save()
             await ReadyOrder.create({_id: order._id, dateCancel: order.dateCancel, number})
         }
-        return {order, blockedItems}
+        return order
     }
 
     async getReadyOrder(order_id, uid) {
@@ -195,6 +194,7 @@ class OrderService {
         )
         let orders = []
         for (const rawOrder of rawOrders) {
+
             orders.push(await transformationOrder(rawOrder, false, true))
         }
         return orders

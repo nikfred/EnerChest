@@ -5,8 +5,11 @@ class OrderController {
     async create(req, res, next){
         try {
             const {id} = req.user
-            const {time} = req.body
-            const order = await orderService.create(id, time)
+            const {time, dispenser_id} = req.body
+            if (!dispenser_id) {
+                return next(ApiError.badRequest('dispenser_id is missing'))
+            }
+            const order = await orderService.create(id, dispenser_id, time)
             return res.json(order)
         } catch (e) {
             console.log(e)
