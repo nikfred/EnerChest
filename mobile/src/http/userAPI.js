@@ -19,12 +19,12 @@ export const login = async (email, password) => {
 }
 
 export const check = async () => {
-    const refreshToken = await AsyncStorage.getItem('refreshToken')?.toString() || ""
-    const {data} = await axios.post(process.env.REACT_APP_API_URL + 'api/user/refresh', {refreshToken: refreshToken})
-    console.log(data)
-    await AsyncStorage.setItem('accessToken', data.accessToken)
-    await AsyncStorage.setItem('refreshToken', data.refreshToken)
-    return jwt_decode(data.accessToken)
+    const refreshToken = await AsyncStorage.getItem('refreshToken') || ""
+    console.log(await AsyncStorage.getItem('refreshToken'))
+    const data = await axios.post('http://34.118.89.28:5000/api/user/refresh', { refreshToken: refreshToken })
+    await AsyncStorage.setItem('accessToken', data.data.accessToken)
+    await AsyncStorage.setItem('refreshToken', data.data.refreshToken)
+    return jwt_decode(data.data.accessToken)
 }
 
 export const fetchUser = async () => {

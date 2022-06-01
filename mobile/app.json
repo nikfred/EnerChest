@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "EnerChest",
-    "slug": "EnerChest",
+    "name": "mobile",
+    "slug": "mobile",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,8 +23,7 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      },
-      "package": "EnerChest.apk"
+      }
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -7,8 +7,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject",
-    "debug": "run 'rndebugger://set-debugger-loc?host=localhost&port=8081'"
+    "eject": "expo eject"
   },
   "dependencies": {
     "@expo-google-fonts/bebas-neue": "^0.2.2",
@@ -38,8 +37,7 @@
     "react-redux": "^7.2.8",
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.9",
-    "remote-redux-devtools": "^0.5.16",
-    "expo-updates": "~0.11.7"
+    "redux-thunk": "^2.4.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
