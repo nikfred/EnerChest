@@ -5,7 +5,7 @@ import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 import {AntDesign} from "@expo/vector-icons";
 import {COLORS} from "../utils/consts";
 import Shop from "../screens/Shop";
-import Basket from "../screens/Basket";
+import Basket from "../screens/Basket/Basket";
 import Orders from "../screens/Orders";
 import Account from "../screens/Account";
 import {createStackNavigator} from "@react-navigation/stack";

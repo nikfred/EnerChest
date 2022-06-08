@@ -45,7 +45,7 @@ export const logout = async () =>{
 
 export const fetchCart = async () => {
     const {data} = await $authHost.get('api/cart')
-    console.log(data)
+    // console.log(data)
     return data
 }
 

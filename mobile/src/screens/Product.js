@@ -11,7 +11,6 @@ const Product = ({product}) => {
                     <Text style={styles.info}>{product.size}</Text>
                     <Text style={styles.info}>{product.price} UAH</Text>
                 </View>
-
                 <Text style={styles.description}>{product.description}</Text>
             </SafeAreaView>
         </View>
