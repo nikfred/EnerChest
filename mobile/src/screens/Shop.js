@@ -8,30 +8,12 @@ import {COLORS} from "../utils/consts";
 import {useDispatch, useSelector} from "react-redux";
 import {addProductsAction, setBrandsAction, setSizesAction} from "../store/productReducer";
 
-const Tab = createMaterialTopTabNavigator();
+const Top = createMaterialTopTabNavigator();
 
 const Shop = () => {
 
-    const dispatch = useDispatch()
-    const {actual, dispenser, selectedBrands, selectedSizes} = useSelector(state => state.product)
-
-    useEffect(() => {
-        fetchBrands().then(data =>
-            dispatch(setBrandsAction(data))).catch(e => console.log(e))
-        fetchSize().then(data =>
-            dispatch(setSizesAction(data.map(i => i.value).sort()))).catch(e => console.log(e))
-    }, [false])
-
-    useEffect(() => {
-        if (!actual) {
-            fetchProduct(selectedBrands, selectedSizes, dispenser?._id, 1, 16).then(data => {
-                dispatch(addProductsAction(data.products))
-            })
-        }
-    }, [actual, selectedBrands, selectedSizes])
-
     return (
-        <Tab.Navigator
+        <Top.Navigator
             initialRouteName="Catalog"
             screenOptions={{
                 tabBarActiveTintColor: COLORS.green,
@@ -44,10 +26,10 @@ const Shop = () => {
                     backgroundColor: COLORS.black
                 },
             }}>
-            <Tab.Screen name="Filters" component={Filters}/>
-            <Tab.Screen name="Catalog" component={Catalog}/>
-            <Tab.Screen name="Maps" component={Maps}/>
-        </Tab.Navigator>
+            <Top.Screen name="Filters" component={Filters}/>
+            <Top.Screen name="Catalog" component={Catalog}/>
+            <Top.Screen name="Maps" component={Maps}/>
+        </Top.Navigator>
 
     );
 };

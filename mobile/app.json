@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "mobile",
-    "slug": "mobile",
+    "name": "EnerChest",
+    "slug": "EnerChest",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -24,12 +24,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.sktshnick.mobile",
-      "config": {
-        "googleMaps": {
-          "apiKey": "AIzaSyDUsjfEhSrUKaMwc3Wq_GQ6ktVvqnkJ4As"
-        }
-      }
+      "package": "EnerChest.apk"
     },
     "web": {
       "favicon": "./assets/favicon.png"

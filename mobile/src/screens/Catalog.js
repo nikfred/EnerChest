@@ -1,13 +1,25 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {StyleSheet, Text, View, ScrollView, Pressable} from 'react-native';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {COLORS} from "../utils/consts";
 import ProductItem from "../components/ProductItem";
+import {fetchProduct} from "../http/productAPI";
+import {addProductsAction} from "../store/productReducer";
 
 const Catalog = ({ navigation: {navigate}}) => {
     const products1 = useSelector(state => state.product.products.filter((_, index) => index % 2 !== 0))
     const products2 = useSelector(state => state.product.products.filter((_, index) => index % 2 === 0))
-    const dispenser = useSelector(state => state.product.dispenser)
+    // const dispenser = useSelector(state => state.product.dispenser)
+    const dispatch = useDispatch()
+    const {actual, dispenser, selectedBrands, selectedSizes} = useSelector(state => state.product)
+
+    useEffect(() => {
+        if (!actual) {
+            fetchProduct(selectedBrands, selectedSizes, dispenser?._id, 1, 16).then(data => {
+                dispatch(addProductsAction(data.products))
+            })
+        }
+    }, [actual, selectedBrands, selectedSizes])
 
 
     return (
