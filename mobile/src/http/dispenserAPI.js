@@ -16,6 +16,11 @@ export const addToDispenser = async (product) => {
     return data
 }
 
+export const fetchDispenser = async (id) => {
+    const {data} = await $host.get('api/dispenser/' + id)
+    return data
+}
+
 
 
 

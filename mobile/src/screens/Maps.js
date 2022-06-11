@@ -87,7 +87,7 @@ const Maps = ({navigation: {navigate}}) => {
         // dispatch(setDispenserAction([]))
     }
 
-    const [elRefs, setElRefs] = React.useState([]);
+    const [elRefs, setElRefs] = useState([]);
     const arrLength = dispensers.length
 
     useEffect(() => {
@@ -184,9 +184,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
-    map: {
+    maps: {
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
+    },
+    map: {
+        width: 500,
+        height: 700,
     },
     control: {
         position: "absolute",

@@ -19,12 +19,12 @@ export const login = async (email, password) => {
 }
 
 export const check = async () => {
-    const refreshToken = await AsyncStorage.getItem('refreshToken')?.toString() || ""
-    const {data} = await axios.post(process.env.REACT_APP_API_URL + 'api/user/refresh', {refreshToken: refreshToken})
-    console.log(data)
-    await AsyncStorage.setItem('accessToken', data.accessToken)
-    await AsyncStorage.setItem('refreshToken', data.refreshToken)
-    return jwt_decode(data.accessToken)
+    const refreshToken = await AsyncStorage.getItem('refreshToken') || ""
+    console.log(await AsyncStorage.getItem('refreshToken'))
+    const data = await axios.post('http://34.118.89.28:5000/api/user/refresh', { refreshToken: refreshToken })
+    await AsyncStorage.setItem('accessToken', data.data.accessToken)
+    await AsyncStorage.setItem('refreshToken', data.data.refreshToken)
+    return jwt_decode(data.data.accessToken)
 }
 
 export const fetchUser = async () => {
@@ -45,11 +45,12 @@ export const logout = async () =>{
 
 export const fetchCart = async () => {
     const {data} = await $authHost.get('api/cart')
-    console.log(data)
+    // console.log(data)
     return data
 }
 
 export const addToCart = async (cartItem) => {
+    console.log(cartItem)
     const {data} = await $authHost.post('api/cart/add', cartItem)
     console.log(data)
     return data
@@ -61,7 +62,12 @@ export const deleteItemFromCard = async (id) => {
 }
 
 export const updateUser = async (user) =>{
-    const {data} = await $authHost.put('api/user', user)
+    const {data} = await $authHost.put('api/user', {user}, {
+        headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+    )
     return data
 }
 
