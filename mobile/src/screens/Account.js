@@ -6,7 +6,8 @@ import {COLORS} from "../utils/consts";
 import {useDispatch, useSelector} from "react-redux";
 import Auth from "./Auth";
 import {fetchUser, logout} from "../http/userAPI";
-import {setAdminAction, setAuthAction, setUserAction} from "../store/userReducer";
+import {setAdminAction, setAuthAction, setProfileAction, setUserAction} from "../store/userReducer";
+import EditProfile from "../components/EditProfile";
 
 const Account = ({ navigation: {navigate}}) => {
     const [contact, setContact] = useState(true)
@@ -14,17 +15,19 @@ const Account = ({ navigation: {navigate}}) => {
     const [circleContact, setCircleContact] = useState("downcircle")
     const [circleInfo, setCircleInfo] = useState("downcircle")
     const [visibleSetting, setVisibleSetting] = useState(false)
-    const [profile, setProfile] = useState(' ')
+    const [visibleEditProfile, setVisibleEditProfile] = useState(false)
 
     const dispatch = useDispatch()
     const login = useSelector(state => state.user.isAuth)
+    const profile = useSelector(state => state.user.profile)
 
 
     useEffect(() => {
         fetchUser().then(data => {
-            setProfile(data)
+            dispatch(setProfileAction(data))
+            console.log(data)
         })
-    }, [])
+    }, [false])
 
     const logOut = () => {
         logout().then(r => console.log(r))
@@ -107,10 +110,11 @@ const Account = ({ navigation: {navigate}}) => {
                                                                                            color="#50C878"/> {profile.gender}
                         </Text>
                     </View>
-                    <Pressable style={styles.accordion}>
+                    <Pressable style={styles.accordion} onPress={() => setVisibleEditProfile(!visibleEditProfile)}>
                         <AntDesign name="edit" size={30} color="#318CE7"/>
                         <Text style={styles.accordion_title}>Edit profile</Text>
                         <AntDesign name="rightcircle" size={24} color="#318CE7"/>
+                        <EditProfile show={visibleEditProfile} onHide={() => setVisibleEditProfile(false)}/>
                     </Pressable>
                     <Pressable style={styles.accordion} onPress={() => setVisibleSetting(!visibleSetting)}>
                         <AntDesign name="setting" size={30} color="#5E4360"/>

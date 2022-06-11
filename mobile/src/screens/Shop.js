@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet} from 'react-native';
+import React, {useEffect} from 'react';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {fetchBrands, fetchProduct, fetchSize} from "../http/productAPI";
 import Catalog from "./Catalog";

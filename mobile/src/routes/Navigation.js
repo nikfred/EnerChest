@@ -11,6 +11,7 @@ import Account from "../screens/Account";
 import {createStackNavigator} from "@react-navigation/stack";
 import {ScrollView} from "react-native-gesture-handler";
 import {useDispatch, useSelector} from "react-redux";
+import Maps from "../screens/Maps";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -60,10 +61,10 @@ export const  Bottom = () => {
                 backgroundColor: COLORS.black,
             },
         })}>
-        <Tab.Screen name="Account" component={Account}/>
         <Tab.Screen name="Shop" component={Shop}/>
         <Tab.Screen name="Basket" component={Basket}/>
         <Tab.Screen name="Orders" component={Orders}/>
+        <Tab.Screen name="Account" component={Account}/>
     </Tab.Navigator>
     )
 }
