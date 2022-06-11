@@ -51,9 +51,9 @@ class CartService {
     }
 
     async getCart(uid) {
-        const cart = await Cart.findOne({uid})
+        let cart = await Cart.findOne({uid})
         if (!cart) {
-            throw ApiError.notFound("Cart not found")
+            cart = await Cart.create({uid})
         }
 
         const cartItems = await CartItem.find({cart_id: cart._id})

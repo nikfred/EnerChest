@@ -23,7 +23,6 @@ class UserService {
         const activationLink = uuid.v4()
 
         user = await User.create({...userData, password: hashPassword, activationLink})
-        await mailService.sendActivationMail(userData.email, `${process.env.API_URL}/api/user/activate/${activationLink}`)
 
         const userDto = new UserDto(user)
         const tokens = tokenService.generateTokens({...userDto})
@@ -33,6 +32,8 @@ class UserService {
         console.log(userDto)
         const cart = await Cart.create({uid: user._id})
         console.log("New Cart: " + cart)
+
+        await mailService.sendActivationMail(userData.email, `${process.env.API_URL}/api/user/activate/${activationLink}`)
 
         return {...tokens, user: userDto}
     }
