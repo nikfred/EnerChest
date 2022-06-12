@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     },
     totalPricePerUnit: {
         fontSize: 17,
-        color: COLORS.yellow
+        color: COLORS.black
     },
     addressWrapperBase: {
         width: '100%',
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.red,
     },
     addressText: {
-        color: COLORS.yellow,
+        color: COLORS.black,
         fontSize: 22,
     },
     dateWrapper: {

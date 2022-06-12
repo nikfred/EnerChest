@@ -26,6 +26,7 @@ const routers = {
 const Navigation = () => {
     const login = useSelector(state => state.user.isAuth)
     return (
+        <NavigationContainer theme={{colors:{background: COLORS.black}}}>
         <Stack.Navigator
             screenOptions={{
                 headerShown: false,
@@ -39,6 +40,7 @@ const Navigation = () => {
                 <Stack.Screen name={'Bottom'} component={Bottom}/>
             }
         </Stack.Navigator>
+        </NavigationContainer>
     );
 };
 
