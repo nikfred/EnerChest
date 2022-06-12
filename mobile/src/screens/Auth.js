@@ -10,10 +10,10 @@ import RNDateTimePicker from "@react-native-community/datetimepicker";
 
 
 const Auth = () => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
+    const [email, setEmail] = useState('shmara@gmail.ua')
+    const [password, setPassword] = useState('1234567890')
     const [check, setCheck] = useState(true)
-    const [show, setShow] = useState(false);
+    const [show, setShow] = useState(false)
     const [isLogin, setIsLogin] = useState(true)
     const [phone, setPhone] = useState('')
     const [firstname, setFirstname] = useState('')

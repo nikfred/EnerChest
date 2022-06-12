@@ -5,10 +5,18 @@ class MailService {
         this.transporter = nodemailer.createTransport({
             host: process.env.SMTP_HOST,
             port: process.env.SMTP_PORT,
-            secure: false,
+            secure: true,
             auth: {
+                type: "OAuth2",
                 user: process.env.SMTP_USER,
-                pass: process.env.SMTP_PASSWORD
+                clientId: process.env.CLIENT_ID,
+                clientSecret: process.env.CLIENT_SECRET,
+                refreshToken: process.env.REFRESH,
+                accessToken: process.env.ACCESS,
+                expires: 3599,
+            },
+            tls: {
+                rejectUnauthorized: false
             }
         })
     }
@@ -51,12 +59,12 @@ class MailService {
         })
     }
 
-    async sendUpdatePasswordMail(to, link){
+    async sendActivationMail(to, link){
         return true
         await this.transporter.sendMail({
             from: process.env.SMTP_USER,
             to,
-            subject: "Изменение пароля аккаунта в сервисе EnerChest",
+            subject: "Подтверждение аккаунта в сервисе EnerChest",
             text: "",
             html:
                 `
@@ -69,7 +77,7 @@ class MailService {
                 <h1 style="
                     color: #fff;
                     margin: 15px 20px;
-                ">Для подтверждения смены пароля перейдите по ссылке</h1>
+                ">Для активации перейдите по ссылке</h1>
                 <a href="${link}" style="
                     text-decoration: none;
                     display: inline-block;
@@ -86,6 +94,16 @@ class MailService {
                 </div>
                 </center>
                 `
+        })
+    }
+
+    async sendMail(to, text){
+        await this.transporter.sendMail({
+            from: process.env.SMTP_USER,
+            to,
+            subject: "Тестовое сообщение",
+            text
+
         })
     }
 }

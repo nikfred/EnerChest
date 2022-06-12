@@ -10,6 +10,7 @@ const path = require("path")
 const apiRouter = require("./routes/apiRouter")
 const orderService = require('./services/orderService')
 const dispenserService = require('./services/dispenserService')
+const ParseSession = require('./utils/ParseSession')
 const errorHandler = require('./middleware/ErrorHandlingMiddleware')
 const pid = process.pid
 
@@ -29,6 +30,7 @@ app.use('/api', apiRouter)
 app.use(errorHandler)
 
 app.get('/', (req, res) => {
+    console.log(ParseSession(req))
     res.status(200).json('Дмитрий Балабан не сделал фронтенд')
 })
 

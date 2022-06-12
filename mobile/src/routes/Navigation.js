@@ -11,6 +11,7 @@ import Account from "../screens/Account";
 import {createStackNavigator} from "@react-navigation/stack";
 import {ScrollView} from "react-native-gesture-handler";
 import {useDispatch, useSelector} from "react-redux";
+import Maps from "../screens/Maps";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -23,48 +24,45 @@ const routers = {
 }
 
 const Navigation = () => {
-    const dispatch = useDispatch()
     const login = useSelector(state => state.user.isAuth)
     return (
-        <NavigationContainer theme={{colors:{ background: COLORS.black}}}>
-            <Stack.Navigator
-                screenOptions={{
+        <Stack.Navigator
+            screenOptions={{
                 headerShown: false,
                 tabBarStyle: {
                     backgroundColor: COLORS.black,
                 },
             }}>
-                {!login ?
+            {!login ?
                 <Stack.Screen name={'Auth'} component={Auth}/>
-                    :
+                :
                 <Stack.Screen name={'Bottom'} component={Bottom}/>
-                }
-            </Stack.Navigator>
-        </NavigationContainer>
+            }
+        </Stack.Navigator>
     );
 };
 
-export const  Bottom = () => {
-    return(
-    <Tab.Navigator
-        screenOptions={({route}) => ({
-            tabBarIcon: ({focused, color, size}) => {
-                return (
-                    <AntDesign name={routers[route.name]} size={36}
-                               color={focused ? COLORS.green : COLORS.lightgray}/>
-                );
-            },
-            tabBarShowLabel: false,
-            headerShown: false,
-            tabBarStyle: {
-                backgroundColor: COLORS.black,
-            },
-        })}>
-        <Tab.Screen name="Account" component={Account}/>
-        <Tab.Screen name="Shop" component={Shop}/>
-        <Tab.Screen name="Basket" component={Basket}/>
-        <Tab.Screen name="Orders" component={Orders}/>
-    </Tab.Navigator>
+export const Bottom = () => {
+    return (
+        <Tab.Navigator
+            screenOptions={({route}) => ({
+                tabBarIcon: ({focused, color, size}) => {
+                    return (
+                        <AntDesign name={routers[route.name]} size={36}
+                                   color={focused ? COLORS.green : COLORS.lightgray}/>
+                    );
+                },
+                tabBarShowLabel: false,
+                headerShown: false,
+                tabBarStyle: {
+                    backgroundColor: COLORS.black,
+                },
+            })}>
+            <Tab.Screen name="Account" component={Account}/>
+            <Tab.Screen name="Shop" component={Shop}/>
+            <Tab.Screen name="Basket" component={Basket}/>
+            <Tab.Screen name="Orders" component={Orders}/>
+        </Tab.Navigator>
     )
 }
 

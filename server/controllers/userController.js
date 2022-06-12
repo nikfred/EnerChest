@@ -21,7 +21,6 @@ class UserController {
             } else {
                 user = await userService.registration(userData, password)
             }
-            res.cookie('refreshToken', user.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
             return res.json(user)
         } catch (e) {
             next(e)
@@ -42,7 +41,6 @@ class UserController {
         try {
             const {email, password} = req.body
             const user = await userService.login(email, password)
-            res.cookie('refreshToken', user.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
             return res.json(user)
         } catch (e) {
             console.log(e)
@@ -52,7 +50,7 @@ class UserController {
 
     async logout(req, res, next) {
         try {
-            const refreshToken = req.cookies.refreshToken || req.body.refreshToken
+            const refreshToken = req.body.refreshToken
             await userService.logout(refreshToken)
             res.clearCookie('refreshToken')
             return res.status(200)
@@ -64,13 +62,12 @@ class UserController {
 
     async refresh(req, res, next) {
         try {
-            const refreshToken = req.cookies.refreshToken ?? req.body.refreshToken
+            const refreshToken = req.body.refreshToken
             console.log("refreshToken=" + refreshToken)
             if (!refreshToken) {
                 return next(ApiError.unauthorized('Unauthorized'))
             }
             const user = await userService.refresh(refreshToken)
-            res.cookie('refreshToken', user.refreshToken, {maxAge: 30 * 24 * 60 * 60 * 1000, httpOnly: true})
             return res.json(user)
         } catch (e) {
             console.log(e)

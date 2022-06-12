@@ -50,6 +50,7 @@ export const fetchCart = async () => {
 }
 
 export const addToCart = async (cartItem) => {
+    console.log(cartItem)
     const {data} = await $authHost.post('api/cart/add', cartItem)
     console.log(data)
     return data
@@ -61,7 +62,12 @@ export const deleteItemFromCard = async (id) => {
 }
 
 export const updateUser = async (user) =>{
-    const {data} = await $authHost.put('api/user', user)
+    const {data} = await $authHost.put('api/user', {user}, {
+        headers: {
+                'content-type': 'multipart/form-data'
+            }
+        }
+    )
     return data
 }
 
