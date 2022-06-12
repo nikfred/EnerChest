@@ -4,11 +4,11 @@ const SET_DATA = 'SET_DATA'
 const ADD_DISPENSERS = 'ADD_DISPENSERS'
 const DELETE_PRODUCT_SUCCESS = 'DELETE_PRODUCT_SUCCESS'
 
-const defaultState = {
+const initialState = {
     data: {},
     dispensers: [],
 }
-const basketReducer = (state = defaultState, action) => {
+const basketReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_DATA:
             return {

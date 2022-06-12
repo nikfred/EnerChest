@@ -1,5 +1,5 @@
-import React, {createRef, useEffect, useState} from 'react';
-import {Pressable, StyleSheet, Text, View, ScrollView, Button} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Pressable, StyleSheet, Text, View, ScrollView} from 'react-native';
 import {Image} from "react-native";
 import {COLORS} from "../../utils/consts";
 import Svg, {Polygon, Path} from 'react-native-svg';
@@ -12,7 +12,6 @@ import {fetchDispensers} from "../../http/dispenserAPI";
 
 const Basket = () => {
     const dispensers = useSelector(state => state.basket.dispensers)
-    const [basket, setBasket] = useState({})
     const [dispensersData, setDispensersData] = useState([])
     const dispatch = useDispatch()
 
