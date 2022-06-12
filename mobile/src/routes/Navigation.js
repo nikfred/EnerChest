@@ -60,10 +60,10 @@ export const Bottom = () => {
                     backgroundColor: COLORS.black,
                 },
             })}>
-            <Tab.Screen name="Account" component={Account}/>
             <Tab.Screen name="Shop" component={Shop}/>
             <Tab.Screen name="Basket" component={Basket}/>
             <Tab.Screen name="Orders" component={Orders}/>
+            <Tab.Screen name="Account" component={Account}/>
         </Tab.Navigator>
     )
 }

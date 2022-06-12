@@ -6,6 +6,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {fetchDispensersWithProduct} from "../http/dispenserAPI";
 import {setDispensersInfoAction, setProductAction} from "../store/productReducer";
 import {addToCart} from "../http/userAPI";
+import {fetchingCart} from "../store/basketReducer";
 
 const BuyControl = ({onHide, quantityAll = 0, quantityFree = 0, navigate}) => {
 
@@ -26,7 +27,10 @@ const BuyControl = ({onHide, quantityAll = 0, quantityFree = 0, navigate}) => {
     }
 
     const buy = () => {
-        addToCart({product_id: product.id ,dispenser_id: dispenser._id, quantity}).then(data => onHide())
+        addToCart({product_id: product.id ,dispenser_id: dispenser._id, quantity}).then(data => {
+            dispatch(fetchingCart())
+            onHide()
+        })
     }
 
     const decrement = () => {

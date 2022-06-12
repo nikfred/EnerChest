@@ -58,14 +58,14 @@ export const getOrder = () => {
 export const completeOrder = (orderId) => {
     return (dispatch) => {
         completionOrder(orderId).then(response => {
-        dispatch(completeOrderSuccess(orderId))
+            dispatch(completeOrderSuccess(orderId))
         })
     }
 }
 export const cancelOrder = (orderId) => {
     return (dispatch) => {
-        canceledOrder(orderId).then(response=>{
-        dispatch(cancelOrderSuccess(orderId))
+        canceledOrder(orderId).then(response => {
+            dispatch(cancelOrderSuccess(orderId))
         })
     }
 }

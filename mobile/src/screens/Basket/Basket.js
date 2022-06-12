@@ -9,6 +9,9 @@ import {
 } from "../../store/basketReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {fetchDispensers} from "../../http/dispenserAPI";
+import {createOrder} from "../../http/userAPI";
+import {getOrder} from "../../store/orderReducer";
+import {AntDesign} from "@expo/vector-icons";
 
 const Basket = () => {
     const dispensers = useSelector(state => state.basket.dispensers)
@@ -39,8 +42,10 @@ const Basket = () => {
                 .map(item => item.price * item.quantity)
                 .reduce((prev, curr) => prev + curr)
         }
-        const buy = () => {
-            dispatch(fetchingCart())
+        const buy = (dispenser_id) => {
+            createOrder(dispenser_id)
+                .then(() => dispatch(fetchingCart()))
+                .then(() => dispatch(getOrder()))
         }
         return (
             <View>
@@ -53,7 +58,7 @@ const Basket = () => {
                             <DrawProductBlocks products={item.items}/>
                             <Text style={styles.border}>Need to pay:<Text
                                 style={styles.finalCost}> {getInitialValue(item)} ₴</Text></Text>
-                            <Pressable style={styles.button} onPress={() => buy()}>
+                            <Pressable style={styles.button} onPress={() => buy(item.dispenser_id)}>
                                 <Text style={styles.textButtonBuy}>Buy</Text>
                             </Pressable>
                         </View>
@@ -82,30 +87,12 @@ const Basket = () => {
                                         <View style={styles.infoWithoutImg}>
                                             <View style={styles.nameWithDeletingWrapper}>
                                                 <Text style={styles.name}>{item.brand + ' ' + item.name}
-                                                    <Svg
-                                                        style={isActiveInfo ? styles.normalTriangle : styles.rotatedTriangle}
-                                                        height="20"
-                                                        width="20">
-                                                        <Polygon style={styles.activeInfo}
-                                                                 points="0,8 14,8 7,20"
-                                                                 fill='white'
-                                                                 strokeWidth="1"
-                                                        />
-                                                    </Svg>
+                                                     <AntDesign name={isActiveInfo ? "caretdown" : "caretright"} size={20} color={COLORS.black} />
                                                 </Text>
                                                 <Pressable style={styles.deleting} onPress={() => {
                                                     deleteItem(item.item_id)
                                                 }}>
-                                                    {/*<Text style={styles.textDeleting}>*/}
-                                                    <Svg width={30} height={30} fill='red'>
-                                                        <Path
-                                                            d="M27,6h-6V5c0-1.654-1.346-3-3-3h-4c-1.654,0-3,1.346-3,3v1H5C3.897,6,3,6.897,3,8v1c0,0.552,0.448,1,1,1h24  c0.552,0,1-0.448,1-1V8C29,6.897,28.103,6,27,6z M13,5c0-0.551,0.449-1,1-1h4c0.551,0,1,0.449,1,1v1h-6V5z"
-                                                            id="XMLID_246_"/>
-                                                        <Path
-                                                            d="M6,12v15c0,1.654,1.346,3,3,3h14c1.654,0,3-1.346,3-3V12H6z M19.707,22.293  c0.391,0.391,0.391,1.023,0,1.414s-1.023,0.391-1.414,0L16,21.414l-2.293,2.293c-0.391,0.391-1.023,0.391-1.414,0  s-0.391-1.023,0-1.414L14.586,20l-2.293-2.293c-0.391-0.391-0.391-1.023,0-1.414s1.023-0.391,1.414,0L16,18.586l2.293-2.293  c0.391-0.391,1.023-0.391,1.414,0s0.391,1.023,0,1.414L17.414,20L19.707,22.293z"
-                                                            id="XMLID_249_"/>
-                                                    </Svg>
-                                                    {/*</Text>*/}
+                                                    <AntDesign name="closecircle" size={28} color={COLORS.red} />
                                                 </Pressable>
                                             </View>
                                             <View
@@ -126,6 +113,7 @@ const Basket = () => {
                                     </View>
                                 </Pressable>
                             </View>
+                            <View style={styles.hr}/>
                         </View>
                     )
                 })}
@@ -146,25 +134,20 @@ const styles = StyleSheet.create({
     },
     content: {
         backgroundColor: COLORS.lightgray,
-        borderRadius: 40,
-        width: '80%',
+        borderRadius: 20,
+        width: '90%',
         marginBottom: 20,
         alignSelf: 'center',
     },
     name: {
         justifyContent: 'flex-start',
-        color: COLORS.green,
+        color: COLORS.black,
         fontSize: 20,
-        // marginLeft: 5,
-        // marginRight: 10,
-        // borderColor: 'purple',
-        // borderWidth: 2,
         width: '80%',
     },
     info: {
         fontSize: 16,
     },
-    price: {},
     productBlock: {
         marginTop: 8,
         width: '100%',
@@ -173,12 +156,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
     infoProduct: {
-        // width:'100%',
         justifyContent: 'flex-start',
         flexDirection: 'row',
-        // marginLeft: 20,
-        // borderColor: 'green',
-        // borderWidth: 2
     },
     imageBasket: {
         width: 75,
@@ -195,46 +174,45 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     button: {
-        backgroundColor: COLORS.purple,
-        height: 30,
+        backgroundColor: COLORS.green,
+        height: 40,
         alignItems: 'center',
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30,
+        justifyContent: 'center',
+        borderBottomLeftRadius: 20,
+        borderBottomRightRadius: 20,
     },
     textButtonBuy: {
         fontSize: 20,
+        color: COLORS.white,
+    },
+    hr: {
+        alignSelf: 'center',
+        borderBottomColor: COLORS.darkgray,
+        width: "95%",
+        borderBottomWidth: 3,
+        borderStyle: "dotted",
+        marginTop: 4,
+        borderRadius: 10,
     },
     border: {
         textAlign: 'center',
-        borderColor: COLORS.white,
-        borderTopWidth: 2,
-        borderStyle: "dotted",
-        borderRadius: 10,
-        borderWidth: 0
+        fontSize: 16,
+        marginVertical: 4
     },
     dispenserAddress: {
         textAlign: 'center',
-        padding: 5,
+        padding: 8,
         fontSize: 20,
-        color: COLORS.yellow,
-        borderBottomWidth: 1,
-        borderColor: COLORS.white,
-        backgroundColor: COLORS.green,
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
+        color: COLORS.white,
+        backgroundColor: COLORS.darkgray,
+        borderTopLeftRadius: 20,
+        borderTopRightRadius: 20,
     },
     noneActiveInfo: {
         display: 'none'
     },
-    normalTriangle: {
-        transform: [{translateX: 4}],
-    },
-    rotatedTriangle: {
-        transform: [{rotate: "-90deg"}, {translateY: -4}],
-    },
     finalCost: {
         fontSize: 20,
-        color: COLORS.red
     },
     mainBlockInfo: {
         flexDirection: 'row',
@@ -249,23 +227,15 @@ const styles = StyleSheet.create({
     },
     infoWithoutImg: {
         flex: 1,
-        // borderColor: 'green',
-        // borderWidth: 2,
-        // marginRight:10,
     },
     deleting: {
         height: 30,
         justifyContent: 'center',
         textAlign: 'center',
-        // borderColor: 'black',
-        // borderWidth: 1,
-        // backgroundColor: COLORS.red,
-        // marginRight: 5,
     },
     textDeleting: {
         color: "black",
         fontWeight: "700",
-        // padding: 2
     },
     nameWithDeletingWrapper: {
         flexDirection: 'row',

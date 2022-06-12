@@ -3,6 +3,7 @@ import {Pressable, StyleSheet, Text, View, ScrollView} from 'react-native';
 import {cancelOrder, completeOrder, getOrder} from "../store/orderReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {COLORS} from "../utils/consts";
+import {AntDesign} from "@expo/vector-icons";
 
 const Orders = () => {
     const orders = useSelector(state => state.order.orders)
@@ -38,34 +39,32 @@ const Orders = () => {
 
         if (item.order.status === 'Ready') {
             return <View style={styles.totalPriceWithStatusWrapper}>
-                <Pressable onPress={() => completeOrderRequest(item.order.id)}>
-                    <View>
-                        <Text style={styles.textButtonComplete}>
-                            Complete</Text>
-                    </View>
+                <Pressable style={{...styles.button, ...styles.buttonComplete}}
+                    onPress={() => completeOrderRequest(item.order.id)}>
+                        <Text style={styles.textButton}>
+                            Complete <AntDesign name="check" size={20} color={COLORS.white} /></Text>
                 </Pressable>
                 <View style={styles.totalPriceWrapper}>
-                    <Text>Total price is {item.order.total} ₴</Text>
+                    <Text>Total price = {item.order.total} ₴</Text>
                 </View>
-                <Pressable onPress={() => cancelOrderRequest(item.order.id)}>
-                    <View>
-                        <Text style={styles.textButtonCancel}>
-                            Cancel</Text>
-                    </View>
+                <Pressable style={{...styles.button, ...styles.buttonCancel}}
+                    onPress={() => cancelOrderRequest(item.order.id)}>
+                        <Text style={styles.textButton}>
+                            Cancel <AntDesign name="close" size={20} color={COLORS.white} /></Text>
                 </Pressable>
             </View>
         } else {
             return <View style={styles.notReadyStatusWrapper}>
                 <View style={styles.totalPriceWrapper}>
                     <Text>
-                        Total price was {item.order.total} ₴
+                        Total price = {item.order.total} ₴
                     </Text>
                 </View>
                 <View
                     style={[styles.notReadyStatus, item.order.status === 'Cancel'
                         ? styles.canceledStatus
                         : styles.completedStatus]}>
-                    <Text>
+                    <Text style={styles.text}>
                         {item.order.status === 'Cancel' ? item.order.status + 'ed' : item.order.status + 'd'} order
                     </Text>
                 </View>
@@ -112,7 +111,11 @@ const Orders = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingHorizontal: 16
         // alignItems: 'center',
+    },
+    text: {
+        color: COLORS.white
     },
     totalPriceWithStatusWrapper: {
         flexDirection: 'row',
@@ -127,10 +130,7 @@ const styles = StyleSheet.create({
         backgroundColor: COLORS.lightgray,
         width: '100%',
         marginBottom: 20,
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30,
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30,
+        borderRadius: 10,
     },
     innerMainBlock: {
         marginLeft: 15,
@@ -148,42 +148,47 @@ const styles = StyleSheet.create({
     addressWrapperBase: {
         width: '100%',
         alignItems: 'center',
-        borderTopLeftRadius: 30,
-        borderTopRightRadius: 30
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10
     },
     addressWrapperReady: {
-        backgroundColor: COLORS.purple,
+        backgroundColor: COLORS.gray,
     },
     addressWrapperCompleted: {
-        backgroundColor: COLORS.green,
+        // backgroundColor: COLORS.green,
+        backgroundColor: COLORS.gray,
     },
     addressWrapperCanceled: {
-        backgroundColor: COLORS.red,
+        // backgroundColor: COLORS.red,
+        backgroundColor: COLORS.gray,
     },
     addressText: {
-        color: COLORS.black,
-        fontSize: 22,
+        color: COLORS.white,
+        fontSize: 20,
+        margin: 6
     },
     dateWrapper: {
         alignItems: 'center'
     },
-    textButtonComplete: {
-        textAlignVertical: "center",
-        textAlign: 'center',
-        borderTopRightRadius: 30,
-        borderBottomLeftRadius: 30,
-        width: 100,
+    button: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 120,
         height: 30,
-        backgroundColor: COLORS.green
     },
-    textButtonCancel: {
-        textAlignVertical: "center",
-        textAlign: 'center',
-        borderTopLeftRadius: 30,
-        borderBottomRightRadius: 30,
-        width: 100,
-        height: 30,
+    buttonComplete: {
+        backgroundColor: COLORS.green,
+        borderTopRightRadius: 10,
+        borderBottomLeftRadius: 10,
+    },
+    buttonCancel: {
+        borderTopLeftRadius: 10,
+        borderBottomRightRadius: 10,
         backgroundColor: COLORS.red,
+    },
+    textButton: {
+        color: COLORS.white,
+        fontSize: 16,
     },
     notReadyStatusWrapper: {
         alignItems: 'center'
@@ -193,8 +198,8 @@ const styles = StyleSheet.create({
         height: 30,
         alignItems: 'center',
         justifyContent: 'center',
-        borderBottomLeftRadius: 30,
-        borderBottomRightRadius: 30,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
     },
     canceledStatus: {
         backgroundColor: COLORS.red,
