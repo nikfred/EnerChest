@@ -33,7 +33,7 @@ const ProductItem = ({product, navigate}) => {
             </View>
 
             {product.quantityFree &&
-                <Text>
+                <Text style={styles.info}>
                     {product.quantityFree}/{product.quantityAll}
                 </Text>
             }

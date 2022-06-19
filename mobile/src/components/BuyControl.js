@@ -54,7 +54,7 @@ const BuyControl = ({onHide, quantityAll = 0, quantityFree = 0, navigate}) => {
                 </Pressable>
             </SafeAreaView>
             {dispenser &&
-                <Text>{quantityFree}/{quantityAll}</Text>
+                <Text style={styles.quantityText}>{quantityFree}/{quantityAll}</Text>
             }
 
             {dispenser
@@ -110,6 +110,9 @@ const styles = StyleSheet.create({
     },
     buttonText: {
         fontSize: 20,
+        color: 'white'
+    },
+    quantityText: {
         color: 'white'
     }
 })

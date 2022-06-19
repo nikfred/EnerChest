@@ -19,7 +19,7 @@ export const login = async (email, password) => {
 
 export const check = async () =>{
     const refreshToken = localStorage.getItem('refreshToken')?.toString() || ""
-    const {data} = await axios.post(process.env.REACT_APP_API_URL + 'api/user/refresh', {refreshToken: refreshToken})
+    const {data} = await $host.post('api/user/refresh', {refreshToken: refreshToken})
     console.log(data)
     localStorage.setItem('accessToken', data.accessToken)
     localStorage.setItem('refreshToken', data.refreshToken)
