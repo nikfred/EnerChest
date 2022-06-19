@@ -2,10 +2,14 @@ import React, {useEffect, useState} from 'react';
 import {Modal, Pressable, StyleSheet, Text, TextInput, ScrollView, View, Image, Button} from "react-native";
 import {AntDesign} from "@expo/vector-icons";
 import {COLORS} from "../utils/consts";
-import {fetchUser, updateUser} from "../http/userAPI";
+import {fetchUser, updateImageUser, updateUser} from "../http/userAPI";
 import {useDispatch, useSelector} from "react-redux";
 import {setProfileAction} from "../store/userReducer";
 import * as ImagePicker from 'expo-image-picker';
+import * as DocumentPicker from 'expo-document-picker';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {Dropdown} from "react-native-element-dropdown";
+import RNDateTimePicker from "@react-native-community/datetimepicker";
 
 
 const EditProfile = ({show, onHide}) => {
@@ -14,22 +18,29 @@ const EditProfile = ({show, onHide}) => {
     const [lastname, setLastname] = useState('')
     const [gender, setGender] = useState('')
     const [birth_date, setBirth_date] = useState('')
-    const [file, setFile] = useState(null)
-    const [check, setCheck] = useState(true)
+   // const [file, setFile] = useState(null)
+    const [check, setCheck] = useState(false)
 
     const dispatch = useDispatch()
     const profile = useSelector(state => state.user.profile)
+    //const auth = AsyncStorage.getItem('accessToken')
 
-
-    const selectFile = e => {
-        setFile(e.target.files[0])
-        console.log("2")
-    }
+    const onChange = (event, selectedDate) => {
+        setBirth_date(selectedDate.toString());
+        setCheck(!check)
+        console.log(birth_date)
+    };
 
     const onChangeGender = (label, value) => {
         console.log(label, value)
         setGender(value)
     }
+
+    const data = [
+        { label: 'Male', value: 'Мужской' },
+        { label: 'Female', value: 'Женский' },
+        { label: 'Other', value: 'Другой' },
+    ]
 
     const pickImage = async () => {
         const result = await ImagePicker.launchImageLibraryAsync({
@@ -38,20 +49,27 @@ const EditProfile = ({show, onHide}) => {
             aspect: [1, 1],
             quality: 1,
         })
-        const formData = new FormData()
-        console.log(formData)
-        formData.append('firstname', 'Курва')
-        formData.append('lastname', 'Лярва')
-        formData.append('file', {
+        console.log(result)
+        const data = new FormData();
+        data.append('file', {
             uri: result.uri,
             type: result.type,
             name: "image",
         })
-        console.log(formData)
-        updateUser(formData).then(data => {onHide()
+        console.log(data)
+        // fetch('http://192.168.1.103:5000/api/user', {
+        //     method: 'put',
+        //     body: data,
+        //     headers: {
+        //         Accept: 'application/json',
+        //         'Content-Type': 'multipart/form-data;',
+        //         authorization: `Bearer ${auth._W}`,
+        //     }
+        // }).then(console.log).catch(console.log)
+        updateImageUser(data).then(data => {onHide()
         console.log(data)} )
-
     }
+
 
     const update = () => {
         let data = {phone: '', firstname:'', lastname:'', gender:'', birth_date:'' }
@@ -60,23 +78,18 @@ const EditProfile = ({show, onHide}) => {
         data.lastname = lastname
         data.gender = gender
         data.birth_date = birth_date
-        updateUser(data).then(e => {onHide()
+        updateUser(data).then(e => {
+            onHide()
             dispatch(setProfileAction(e))
-            console.log(e)} )
+            console.log(e)
+            setFirstname(' ')
+            setLastname('')
+            setPhone(' ')
+            setGender(' ')
+            setBirth_date('')
+        })
 
     }
-
-    // const update = () => {
-    //     const formData = new FormData()
-    //     formData.append('phone', phone)
-    //     formData.append('firstname', firstname)
-    //     formData.append('lastname', lastname)
-    //     formData.append('gender', gender)
-    //     formData.append('birth_date', birth_date)
-    //     formData.append('img', file)
-    //     updateUser(formData).then(data => {onHide()
-    //     console.log(data)} )
-    // }
 
     return (
         <>
@@ -95,22 +108,22 @@ const EditProfile = ({show, onHide}) => {
                             <Text style={styles.button_value}>Edit photo</Text>
                         </Pressable>
                     </View>
-                    <ScrollView contentContainerStyle={styles.container}>
-                        <Text>First Name</Text>
+                    <ScrollView>
+                        <Text style={styles.title}>First name</Text>
                         <TextInput
                             style={styles.input}
                             placeholder={profile.firstname}
                             onChangeText={setFirstname}
                             value={firstname}
                         />
-                        <Text>Last name</Text>
+                        <Text style={styles.title}>Last name</Text>
                         <TextInput
                             style={styles.input}
                             placeholder={profile.lastname}
                             onChangeText={setLastname}
                             value={lastname}
                         />
-                        <Text>Phone number</Text>
+                        <Text style={styles.title}>Phone number</Text>
                         <TextInput
                             style={styles.input}
                             placeholder={profile.phone}
@@ -119,9 +132,38 @@ const EditProfile = ({show, onHide}) => {
                             value={phone}
                             keyboardType='number-pad'
                         />
+                        <Text style={styles.title}>Gender</Text>
+                        <Dropdown
+                            style={styles.input}
+                            data={data}
+                            onChange={(e) => setGender(e.value)}
+                            labelField="label"
+                            valueField="value"
+                            value={gender}
+                            placeholder={gender || "Gender"}
+                            selectedTextStyle={styles.selectedTextStyle}
+                            placeholderStyle={styles.placeholderStyle}
+
+                        />
+                        <Text style={styles.title}>Birth date</Text>
+                        <Pressable style={styles.input} onPress={() => setCheck(!check)}>
+                            <Text style={styles.button_value}>{birth_date?.substring(3, 16) || profile.birth_date?.substring(0, 10)}</Text>
+                        </Pressable>
+                        {check && (
+                            <RNDateTimePicker
+                                mode="date"
+                                value={birth_date ? new Date(birth_date) : new Date() }
+                                onChange={onChange}
+                                themeVariant=""
+                                style={styles.input}
+                                display="calendar"
+                            />
+                        )}
+                        <View style={styles.container}>
                         <Pressable style={styles.button} onPress={() => update()}>
                             <Text style={styles.button_value}>update</Text>
                         </Pressable>
+                        </View>
                     </ScrollView>
 
                 </View>
@@ -145,6 +187,10 @@ const styles = StyleSheet.create(
             textAlign: 'center',
             margin: 5,
         },
+        title: {
+          color: COLORS.white,
+            marginTop: 5,
+        },
         rectangle: {
             width: '90%',
             height: 3,
@@ -161,16 +207,16 @@ const styles = StyleSheet.create(
             color: COLORS.green,
             fontSize: 15,
             height: 50,
-            width: '80%',
+            width: '95%',
             borderRadius: 10,
-            backgroundColor: COLORS.white,
+            backgroundColor: COLORS.lightgray,
             padding: 10,
-            marginTop: 10,
+            marginTop: 5,
         },
         container: {
             flex: 1,
-            alignItems: 'center',
-            justifyContent: 'center',
+            alignItems: "center",
+            justifyContent: "center",
         },
         content: {
             color: '#C4C4C4',

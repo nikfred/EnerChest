@@ -1,19 +1,19 @@
 import React from 'react';
 import {Modal, StyleSheet, Text, View, TextInput} from "react-native";
-import {AntDesign} from "@expo/vector-icons";
+import {AntDesign, MaterialIcons} from "@expo/vector-icons";
 import {COLORS} from "../utils/consts";
 
-const Setting = ({show, onHide}) => {
+const PaymentSetting = ({show, onHide}) => {
     return (
         <Modal visible={show} animationType='fade' onRequestClose={() => onHide()}>
             <View style={styles.settingPage}>
                 <View style={styles.headBlock}>
-                    <Text style={styles.headText}>SETTING</Text>
+                    <Text style={styles.headText}>PAYMENT SETTING</Text>
                     <AntDesign name="closecircle" size={40} color="black" onPress={() => onHide()}/>
                 </View>
                 <View style={styles.rectangle}></View>
                 <View>
-                    <Text style={{fontSize: 70, textAlign: 'center', color: COLORS.green}}>Will be available in a new update</Text>
+                    <Text style={{fontSize: 70, textAlign: 'center', color: COLORS.green}}>Will be available in a new update =)</Text>
                 </View>
 
             </View>
@@ -50,4 +50,4 @@ const styles = StyleSheet.create(
     }
 )
 
-export default Setting;
+export default PaymentSetting;

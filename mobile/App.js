@@ -27,7 +27,7 @@ const App = () => {
             console.log(data)
             dispatch(setAuthAction(true))
             dispatch(setUserAction(data))
-        }).finally(() => setLoading(false))
+        }).catch(() => {}).finally(() => setLoading(false))
     }, [])
 
     if (loading) {

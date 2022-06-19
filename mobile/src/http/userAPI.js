@@ -5,8 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const registration = async (email, password, phone, firstname, lastname, gender, birth_date) =>{
     const {data} = await $host.post('api/user/registration', {email, password, phone, firstname, lastname, gender, birth_date})
-    Storage.setItem('accessToken', data.accessToken)
-    await AsyncStorage.setItem('accessToken', data.refreshToken)
+    await AsyncStorage.setItem('accessToken', data.accessToken)
+    await AsyncStorage.setItem('refreshToken', data.refreshToken)
     return jwt_decode(data.accessToken)
 }
 
@@ -21,7 +21,7 @@ export const login = async (email, password) => {
 export const check = async () => {
     const refreshToken = await AsyncStorage.getItem('refreshToken') || ""
     console.log(await AsyncStorage.getItem('refreshToken'))
-    const data = await axios.post('http://34.118.89.28:5000/api/user/refresh', { refreshToken: refreshToken })
+    const data = await axios.post('http://192.168.1.103:5000/api/user/refresh', { refreshToken: refreshToken })
     await AsyncStorage.setItem('accessToken', data.data.accessToken)
     await AsyncStorage.setItem('refreshToken', data.data.refreshToken)
     return jwt_decode(data.data.accessToken)
@@ -62,12 +62,23 @@ export const deleteItemFromCard = async (id) => {
 }
 
 export const updateUser = async (user) =>{
+    console.log(user)
+    const {data} = await $authHost.put('api/user', user)
+    console.log(user)
+    return data
+}
+
+export const updateImageUser = async (user) =>{
+    console.log(user)
     const {data} = await $authHost.put('api/user', {user}, {
         headers: {
-                'content-type': 'multipart/form-data'
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data'
             }
         }
+
     )
+    console.log(user)
     return data
 }
 

@@ -8,6 +8,7 @@ import Auth from "./Auth";
 import {fetchUser, logout} from "../http/userAPI";
 import {setAdminAction, setAuthAction, setProfileAction, setUserAction} from "../store/userReducer";
 import EditProfile from "../components/EditProfile";
+import PaymentSetting from "../components/PaymentSetting";
 
 const Account = ({ navigation: {navigate}}) => {
     const [contact, setContact] = useState(true)
@@ -16,6 +17,7 @@ const Account = ({ navigation: {navigate}}) => {
     const [circleInfo, setCircleInfo] = useState("downcircle")
     const [visibleSetting, setVisibleSetting] = useState(false)
     const [visibleEditProfile, setVisibleEditProfile] = useState(false)
+    const [visiblePaymentSetting, setVisiblePaymentSetting] = useState(false)
 
     const dispatch = useDispatch()
     const login = useSelector(state => state.user.isAuth)
@@ -61,26 +63,15 @@ const Account = ({ navigation: {navigate}}) => {
                     source={!profile.imageUrl ? require('../../assets/img/img.png')  : {uri: profile.imageUrl}}
                     style={styles.image}/>
                 <View style={styles.containerInfo}>
-                    {profile.isActivated ? false : <Text>Please activated your account</Text>}
                     <Text
                         style={profile.role === 'ADMIN' ? styles.roleColor_admin : profile.role === 'USER' ? styles.roleColor_user : styles.roleColor_other}>
                         {profile.role}
                     </Text>
                     <Text style={[styles.content, styles.firstname]}>{profile.firstname}</Text>
                     <Text style={styles.content}>{profile.lastname}</Text>
+                    {/*{profile.isActivated ? false : <Text>Please activated your account</Text>}*/}
                 </View>
             </View>
-
-            {!login ?
-                <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'center'}}>
-                    <Pressable style={styles.accordion} onPress={() => navigate('Auth')}>
-                        <AntDesign name="edit" size={30} color="#318CE7"/>
-                        <Text style={styles.accordion_title}>Edit profile</Text>
-                        <AntDesign name="rightcircle" size={24} color="#318CE7"/>
-                    </Pressable>
-                </ScrollView>
-                :
-
                 <ScrollView style={styles.container} contentContainerStyle={{alignItems: 'center'}}>
                     <Pressable style={styles.accordion} onPress={contact_visible}>
                         <AntDesign name="link" size={30} color="#50C878"/>
@@ -122,10 +113,11 @@ const Account = ({ navigation: {navigate}}) => {
                         <AntDesign name="rightcircle" size={24} color="#5E4360"/>
                         <Setting show={visibleSetting} onHide={() => setVisibleSetting(false)}/>
                     </Pressable>
-                    <Pressable style={styles.accordion}>
+                    <Pressable style={styles.accordion} onPress={() => setVisiblePaymentSetting(!visiblePaymentSetting)}>
                         <MaterialIcons name="payment" size={30} color="#F4CA16"/>
                         <Text style={styles.accordion_title}>Payment Setting</Text>
                         <AntDesign name="rightcircle" size={24} color="#F4CA16"/>
+                        <PaymentSetting show={visiblePaymentSetting} onHide={() => setVisiblePaymentSetting(false)}/>
                     </Pressable>
                     <Pressable style={styles.accordion} onPress={() => logOut()}>
                         <AntDesign name="login" size={30} color="#DC5678"/>
@@ -134,7 +126,6 @@ const Account = ({ navigation: {navigate}}) => {
                     </Pressable>
 
                 </ScrollView>
-            }
         </View>
     );
 };

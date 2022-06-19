@@ -4,9 +4,9 @@
     "slug": "EnerChest",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/icon2.png",
     "splash": {
-      "image": "./assets/img/start7.png",
+      "image": "./assets/img/splash-logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#1B1B1B"
     },
@@ -24,7 +24,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.sktshnick.mobile",
+      "package": "com.sktshnick.EnerChest",
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyDUsjfEhSrUKaMwc3Wq_GQ6ktVvqnkJ4As"
