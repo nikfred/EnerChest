@@ -1,5 +1,5 @@
 const ApiError = require('../error/ApiError')
-const User = require('../models/user')
+const User = require('../models/user.model')
 
 module.exports = async function (req, res, next) {
     try {

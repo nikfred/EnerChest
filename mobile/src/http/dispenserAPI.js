@@ -2,7 +2,7 @@ import {$authHost, $host} from "./index";
 
 export const fetchDispensers = async () => {
     const {data} = await $host.get('api/dispenser/all')
-    // console.log(data)
+    // console.log(datasources)
     return data
 }
 

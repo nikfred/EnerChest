@@ -59,10 +59,10 @@ const EditProfile = ({show, onHide}) => {
         console.log(data)
         // fetch('http://192.168.1.103:5000/api/user', {
         //     method: 'put',
-        //     body: data,
+        //     body: datasources,
         //     headers: {
         //         Accept: 'application/json',
-        //         'Content-Type': 'multipart/form-data;',
+        //         'Content-Type': 'multipart/form-datasources;',
         //         authorization: `Bearer ${auth._W}`,
         //     }
         // }).then(console.log).catch(console.log)

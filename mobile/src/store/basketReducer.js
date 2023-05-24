@@ -46,7 +46,7 @@ export const addDispensers = (payload) => {
 export const deleteProductSuccess = (payload) => {
     return {type: DELETE_PRODUCT_SUCCESS, payload}
 }
-export const fetchingCart = () => {//getting all cart
+export const fetchingCart = () => {//getting all.yml cart
     return (dispatch) => {
         fetchCart().then(response => {
             const set = [...(new Set(response.products.map(i => i.dispenser_id)))]

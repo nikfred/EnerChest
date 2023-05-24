@@ -45,7 +45,7 @@ export const logout = async () =>{
 
 export const fetchCart = async () => {
     const {data} = await $authHost.get('api/cart')
-    // console.log(data)
+    // console.log(datasources)
     return data
 }
 
@@ -73,7 +73,7 @@ export const updateImageUser = async (user) =>{
     const {data} = await $authHost.put('api/user', {user}, {
         headers: {
             Accept: 'application/json',
-            'Content-Type': 'multipart/form-data'
+            'Content-Type': 'multipart/form-datasources'
             }
         }
 
