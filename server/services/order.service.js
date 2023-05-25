@@ -170,7 +170,7 @@ class OrderService {
         }
     }
 
-    async getUserOrders(uid, limit, page) {
+    async getUserOrders(uid, limit = 30, page = 1) {
         // const rawOrders = await Order.find(
         //     {uid},
         //     {},
