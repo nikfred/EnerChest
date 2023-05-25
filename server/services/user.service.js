@@ -30,7 +30,7 @@ class UserService {
         const cart = await Cart.create({uid: user._id})
         console.log("New Cart: " + cart)
 
-        await mailer.sendActivationMail(userData.email, `${process.env.API_URL}/api/user/activate/${activationLink}`)
+        mailer.sendActivationMail(userData.email, `${process.env.API_URL}/api/user/activate/${activationLink}`).catch(() => {})
 
         return {...tokens, user: userDto}
     }
@@ -41,6 +41,7 @@ class UserService {
             throw ApiError.notFound("User not found")
         }
         await User.updateOne({activationLink}, {isActivated: true})
+        return true
     }
 
     async login(email, password) {
@@ -87,7 +88,7 @@ class UserService {
     }
 
     async getAll() {
-        return User.find().lean()
+        return await User.find().lean()
     }
 
     async update(id, rawUser, img = null) {
@@ -97,8 +98,7 @@ class UserService {
                 firstname: rawUser.firstname || user.firstname,
                 lastname: rawUser.lastname || user.lastname,
                 birth_date: rawUser.birth_date || user.birth_date,
-                phone: rawUser.phone || user.phone,
-                gender: rawUser.gender || user.gender
+                balance: rawUser.balance || user.balance,
             }
             if (img) {
                 rawUser.imageUrl = await uploadFile(img, 'user')
@@ -121,14 +121,12 @@ class UserService {
 
         const updateLink = uuid.v4()
         const updateCancel = new Date(+new Date() + 10 * 60 * 1000)
-        await mailer.sendActivationMail(user.email, `${process.env.API_URL}/api/user/password/${updateLink}`)
+        mailer.sendActivationMail(user.email, `${process.env.API_URL}/api/user/password/${updateLink}`).catch(() => {})
 
         const hash = await bcrypt.hash(newPassword, 5)
         await User.updateOne(
             {_id: id},
-            {tempPassword: hash, updateLink, updateCancel},
-            {new: true}
-        )
+            {tempPassword: hash, updateLink, updateCancel})
         return true
     }
 

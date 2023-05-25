@@ -41,7 +41,8 @@ class OrderController {
     async getUserOrders(req, res, next){
         try {
             const {id} = req.user
-            const order = await orderService.getUserOrders(id)
+            const {limit, page} = req.query
+            const order = await orderService.getUserOrders(id, limit, page)
             return res.json(order)
         } catch (e) {
             next(e)

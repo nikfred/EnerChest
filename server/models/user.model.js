@@ -25,6 +25,10 @@ const userSchema = new Schema({
     imageUrl: {
         type: String,
     },
+    balance: {
+        type: Number,
+        default: 1000
+    },
     birth_date: Date,
     role: {
         type: String,

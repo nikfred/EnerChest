@@ -11,6 +11,7 @@ const User = require('../models/user.model')
 const dispenserService = require('./dispenser.service')
 const cartService = require('./cart.service')
 const numberGenerator = require('../utils/number-generator')
+const calculateSkip = require('../utils/calculateSkip')
 const ApiError = require('../error/ApiError')
 
 const ProductDto = require("../dtos/product.dto");
@@ -65,7 +66,7 @@ class OrderService {
         let number
         do {
             number = numberGenerator(6)
-        } while (await Order.findOne({number}))
+        } while (await Order.findOne({number}).lean())
 
         let order = new Order({
             uid,
@@ -169,7 +170,7 @@ class OrderService {
         }
     }
 
-    async getUserOrders(uid) {
+    async getUserOrders(uid, limit, page) {
         // const rawOrders = await Order.find(
         //     {uid},
         //     {},
@@ -188,11 +189,11 @@ class OrderService {
             }, {
                 $sort: {date: -1}
             },
-            // {
-            //     $skip: skip,
-            // }, {
-            //     $limit: limit
-            // },
+            {
+                $skip: calculateSkip(limit, page),
+            }, {
+                $limit: +limit
+            },
             {
                 $lookup: {
                     from: "orderitems",
@@ -247,12 +248,26 @@ class OrderService {
             }, {
                 $lookup: {
                     from: "dispensers",
-                    localField: "$dispenser_id",
-                    foreignField: "$_id",
+                    localField: "dispenser_id",
+                    foreignField: "_id",
                     as: "dispenser",
                 }
             }, {
-                $projects: {}
+                $unwind: "$dispenser"
+            },
+            {
+                $project: {
+                    id: {$toString: "$_id"},
+                    _id: 0,
+                    address: "$dispenser.address",
+                    status: 1,
+                    number: 1,
+                    quantity: 1,
+                    date: 1,
+                    dateCancel: 1,
+                    total: {$toString: "$total"},
+                    products: 1,
+                }
             }
         ])
     }

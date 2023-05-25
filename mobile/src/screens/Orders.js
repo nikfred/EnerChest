@@ -40,17 +40,17 @@ const Orders = () => {
         if (item.order.status === 'Ready') {
             return <View style={styles.totalPriceWithStatusWrapper}>
                 <Pressable style={{...styles.button, ...styles.buttonComplete}}
-                    onPress={() => completeOrderRequest(item.order.id)}>
-                        <Text style={styles.textButton}>
-                            Complete <AntDesign name="check" size={20} color={COLORS.white} /></Text>
+                           onPress={() => completeOrderRequest(item.order.id)}>
+                    <Text style={styles.textButton}>
+                        Complete <AntDesign name="check" size={20} color={COLORS.white}/></Text>
                 </Pressable>
                 <View style={styles.totalPriceWrapper}>
                     <Text>Total price = {item.order.total} ₴</Text>
                 </View>
                 <Pressable style={{...styles.button, ...styles.buttonCancel}}
-                    onPress={() => cancelOrderRequest(item.order.id)}>
-                        <Text style={styles.textButton}>
-                            Cancel <AntDesign name="close" size={20} color={COLORS.white} /></Text>
+                           onPress={() => cancelOrderRequest(item.order.id)}>
+                    <Text style={styles.textButton}>
+                        Cancel <AntDesign name="close" size={20} color={COLORS.white}/></Text>
                 </Pressable>
             </View>
         } else {

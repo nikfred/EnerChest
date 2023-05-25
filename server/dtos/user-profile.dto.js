@@ -3,10 +3,9 @@ module.exports = class UserProfileDto{
     email;
     firstname;
     lastname;
-    phone;
     imageUrl;
+    balance;
     birth_date;
-    gender;
     isActivated;
     role;
 
@@ -15,13 +14,9 @@ module.exports = class UserProfileDto{
         this.email = model.email;
         this.firstname = model.firstname || "";
         this.lastname = model.lastname || "";
-        this.phone = model.phone || "";
-        this.imageUrl =
-            model.imageUrl !== undefined
-                ? `${process.env.API_URL}/${model.imageUrl}`
-                : "";
+        this.imageUrl = model.imageUrl ?? null;
+        this.balance = model.balance ?? 0;
         this.birth_date = model.birth_date || "";
-        this.gender = model.gender || "";
         this.isActivated = model.isActivated;
         this.role = model.role || "USER";
     }
