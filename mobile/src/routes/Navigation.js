@@ -6,12 +6,14 @@ import {AntDesign} from "@expo/vector-icons";
 import {COLORS} from "../utils/consts";
 import Shop from "../screens/Shop";
 import Basket from "../screens/Basket/Basket";
-import Orders from "../screens/Orders";
+import Orders from "../screens/Orders/Orders";
 import Account from "../screens/Account";
+import Scanner from "../screens/Scanner";
 import {createStackNavigator} from "@react-navigation/stack";
 import {ScrollView} from "react-native-gesture-handler";
 import {useDispatch, useSelector} from "react-redux";
 import Maps from "../screens/Maps";
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -20,7 +22,8 @@ const routers = {
     'Shop': 'bars',
     'Basket': 'shoppingcart',
     'Orders': 'book',
-    'Account': 'user'
+    'Account': 'user',
+    'Scanner' : 'scan1'
 }
 
 const Navigation = () => {
@@ -62,6 +65,7 @@ export const Bottom = () => {
             })}>
             <Tab.Screen name="Shop" component={Shop}/>
             <Tab.Screen name="Basket" component={Basket}/>
+            <Tab.Screen name="Scanner" component={Scanner}/>
             <Tab.Screen name="Orders" component={Orders}/>
             <Tab.Screen name="Account" component={Account}/>
         </Tab.Navigator>

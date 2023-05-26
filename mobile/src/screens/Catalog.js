@@ -5,6 +5,7 @@ import {COLORS} from "../utils/consts";
 import ProductItem from "../components/ProductItem";
 import {fetchProduct} from "../http/productAPI";
 import {addProductsAction} from "../store/productReducer";
+import {useIsFocused} from "@react-navigation/native";
 
 const Catalog = ({ navigation: {navigate}}) => {
     const products1 = useSelector(state => state.product.products.filter((_, index) => index % 2 !== 0))
@@ -12,14 +13,16 @@ const Catalog = ({ navigation: {navigate}}) => {
     // const dispenser = useSelector(state => state.product.dispenser)
     const dispatch = useDispatch()
     const {actual, dispenser, selectedBrands, selectedSizes} = useSelector(state => state.product)
-
+    const isFocused=useIsFocused()
     useEffect(() => {
-        if (!actual) {
+        // if (!actual) {
+        if (isFocused) {
             fetchProduct(selectedBrands, selectedSizes, dispenser?._id, 1, 16).then(data => {
                 dispatch(addProductsAction(data.products))
+                console.log('dispenser', dispenser)
             })
         }
-    }, [actual, selectedBrands, selectedSizes])
+    }, [actual, selectedBrands, selectedSizes,isFocused])
 
 
     return (

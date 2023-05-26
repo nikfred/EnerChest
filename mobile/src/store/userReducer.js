@@ -11,6 +11,7 @@ const SET_USER = 'SET_USER'
 const SET_ADMIN = 'ADMIN'
 const SET_PROFILE = 'PROFILE'
 
+
 export const userReducer = (state = defaultState, action) => {
     switch (action.type) {
         case SET_AUTH:

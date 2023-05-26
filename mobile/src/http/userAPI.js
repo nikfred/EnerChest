@@ -21,7 +21,7 @@ export const login = async (email, password) => {
 export const check = async () => {
     const refreshToken = await AsyncStorage.getItem('refreshToken') || ""
     console.log(await AsyncStorage.getItem('refreshToken'))
-    const data = await axios.post('http://192.168.1.103:5000/api/user/refresh', { refreshToken: refreshToken })
+    const data = await axios.post('http://192.168.1.108:5000/api/user/refresh', { refreshToken: refreshToken })
     await AsyncStorage.setItem('accessToken', data.data.accessToken)
     await AsyncStorage.setItem('refreshToken', data.data.refreshToken)
     return jwt_decode(data.data.accessToken)
@@ -89,6 +89,7 @@ export const createOrder = async (dispenser_id) => {
 
 export const fetchOrder = async () => {
     const {data} = await $authHost.get('/api/order')
+
     return data
 }
 

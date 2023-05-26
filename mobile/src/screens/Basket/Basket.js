@@ -50,7 +50,7 @@ const Basket = () => {
         return (
             <View>
                 {!dispensers.length
-                    ? <Text style={styles.noContent}>Your basket is empty</Text>
+                    ?  <Image source={require('../../assets/no-task.svg')} style={styles.image}/>
                     : dispensers.map(item => (
                         <View key={item.dispenser_id} style={styles.content}>
                             <Text style={styles.dispenserAddress}>
@@ -158,6 +158,10 @@ const styles = StyleSheet.create({
     infoProduct: {
         justifyContent: 'flex-start',
         flexDirection: 'row',
+    },
+    image: {
+        width: 60,
+        height: 60,
     },
     imageBasket: {
         width: 75,

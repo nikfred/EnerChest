@@ -10,8 +10,8 @@ import RNDateTimePicker from "@react-native-community/datetimepicker";
 
 
 const Auth = () => {
-    const [email, setEmail] = useState('sobaka.so.stagem@gmail.ua')
-    const [password, setPassword] = useState('1234567890')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const [check, setCheck] = useState(true)
     const [show, setShow] = useState(false)
     const [isLogin, setIsLogin] = useState(true)
@@ -79,6 +79,7 @@ const Auth = () => {
                         placeholder="Enter your e-mail"
                         onChangeText={setEmail}
                         value={email}
+                        placeholderTextColor={COLORS.green}
                     />
                     <View style={styles.pass_block}>
                         <TextInput
@@ -87,6 +88,7 @@ const Auth = () => {
                             onChangeText={setPassword}
                             secureTextEntry={check}
                             value={password}
+                            placeholderTextColor={COLORS.green}
                         />
                         <Pressable onPress={() => setCheck(!check)}>
                             {!check ?
@@ -123,6 +125,7 @@ const Auth = () => {
                         onChangeText={setEmail}
                         value={email}
                         keyboardType='email-address'
+                        placeholderTextColor={COLORS.green}
 
                     />
                     <View style={styles.pass_block}>
@@ -132,6 +135,7 @@ const Auth = () => {
                             onChangeText={setPassword}
                             secureTextEntry={check}
                             value={password}
+                            placeholderTextColor={COLORS.green}
                         />
                         <Pressable onPress={() => setCheck(!check)}>
                             {!check ?
@@ -149,18 +153,21 @@ const Auth = () => {
                         value={phone}
                         maxLength={12}
                         keyboardType='number-pad'
+                        placeholderTextColor={COLORS.green}
                     />
                     <TextInput
                         style={styles.input}
                         placeholder="Enter first name"
                         onChangeText={setFirstname}
                         value={firstname}
+                        placeholderTextColor={COLORS.green}
                     />
                     <TextInput
                         style={styles.input}
                         placeholder="Enter last name"
                         onChangeText={setLastname}
                         value={lastname}
+                        placeholderTextColor={COLORS.green}
                     />
                     <Dropdown
                         style={styles.input}
@@ -175,7 +182,7 @@ const Auth = () => {
 
                     />
                     <Pressable style={styles.input} onPress={() => setShow(!show)}>
-                        <Text style={styles.button_value}>{birth_date?.substring(3, 16) || "Birth date"}</Text>
+                        <Text style={styles.value_calendar}>{birth_date?.substring(3, 16) || "Birth date"}</Text>
                     </Pressable>
                     {show && (
                         <RNDateTimePicker
@@ -212,7 +219,7 @@ const styles = StyleSheet.create({
         height: 50,
         width: '80%',
         borderRadius: 10,
-        backgroundColor: COLORS.darkgray,
+        backgroundColor: COLORS.gray,
         padding: 10,
         marginTop: 10,
     },
@@ -243,6 +250,10 @@ const styles = StyleSheet.create({
     button_value: {
         color: COLORS.gray,
         fontSize: 18,
+    },
+    value_calendar: {
+        color: COLORS.green,
+        fontSize: 17
     },
     placeholderStyle: {
         fontSize: 16,

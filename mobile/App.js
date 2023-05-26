@@ -38,6 +38,7 @@ const App = () => {
         );
     }
 
+
     return (
         <SafeAreaView style={styles.app}>
             <Navbar title={'EnerChest'}/>

@@ -17,9 +17,9 @@ const orderReducer = (state = initialState, action) => {
         case COMPLETE_ORDER_SUCCESS:
             return {
                 ...state,
-                orders: state.orders.map(item => {
-                    if (item.order.id === action.payload) {
-                        item.order.status = 'Complete'
+                orders: state.map(item => {
+                    if (item.id === action.payload) {
+                        item.status = 'Complete'
                     }
                     return item
                 })
@@ -27,9 +27,9 @@ const orderReducer = (state = initialState, action) => {
         case CANCEL_ORDER_SUCCESS:
             return {
                 ...state,
-                orders: state.orders.map(item => {
-                    if (item.order.id === action.payload) {
-                        item.order.status = 'Cancel'
+                orders: state.map(item => {
+                    if (item.id === action.payload) {
+                        item.status = 'Cancel'
                     }
                     return item
                 })

@@ -57,7 +57,7 @@ const EditProfile = ({show, onHide}) => {
             name: "image",
         })
         console.log(data)
-        // fetch('http://192.168.1.103:5000/api/user', {
+        // fetch('http://188.166.73.5:5005/api/user', {
         //     method: 'put',
         //     body: datasources,
         //     headers: {
