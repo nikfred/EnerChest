@@ -142,9 +142,10 @@ class OrderService {
         console.log('Cancel order: ' + order_id)
         let order = await this.getReadyOrder(order_id, uid)
         const orderItems = await OrderItem.find({order_id: order._id})
-        for (const orderItem of orderItems) {
-            await dispenserService.returned(order.dispenser_id, orderItem.product_id, orderItem.quantity)
-        }
+        await Promise.all(orderItems.map(i => dispenserService.returned(order.dispenser_id, i.product_id, i.quantity)))
+        // for (const orderItem of orderItems) {
+        //     await dispenserService.returned(order.dispenser_id, orderItem.product_id, orderItem.quantity)
+        // }
         return this.deleteReadyOrder(order._id, 'Cancel')
     }
 
@@ -152,22 +153,17 @@ class OrderService {
         await ReadyOrder.findOneAndDelete({_id: order_id})
         return Order.findOneAndUpdate(
             {_id: order_id},
-            {status: status},
+            {status},
             {new: true}
         )
     }
 
     async checkReadyOrder() {
-        const orders = await ReadyOrder.find().sort({dateCancel: 'asc'})
-        const dateNow = +Date.now()
-        for (const order of orders) {
-            if (+order.dateCancel < dateNow) {
-                await this.canceled(order._id)
-                await ReadyOrder.findOneAndDelete({_id: order._id})
-            } else {
-                break
-            }
-        }
+        const orders = await ReadyOrder.find({dateCancel: {$lte: Date.now()}}).lean()
+        await Promise.all([
+            ...orders.map(i => this.canceled(i._id)),
+            ReadyOrder.deleteMany({_id: {$in: orders.map(i => i._id)}})
+        ])
     }
 
     async getUserOrders(uid, limit = 30, page = 1) {

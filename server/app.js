@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 })
 
 
-const job = new CronJob('*/10 * * * *', function() {
+const job = new CronJob('* * * * *', function() {
     orderService.checkReadyOrder()
     dispenserService.clear()
 }, null, true, 'Europe/Kiev');
